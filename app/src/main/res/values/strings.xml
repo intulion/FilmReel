@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Film Reel</string>
+    <string name="menu_top_rated">Top Rated</string>
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="top_rated_rating"><b>%1$s</b> (%2$s)</string>
+    <string name="desc_movies_poster">Movie Poster</string>
+
+    <string name="date_format">%1$td.%1$tm.%1$tY</string>
+</resources>
