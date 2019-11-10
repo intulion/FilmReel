@@ -58,7 +58,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         String posterPath = movie.getPosterPath();
         if (posterPath != null) {
             Glide.with(holder.poster.getContext())
-                    .load(Constants.HTTP.IMAGE_URL + posterPath)
+                    .load(Constants.HTTP.POSTER_URL + posterPath)
                     .into(holder.poster);
         }
     }

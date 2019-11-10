@@ -10,11 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akat.filmreel.R;
+import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.InjectorUtils;
 
 public class MovieListFragment extends Fragment implements MovieListAdapter.MovieListAdapterOnItemClickHandler {
@@ -22,12 +24,6 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.Movi
     private MovieListAdapter movieListAdapter;
     private ProgressBar loadingIndicator;
     private RecyclerView recyclerView;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -51,8 +47,8 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.Movi
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         MovieListViewModelFactory factory = InjectorUtils.provideMovieListViewModelFactory(
                 requireActivity().getApplicationContext());
@@ -67,7 +63,10 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.Movi
 
     @Override
     public void onItemClick(View view, long movieId) {
+        Bundle bundle = new Bundle();
+        bundle.putLong(Constants.PARAM.MOVIE_ID, movieId);
 
+        Navigation.findNavController(view).navigate(R.id.fragment_movie_detail, bundle);
     }
 
     private void showGamesDataView() {

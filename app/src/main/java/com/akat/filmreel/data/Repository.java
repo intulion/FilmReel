@@ -53,4 +53,8 @@ public class Repository {
         return topRatedDao.getTopRated();
     }
 
+    public LiveData<Movie> getMovie(long id) {
+        return topRatedDao.getById(id);
+    }
+
 }

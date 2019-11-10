@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/fragment_movie_list">
 
     <fragment
         android:id="@+id/fragment_movie_list"
         android:name="com.akat.filmreel.ui.movieList.MovieListFragment"
-        android:label="@string/top_rated_movies" />
+        android:label="@string/top_rated_movies" >
+        <action
+            android:id="@+id/action_fragment_movie_list_to_movieDetailFragment"
+            app:destination="@id/fragment_movie_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_movie_detail"
+        android:name="com.akat.filmreel.ui.movieDetail.MovieDetailFragment"
+        android:label="@string/movie_details"
+        tools:layout="@layout/fragment_movie_detail" />
 </navigation>

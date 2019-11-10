@@ -17,7 +17,7 @@ public interface TopRatedDao {
     LiveData<List<Movie>> getTopRated();
 
     @Query("SELECT * FROM top_rated WHERE id = :id")
-    Movie getById(long id);
+    LiveData<Movie> getById(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void bulkInsert(List<Movie> list);
