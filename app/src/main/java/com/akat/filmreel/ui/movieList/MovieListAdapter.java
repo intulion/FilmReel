@@ -1,4 +1,4 @@
-package com.akat.filmreel.ui.topRated;
+package com.akat.filmreel.ui.movieList;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,28 +18,28 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class TopRatedAdapter extends RecyclerView.Adapter<TopRatedAdapter.TopRatedAdapterViewHolder> {
+public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListAdapterViewHolder> {
 
     private final Context context;
-    private final TopRatedAdapterOnItemClickHandler clickHandler;
+    private final MovieListAdapterOnItemClickHandler clickHandler;
     private List<Movie> movies;
 
-    TopRatedAdapter(@NonNull Context context, TopRatedAdapterOnItemClickHandler clickHandler) {
+    MovieListAdapter(@NonNull Context context, MovieListAdapterOnItemClickHandler clickHandler) {
         this.context = context;
         this.clickHandler = clickHandler;
     }
 
     @NonNull
     @Override
-    public TopRatedAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        int layoutId = R.layout.item_top_rated;
+    public MovieListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        int layoutId = R.layout.item_movie_list;
         View view = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
         view.setFocusable(true);
-        return new TopRatedAdapterViewHolder(view);
+        return new MovieListAdapterViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TopRatedAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieListAdapterViewHolder holder, int position) {
         Movie movie = movies.get(position);
 
         holder.title.setText(movie.getTitle());
@@ -105,11 +105,11 @@ public class TopRatedAdapter extends RecyclerView.Adapter<TopRatedAdapter.TopRat
         return movies.size();
     }
 
-    public interface TopRatedAdapterOnItemClickHandler {
+    public interface MovieListAdapterOnItemClickHandler {
         void onItemClick(View view, long movieId);
     }
 
-    class TopRatedAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MovieListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final ImageView poster;
         final TextView title;
@@ -121,17 +121,17 @@ public class TopRatedAdapter extends RecyclerView.Adapter<TopRatedAdapter.TopRat
         final String ratingFormat;
         final String dateFormat;
 
-        TopRatedAdapterViewHolder(View view) {
+        MovieListAdapterViewHolder(View view) {
             super(view);
 
-            poster = itemView.findViewById(R.id.top_rated_img);
-            title = itemView.findViewById(R.id.top_rated_title);
-            originalTitle = itemView.findViewById(R.id.top_rated_orig_title);
-            overview = itemView.findViewById(R.id.top_rated_overview);
-            rating = itemView.findViewById(R.id.top_rated_rating);
-            releaseDate = itemView.findViewById(R.id.top_rated_release_date);
+            poster = itemView.findViewById(R.id.movie_list_img);
+            title = itemView.findViewById(R.id.movie_list_title);
+            originalTitle = itemView.findViewById(R.id.movie_list_orig_title);
+            overview = itemView.findViewById(R.id.movie_list_overview);
+            rating = itemView.findViewById(R.id.movie_list_rating);
+            releaseDate = itemView.findViewById(R.id.movie_list_release_date);
 
-            ratingFormat = itemView.getResources().getString(R.string.top_rated_rating);
+            ratingFormat = itemView.getResources().getString(R.string.movie_rating_format);
             dateFormat = itemView.getResources().getString(R.string.date_format);
 
             itemView.setOnClickListener(this);

@@ -44,7 +44,7 @@ public class Repository {
         return sInstance;
     }
 
-    public synchronized void initializeData() {
+    private synchronized void initializeData() {
         executors.diskIO().execute(networkDataSource::fetchTopRatedMovies);
     }
 

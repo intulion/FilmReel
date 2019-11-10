@@ -6,11 +6,11 @@ import com.akat.filmreel.data.Repository;
 import com.akat.filmreel.data.db.AppDatabase;
 import com.akat.filmreel.data.network.ApiManager;
 import com.akat.filmreel.data.network.NetworkDataSource;
-import com.akat.filmreel.ui.topRated.TopRatedViewModelFactory;
+import com.akat.filmreel.ui.movieList.MovieListViewModelFactory;
 
 public class InjectorUtils {
 
-    private static Repository provideTopRatedRepository(Context context) {
+    private static Repository provideRepository(Context context) {
         AppDatabase database = AppDatabase.getInstance(context.getApplicationContext());
         AppExecutors executors = AppExecutors.getInstance();
         ApiManager manager = ApiManager.getInstance();
@@ -19,9 +19,9 @@ public class InjectorUtils {
         return Repository.getInstance(database.topRatedDao(), networkDataSource, executors);
     }
 
-    public static TopRatedViewModelFactory provideTopRatedViewModelFactory(Context context) {
-        Repository repository = provideTopRatedRepository(context.getApplicationContext());
-        return new TopRatedViewModelFactory(repository);
+    public static MovieListViewModelFactory provideMovieListViewModelFactory(Context context) {
+        Repository repository = provideRepository(context.getApplicationContext());
+        return new MovieListViewModelFactory(repository);
     }
 
 }

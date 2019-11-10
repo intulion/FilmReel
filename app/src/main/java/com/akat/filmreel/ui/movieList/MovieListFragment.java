@@ -1,4 +1,4 @@
-package com.akat.filmreel.ui.topRated;
+package com.akat.filmreel.ui.movieList;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.akat.filmreel.R;
 import com.akat.filmreel.util.InjectorUtils;
 
-public class TopRatedFragment extends Fragment implements TopRatedAdapter.TopRatedAdapterOnItemClickHandler {
+public class MovieListFragment extends Fragment implements MovieListAdapter.MovieListAdapterOnItemClickHandler {
 
-    private TopRatedAdapter topRatedAdapter;
+    private MovieListAdapter movieListAdapter;
     private ProgressBar loadingIndicator;
     private RecyclerView recyclerView;
 
@@ -32,10 +32,10 @@ public class TopRatedFragment extends Fragment implements TopRatedAdapter.TopRat
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_top_rated, container, false);
+        final View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
         loadingIndicator = view.findViewById(R.id.pb_loading_indicator);
-        recyclerView = view.findViewById(R.id.recycler_view_top_rated);
+        recyclerView = view.findViewById(R.id.recycler_view_movie_list);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -44,8 +44,8 @@ public class TopRatedFragment extends Fragment implements TopRatedAdapter.TopRat
         DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
-        topRatedAdapter = new TopRatedAdapter(requireActivity(), this);
-        recyclerView.setAdapter(topRatedAdapter);
+        movieListAdapter = new MovieListAdapter(requireActivity(), this);
+        recyclerView.setAdapter(movieListAdapter);
 
         return view;
     }
@@ -54,11 +54,11 @@ public class TopRatedFragment extends Fragment implements TopRatedAdapter.TopRat
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        TopRatedViewModelFactory factory = InjectorUtils.provideTopRatedViewModelFactory(
+        MovieListViewModelFactory factory = InjectorUtils.provideMovieListViewModelFactory(
                 requireActivity().getApplicationContext());
-        TopRatedViewModel viewModel = ViewModelProviders.of(this, factory).get(TopRatedViewModel.class);
+        MovieListViewModel viewModel = ViewModelProviders.of(this, factory).get(MovieListViewModel.class);
         viewModel.getMovies().observe(this, entries -> {
-            topRatedAdapter.swapItems(entries);
+            movieListAdapter.swapItems(entries);
 
             if (entries != null && entries.size() != 0) showGamesDataView();
             else showLoading();

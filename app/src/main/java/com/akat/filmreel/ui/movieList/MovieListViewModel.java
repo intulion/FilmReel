@@ -1,4 +1,4 @@
-package com.akat.filmreel.ui.topRated;
+package com.akat.filmreel.ui.movieList;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -8,12 +8,12 @@ import com.akat.filmreel.data.model.Movie;
 
 import java.util.List;
 
-public class TopRatedViewModel extends ViewModel {
+public class MovieListViewModel extends ViewModel {
 
     private final Repository repository;
     private LiveData<List<Movie>> movies;
 
-    public TopRatedViewModel(Repository repository) {
+    public MovieListViewModel(Repository repository) {
         this.repository = repository;
         this.movies = this.repository.getTopRatedMovies();
     }

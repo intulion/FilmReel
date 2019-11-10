@@ -48,6 +48,7 @@ public class NetworkDataSource {
         executors.networkIO().execute(() -> {
 
             Call<ApiResponse> call = manager.getApiService().getTopRatedMovies();
+            //noinspection NullableProblems
             call.enqueue(new Callback<ApiResponse>() {
                 @Override
                 public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
