@@ -4,6 +4,10 @@
     <string name="top_rated_movies">Top Rated Movies</string>
     <string name="movie_details">Movie Details</string>
 
+    <string name="more">More</string>
+    <string name="more_info">More Info</string>
+    <string name="genres">Genres</string>
+    <string name="close">Close</string>
     <string name="menu_top_rated">Top Rated</string>
     <string name="bookmarks">Bookmarks</string>
 

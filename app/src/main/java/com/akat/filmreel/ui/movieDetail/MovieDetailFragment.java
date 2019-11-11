@@ -22,6 +22,7 @@ import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.InjectorUtils;
 import com.bumptech.glide.Glide;
 
+import java.util.List;
 import java.util.Locale;
 
 public class MovieDetailFragment extends Fragment {
@@ -39,6 +40,7 @@ public class MovieDetailFragment extends Fragment {
     private MovieDetailViewModel viewModel;
     private long movieId;
     private boolean isBookmarked;
+    private List<Integer> genres;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -59,6 +61,13 @@ public class MovieDetailFragment extends Fragment {
         ratingView = rootView.findViewById(R.id.movie_rating);
         popularityView = rootView.findViewById(R.id.movie_popularity);
         overviewView = rootView.findViewById(R.id.movie_overview);
+
+        // More Button
+        rootView.findViewById(R.id.movie_more_btn).setOnClickListener(v -> {
+            FragmentMoreInfo fragment = new FragmentMoreInfo();
+            fragment.setGenres(genres);
+            fragment.show(requireActivity().getSupportFragmentManager(), fragment.getTag());
+        });
 
         return rootView;
     }
@@ -110,6 +119,9 @@ public class MovieDetailFragment extends Fragment {
                 // set bookmark icon
                 isBookmarked = entry.isBookmarked();
                 requireActivity().invalidateOptionsMenu();
+
+                // set genres array
+                genres = entry.getGenreIds();
             }
         });
     }
