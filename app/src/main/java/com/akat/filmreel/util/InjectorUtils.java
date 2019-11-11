@@ -17,7 +17,12 @@ public class InjectorUtils {
         ApiManager manager = ApiManager.getInstance();
         NetworkDataSource networkDataSource =
                 NetworkDataSource.getInstance(executors, manager);
-        return Repository.getInstance(database.topRatedDao(), networkDataSource, executors);
+        return Repository.getInstance(
+                database.topRatedDao(),
+                database.bookmarksDao(),
+                networkDataSource,
+                executors
+        );
     }
 
     public static MovieListViewModelFactory provideMovieListViewModelFactory(Context context) {

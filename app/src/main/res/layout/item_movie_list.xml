@@ -96,4 +96,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="8.1 (2945)" />
 
+    <ImageView
+        android:id="@+id/movie_list_bookmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/desc_movies_bookmark"
+        android:src="@drawable/ic_bookmark_poster"
+        app:layout_constraintStart_toStartOf="@id/movie_list_card"
+        app:layout_constraintTop_toTopOf="@id/movie_list_card" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

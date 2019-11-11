@@ -19,7 +19,10 @@ import com.akat.filmreel.R;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.InjectorUtils;
 
-public class MovieListFragment extends Fragment implements MovieListAdapter.MovieListAdapterOnItemClickHandler {
+public class MovieListFragment extends Fragment
+        implements MovieListAdapter.MovieListAdapterOnItemClickHandler {
+
+    MovieListViewModel viewModel;
 
     private MovieListAdapter movieListAdapter;
     private ProgressBar loadingIndicator;
@@ -50,13 +53,13 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.Movi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MovieListViewModelFactory factory = InjectorUtils.provideMovieListViewModelFactory(
-                requireActivity().getApplicationContext());
-        MovieListViewModel viewModel = ViewModelProviders.of(this, factory).get(MovieListViewModel.class);
+        MovieListViewModelFactory factory =
+                InjectorUtils.provideMovieListViewModelFactory(requireActivity());
+        viewModel = ViewModelProviders.of(this, factory).get(MovieListViewModel.class);
         viewModel.getMovies().observe(this, entries -> {
             movieListAdapter.swapItems(entries);
 
-            if (entries != null && entries.size() != 0) showGamesDataView();
+            if (entries != null && entries.size() != 0) showDataView();
             else showLoading();
         });
     }
@@ -69,7 +72,13 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.Movi
         Navigation.findNavController(view).navigate(R.id.fragment_movie_detail, bundle);
     }
 
-    private void showGamesDataView() {
+    @Override
+    public void onItemLongClick(View view, int position, long movieId, boolean isBookmarked) {
+        viewModel.setBookmark(movieId, isBookmarked);
+        movieListAdapter.notifyItemChanged(position);
+    }
+
+    private void showDataView() {
         loadingIndicator.setVisibility(View.INVISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
     }
