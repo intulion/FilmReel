@@ -61,6 +61,10 @@ public class Repository {
         return topRatedDao.getTopRated();
     }
 
+    public LiveData<List<MovieWithBookmark>> getBookmarkedMovies() {
+        return topRatedDao.getBookmarkedMovies();
+    }
+
     public LiveData<Movie> getMovie(long id) {
         return topRatedDao.getById(id);
     }

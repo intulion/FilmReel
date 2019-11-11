@@ -1,10 +1,9 @@
-package com.akat.filmreel.ui.movieList;
+package com.akat.filmreel.ui.bookmarks;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,22 +19,19 @@ import com.akat.filmreel.ui.common.MovieAdapter;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.InjectorUtils;
 
-public class MovieListFragment extends Fragment
+public class BookmarksFragment extends Fragment
         implements MovieAdapter.MovieListAdapterOnItemClickHandler {
 
-    MovieListViewModel viewModel;
+    BookmarksViewModel viewModel;
 
     private MovieAdapter movieAdapter;
-    private ProgressBar loadingIndicator;
-    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_bookmarks, container, false);
 
-        loadingIndicator = view.findViewById(R.id.pb_loading_indicator);
-        recyclerView = view.findViewById(R.id.recycler_view_movie_list);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_bookmarks);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -55,14 +51,11 @@ public class MovieListFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MovieListViewModelFactory factory =
-                InjectorUtils.provideMovieListViewModelFactory(requireActivity());
-        viewModel = ViewModelProviders.of(this, factory).get(MovieListViewModel.class);
-        viewModel.getMovies().observe(this, entries -> {
+        BookmarksViewModelFactory factory =
+                InjectorUtils.provideBookmarksViewModelFactory(requireActivity());
+        viewModel = ViewModelProviders.of(this, factory).get(BookmarksViewModel.class);
+        viewModel.getBookmarkedMovies().observe(this, entries -> {
             movieAdapter.swapItems(entries);
-
-            if (entries != null && entries.size() != 0) showDataView();
-            else showLoading();
         });
     }
 
@@ -80,13 +73,4 @@ public class MovieListFragment extends Fragment
         movieAdapter.notifyItemChanged(position);
     }
 
-    private void showDataView() {
-        loadingIndicator.setVisibility(View.INVISIBLE);
-        recyclerView.setVisibility(View.VISIBLE);
-    }
-
-    private void showLoading() {
-        loadingIndicator.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.INVISIBLE);
-    }
 }

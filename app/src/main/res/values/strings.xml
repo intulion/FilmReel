@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Film Reel</string>
     <string name="menu_top_rated">Top Rated</string>
+    <string name="bookmarks">Bookmarks</string>
     <string name="top_rated_movies">Top Rated Movies</string>
     <string name="movie_details">Movie Details</string>
+
     <string name="movie_share">Share</string>
     <string name="movie_share_text">Hi! Let\'s watch this movie: %s</string>
 

@@ -20,6 +20,12 @@ public interface TopRatedDao {
             "ORDER BY voteAverage DESC, voteCount DESC")
     LiveData<List<MovieWithBookmark>> getTopRated();
 
+    @Query("SELECT top_rated.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+            "FROM top_rated " +
+            "INNER JOIN bookmarks ON top_rated.id = bookmarks.movie_id " +
+            "ORDER BY bookmarkDate DESC")
+    LiveData<List<MovieWithBookmark>> getBookmarkedMovies();
+
     @Query("SELECT * FROM top_rated WHERE id = :id")
     LiveData<Movie> getById(long id);
 

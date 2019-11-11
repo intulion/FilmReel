@@ -1,4 +1,4 @@
-package com.akat.filmreel.ui.movieList;
+package com.akat.filmreel.ui.common;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,25 +10,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.model.MovieWithBookmark;
 import com.akat.filmreel.util.Constants;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListAdapterViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieListAdapterViewHolder> {
 
     private final Context context;
     private final MovieListAdapterOnItemClickHandler clickHandler;
     private List<MovieWithBookmark> movies;
     private int lastPosition = -1;
 
-    MovieListAdapter(@NonNull Context context, MovieListAdapterOnItemClickHandler clickHandler) {
+    public MovieAdapter(@NonNull Context context, MovieListAdapterOnItemClickHandler clickHandler) {
         this.context = context;
         this.clickHandler = clickHandler;
     }
@@ -121,6 +121,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     class MovieListAdapterViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
 
+        final CardView cardView;
         final ImageView poster;
         final ImageView bookmark;
         final TextView title;
@@ -135,6 +136,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         MovieListAdapterViewHolder(View view) {
             super(view);
 
+            cardView = itemView.findViewById(R.id.movie_list_card);
             poster = itemView.findViewById(R.id.movie_list_img);
             bookmark = itemView.findViewById(R.id.movie_list_bookmark);
             title = itemView.findViewById(R.id.movie_list_title);
@@ -164,7 +166,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             MovieWithBookmark selectedMovie = movies.get(adapterPosition);
             boolean isBookmarked = selectedMovie.isBookmarked();
 
-            setLongTapAnimation(poster);
+            setLongTapAnimation(cardView);
             clickHandler.onItemLongClick(view, adapterPosition, selectedMovie.getId(), isBookmarked);
 
             selectedMovie.setBookmark(!isBookmarked);

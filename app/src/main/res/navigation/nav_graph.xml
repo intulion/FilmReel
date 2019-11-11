@@ -18,4 +18,13 @@
         android:name="com.akat.filmreel.ui.movieDetail.MovieDetailFragment"
         android:label="@string/movie_details"
         tools:layout="@layout/fragment_movie_detail" />
+    <fragment
+        android:id="@+id/fragment_bookmarks"
+        android:name="com.akat.filmreel.ui.bookmarks.BookmarksFragment"
+        android:label="@string/bookmarks"
+        tools:layout="@layout/fragment_bookmarks">
+        <action
+            android:id="@+id/action_bookmarksFragment_to_fragment_movie_detail"
+            app:destination="@id/fragment_movie_detail" />
+    </fragment>
 </navigation>
