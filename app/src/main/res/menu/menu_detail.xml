@@ -8,4 +8,10 @@
         android:title="@string/movie_share"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_detail_bookmark"
+        android:icon="@drawable/ic_bookmark_border"
+        android:title="@string/movie_bookmark"
+        app:showAsAction="ifRoom" />
+
 </menu>

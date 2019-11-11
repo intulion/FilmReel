@@ -15,16 +15,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akat.filmreel.R;
-import com.akat.filmreel.ui.common.MovieAdapter;
+import com.akat.filmreel.ui.common.MovieListAdapter;
+import com.akat.filmreel.ui.movieList.MovieListViewModelFactory;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.InjectorUtils;
 
 public class BookmarksFragment extends Fragment
-        implements MovieAdapter.MovieListAdapterOnItemClickHandler {
+        implements MovieListAdapter.MovieListAdapterOnItemClickHandler {
 
-    BookmarksViewModel viewModel;
+    private BookmarksViewModel viewModel;
 
-    private MovieAdapter movieAdapter;
+    private MovieListAdapter movieListAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -41,8 +42,8 @@ public class BookmarksFragment extends Fragment
                 new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
-        movieAdapter = new MovieAdapter(requireActivity(), this);
-        recyclerView.setAdapter(movieAdapter);
+        movieListAdapter = new MovieListAdapter(requireActivity(), this);
+        recyclerView.setAdapter(movieListAdapter);
 
         return view;
     }
@@ -55,7 +56,7 @@ public class BookmarksFragment extends Fragment
                 InjectorUtils.provideBookmarksViewModelFactory(requireActivity());
         viewModel = ViewModelProviders.of(this, factory).get(BookmarksViewModel.class);
         viewModel.getBookmarkedMovies().observe(this, entries -> {
-            movieAdapter.swapItems(entries);
+            movieListAdapter.swapItems(entries);
         });
     }
 
@@ -70,7 +71,7 @@ public class BookmarksFragment extends Fragment
     @Override
     public void onItemLongClick(View view, int position, long movieId, boolean isBookmarked) {
         viewModel.setBookmark(movieId, isBookmarked);
-        movieAdapter.notifyItemChanged(position);
+        movieListAdapter.notifyItemChanged(position);
     }
 
 }

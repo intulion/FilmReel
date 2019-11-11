@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -35,7 +36,9 @@ public class MovieDetailFragment extends Fragment {
     private TextView popularityView;
     private TextView overviewView;
 
+    private MovieDetailViewModel viewModel;
     private long movieId;
+    private boolean isBookmarked;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -64,9 +67,9 @@ public class MovieDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MovieDetailViewModelFactory factory
-                = InjectorUtils.provideMovieDetailViewModelFactory(requireActivity(), movieId);
-        MovieDetailViewModel viewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel.class);
+        MovieDetailViewModelFactory factory =
+                InjectorUtils.provideMovieDetailViewModelFactory(requireActivity(), movieId);
+        viewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel.class);
         viewModel.getMovie().observe(this, entry -> {
             if (entry != null) {
                 titleView.setText(entry.getTitle());
@@ -74,7 +77,7 @@ public class MovieDetailFragment extends Fragment {
                 overviewView.setText(entry.getOverview());
                 languageView.setText(entry.getOriginalLanguage());
                 popularityView.setText(
-                        String.format(Locale.getDefault(),"%.3f", entry.getPopularity())
+                        String.format(Locale.getDefault(), "%.3f", entry.getPopularity())
                 );
 
                 String dateFormat = requireActivity().getResources().getString(R.string.date_format);
@@ -103,6 +106,10 @@ public class MovieDetailFragment extends Fragment {
                             .load(Constants.HTTP.BACKDROP_URL + backdropPath)
                             .into(backdropView);
                 }
+
+                // set bookmark icon
+                isBookmarked = entry.isBookmarked();
+                requireActivity().invalidateOptionsMenu();
             }
         });
     }
@@ -114,8 +121,21 @@ public class MovieDetailFragment extends Fragment {
     }
 
     @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuItem bookmarkItem = menu.findItem(R.id.menu_detail_bookmark);
+        if (isBookmarked) {
+            bookmarkItem.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_bookmark));
+        } else {
+            bookmarkItem.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_bookmark_border));
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() ==  R.id.menu_detail_share) {
+        switch (item.getItemId()) {
+            case R.id.menu_detail_share:
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT,
@@ -124,6 +144,12 @@ public class MovieDetailFragment extends Fragment {
                 sendIntent.setType("text/plain");
                 Intent shareIntent = Intent.createChooser(sendIntent, null);
                 startActivity(shareIntent);
+
+                return true;
+            case R.id.menu_detail_bookmark:
+                viewModel.setBookmark(movieId, isBookmarked);
+                isBookmarked = !isBookmarked;
+                requireActivity().invalidateOptionsMenu();
 
                 return true;
         }

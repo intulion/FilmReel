@@ -26,8 +26,11 @@ public interface TopRatedDao {
             "ORDER BY bookmarkDate DESC")
     LiveData<List<MovieWithBookmark>> getBookmarkedMovies();
 
-    @Query("SELECT * FROM top_rated WHERE id = :id")
-    LiveData<Movie> getById(long id);
+    @Query("SELECT top_rated.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+            "FROM top_rated " +
+            "LEFT JOIN bookmarks ON top_rated.id = bookmarks.movie_id " +
+            "WHERE top_rated.id = :id")
+    LiveData<MovieWithBookmark> getById(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void bulkInsert(List<Movie> list);

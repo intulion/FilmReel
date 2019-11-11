@@ -21,14 +21,14 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieListAdapterViewHolder> {
+public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListAdapterViewHolder> {
 
     private final Context context;
     private final MovieListAdapterOnItemClickHandler clickHandler;
     private List<MovieWithBookmark> movies;
     private int lastPosition = -1;
 
-    public MovieAdapter(@NonNull Context context, MovieListAdapterOnItemClickHandler clickHandler) {
+    public MovieListAdapter(@NonNull Context context, MovieListAdapterOnItemClickHandler clickHandler) {
         this.context = context;
         this.clickHandler = clickHandler;
     }

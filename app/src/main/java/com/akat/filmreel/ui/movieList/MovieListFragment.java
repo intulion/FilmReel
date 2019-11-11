@@ -16,16 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akat.filmreel.R;
-import com.akat.filmreel.ui.common.MovieAdapter;
+import com.akat.filmreel.ui.common.MovieListAdapter;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.InjectorUtils;
 
 public class MovieListFragment extends Fragment
-        implements MovieAdapter.MovieListAdapterOnItemClickHandler {
+        implements MovieListAdapter.MovieListAdapterOnItemClickHandler {
 
-    MovieListViewModel viewModel;
+    private MovieListViewModel viewModel;
 
-    private MovieAdapter movieAdapter;
+    private MovieListAdapter movieListAdapter;
     private ProgressBar loadingIndicator;
     private RecyclerView recyclerView;
 
@@ -45,8 +45,8 @@ public class MovieListFragment extends Fragment
                 new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
-        movieAdapter = new MovieAdapter(requireActivity(), this);
-        recyclerView.setAdapter(movieAdapter);
+        movieListAdapter = new MovieListAdapter(requireActivity(), this);
+        recyclerView.setAdapter(movieListAdapter);
 
         return view;
     }
@@ -59,7 +59,7 @@ public class MovieListFragment extends Fragment
                 InjectorUtils.provideMovieListViewModelFactory(requireActivity());
         viewModel = ViewModelProviders.of(this, factory).get(MovieListViewModel.class);
         viewModel.getMovies().observe(this, entries -> {
-            movieAdapter.swapItems(entries);
+            movieListAdapter.swapItems(entries);
 
             if (entries != null && entries.size() != 0) showDataView();
             else showLoading();
@@ -77,7 +77,7 @@ public class MovieListFragment extends Fragment
     @Override
     public void onItemLongClick(View view, int position, long movieId, boolean isBookmarked) {
         viewModel.setBookmark(movieId, isBookmarked);
-        movieAdapter.notifyItemChanged(position);
+        movieListAdapter.notifyItemChanged(position);
     }
 
     private void showDataView() {

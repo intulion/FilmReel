@@ -4,22 +4,23 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.akat.filmreel.data.Repository;
-import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.data.model.MovieWithBookmark;
 
-import java.util.List;
-
-public class MovieDetailViewModel extends ViewModel {
+class MovieDetailViewModel extends ViewModel {
 
     private final Repository repository;
-    private LiveData<Movie> movie;
+    private LiveData<MovieWithBookmark> movie;
 
-    public MovieDetailViewModel(Repository repository, long movieId) {
+    MovieDetailViewModel(Repository repository, long movieId) {
         this.repository = repository;
         this.movie = this.repository.getMovie(movieId);
     }
 
-    public LiveData<Movie> getMovie() {
+    public LiveData<MovieWithBookmark> getMovie() {
         return movie;
     }
 
+    public void setBookmark(long movieId, boolean isBookmarked) {
+        repository.setBookmark(movieId, isBookmarked);
+    }
 }
