@@ -47,7 +47,7 @@ public class PlacesNetworkDataSource {
         executors.networkIO().execute(() -> {
             String location = String.format("%s,%s", lat, lng);
 
-            Call<PlacesResponse> call = manager.getApiService().getNearbyCinemas("45.016622,41.895931");
+            Call<PlacesResponse> call = manager.getApiService().getNearbyCinemas(location);
             //noinspection NullableProblems
             call.enqueue(new Callback<PlacesResponse>() {
                 @Override

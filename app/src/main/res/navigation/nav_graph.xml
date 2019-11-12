@@ -30,7 +30,7 @@
     <fragment
         android:id="@+id/fragment_cinema_list"
         android:name="com.akat.filmreel.ui.cinemas.CinemaListFragment"
-        android:label="@string/cinemas">
+        android:label="@string/nearby_cinemas">
         <action
             android:id="@+id/action_fragment_cinema_list_to_mapsFragment"
             app:destination="@id/fragment_maps" />

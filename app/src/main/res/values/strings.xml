@@ -12,6 +12,7 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="map">Map</string>
     <string name="cinemas">Cinemas</string>
+    <string name="nearby_cinemas">Nearby Cinemas</string>
 
     <string name="movie_bookmark">Bookmark</string>
     <string name="movie_share">Share</string>

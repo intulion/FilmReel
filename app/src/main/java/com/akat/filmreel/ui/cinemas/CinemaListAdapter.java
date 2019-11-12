@@ -55,7 +55,7 @@ public class CinemaListAdapter extends RecyclerView.Adapter<CinemaListAdapter.Ci
     }
 
     public interface CinemaListAdapterOnItemClickHandler {
-        void onItemClick(View view, Double lat, Double lng);
+        void onItemClick(View view, String name, Double lat, Double lng);
     }
 
     class CinemaListAdapterViewHolder extends RecyclerView.ViewHolder
@@ -80,7 +80,12 @@ public class CinemaListAdapter extends RecyclerView.Adapter<CinemaListAdapter.Ci
 
             Location cinemaLocation = selectedCinema.getGeometry().getLocation();
 
-            clickHandler.onItemClick(view, cinemaLocation.getLat(), cinemaLocation.getLng());
+            clickHandler.onItemClick(
+                    view,
+                    selectedCinema.getName(),
+                    cinemaLocation.getLat(),
+                    cinemaLocation.getLng()
+            );
         }
     }
 }

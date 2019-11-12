@@ -33,6 +33,9 @@ public class CinemaListFragment extends Fragment
     private FusedLocationProviderClient fusedLocationClient;
     private CinemaListAdapter cinemaListAdapter;
 
+    private double currentLat;
+    private double currentLng;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,10 +70,13 @@ public class CinemaListFragment extends Fragment
     }
 
     @Override
-    public void onItemClick(View view, Double lat, Double lng) {
+    public void onItemClick(View view, String name, Double lat, Double lng) {
         Bundle bundle = new Bundle();
+        bundle.putString(Constants.PARAM.CINEMA_NAME, name);
         bundle.putDouble(Constants.PARAM.CINEMA_LAT, lat);
         bundle.putDouble(Constants.PARAM.CINEMA_LNG, lng);
+        bundle.putDouble(Constants.PARAM.CURRENT_LAT, currentLat);
+        bundle.putDouble(Constants.PARAM.CURRENT_LNG, currentLng);
 
         Navigation.findNavController(view).navigate(R.id.fragment_maps, bundle);
     }
@@ -102,14 +108,15 @@ public class CinemaListFragment extends Fragment
     @Override
     public void onSuccess(Location location) {
         if (location != null) {
-            double lat = location.getLatitude();
-            double lng = location.getLongitude();
+            currentLat = location.getLatitude();
+            currentLng = location.getLongitude();
 
-            CinemaListViewModelFactory factory = InjectorUtils.provideCinemaListViewModelFactory(lat, lng);
+            CinemaListViewModelFactory factory =
+                    InjectorUtils.provideCinemaListViewModelFactory(currentLat, currentLng);
             CinemaListViewModel viewModel = ViewModelProviders.of(this, factory).get(CinemaListViewModel.class);
-            viewModel.getNearbyCinemas().observe(this, entries -> {
-                cinemaListAdapter.setItems(entries);
-            });
+            viewModel.getNearbyCinemas().observe(this,
+                    entries -> cinemaListAdapter.setItems(entries)
+            );
         }
     }
 }
