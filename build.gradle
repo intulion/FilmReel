@@ -18,6 +18,7 @@ buildscript {
         lifecycleVersion = '2.1.0'
         materialVersion = '1.0.0'
         navigationVersion = '2.1.0'
+        playServicesVersion = '17.0.0'
         recyclerViewVersion = '1.0.0'
         retrofitVersion = '2.6.2'
         roomVersion = '2.2.1'

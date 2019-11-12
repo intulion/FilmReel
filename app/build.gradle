@@ -19,12 +19,16 @@ android {
         }
 
         buildConfigField 'String', "ApiKey", FilmReel_ApiKey
+        buildConfigField 'String', "PlacesApiKey", FilmReel_PlacesApiKey
+        resValue "string", "google_maps_key", FilmReel_MapsKey
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', "ApiKey", FilmReel_ApiKey
+            buildConfigField 'String', "PlacesApiKey", FilmReel_PlacesApiKey
+            resValue "string", "google_maps_key", FilmReel_MapsKey
         }
     }
 
@@ -40,6 +44,8 @@ dependencies {
     implementation "com.google.android.material:material:$rootProject.materialVersion"
 
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    implementation "com.google.android.gms:play-services-maps:$rootProject.playServicesVersion"
+    implementation "com.google.android.gms:play-services-location:$rootProject.playServicesVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"

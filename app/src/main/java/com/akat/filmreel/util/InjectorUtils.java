@@ -2,11 +2,15 @@ package com.akat.filmreel.util;
 
 import android.content.Context;
 
+import com.akat.filmreel.data.PlacesRepository;
 import com.akat.filmreel.data.Repository;
 import com.akat.filmreel.data.db.AppDatabase;
 import com.akat.filmreel.data.network.ApiManager;
 import com.akat.filmreel.data.network.NetworkDataSource;
+import com.akat.filmreel.data.network.PlacesApiManager;
+import com.akat.filmreel.data.network.PlacesNetworkDataSource;
 import com.akat.filmreel.ui.bookmarks.BookmarksViewModelFactory;
+import com.akat.filmreel.ui.cinemas.CinemaListViewModelFactory;
 import com.akat.filmreel.ui.movieDetail.MovieDetailViewModelFactory;
 import com.akat.filmreel.ui.movieList.MovieListViewModelFactory;
 
@@ -39,6 +43,22 @@ public class InjectorUtils {
     public static BookmarksViewModelFactory provideBookmarksViewModelFactory(Context context) {
         Repository repository = provideRepository(context);
         return new BookmarksViewModelFactory(repository);
+    }
+
+    private static PlacesRepository providePlacesRepository() {
+        AppExecutors executors = AppExecutors.getInstance();
+        PlacesApiManager manager = PlacesApiManager.getInstance();
+        PlacesNetworkDataSource networkDataSource =
+                PlacesNetworkDataSource.getInstance(executors, manager);
+        return PlacesRepository.getInstance(
+                networkDataSource,
+                executors
+        );
+    }
+
+    public static CinemaListViewModelFactory provideCinemaListViewModelFactory(double lat, double lng) {
+        PlacesRepository repository = providePlacesRepository();
+        return new CinemaListViewModelFactory(repository, lat, lng);
     }
 
 }

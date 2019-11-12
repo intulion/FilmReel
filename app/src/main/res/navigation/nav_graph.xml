@@ -27,4 +27,17 @@
             android:id="@+id/action_bookmarksFragment_to_fragment_movie_detail"
             app:destination="@id/fragment_movie_detail" />
     </fragment>
+    <fragment
+        android:id="@+id/fragment_cinema_list"
+        android:name="com.akat.filmreel.ui.cinemas.CinemaListFragment"
+        android:label="@string/cinemas">
+        <action
+            android:id="@+id/action_fragment_cinema_list_to_mapsFragment"
+            app:destination="@id/fragment_maps" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_maps"
+        android:name="com.akat.filmreel.ui.cinemas.MapsFragment"
+        android:label="@string/map"
+        tools:layout="@layout/fragment_maps" />
 </navigation>

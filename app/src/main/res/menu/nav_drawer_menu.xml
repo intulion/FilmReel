@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_bookmark_black"
         android:title="@string/bookmarks" />
 
+    <item
+        android:id="@id/fragment_cinema_list"
+        android:icon="@drawable/ic_map"
+        android:title="@string/cinemas" />
+
 </menu>

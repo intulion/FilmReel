@@ -10,6 +10,8 @@
     <string name="close">Close</string>
     <string name="menu_top_rated">Top Rated</string>
     <string name="bookmarks">Bookmarks</string>
+    <string name="map">Map</string>
+    <string name="cinemas">Cinemas</string>
 
     <string name="movie_bookmark">Bookmark</string>
     <string name="movie_share">Share</string>
@@ -17,6 +19,7 @@
 
     <string name="desc_movies_poster">Movie Poster</string>
     <string name="desc_movies_bookmark">Movie Bookmark</string>
+    <string name="desc_icon_places">Places Icon</string>
 
     <string name="movie_rating_format">%1$.1f (%2$d)</string>
     <string name="date_format">%1$td.%1$tm.%1$tY</string>
