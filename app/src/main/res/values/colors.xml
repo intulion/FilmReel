@@ -5,6 +5,7 @@
     <color name="colorAccentLight">#FDC00F</color>
     <color name="colorAccent">#F29A00</color>
 
+    <color name="grey_20">#CCCCCC</color>
     <color name="grey_40">#999999</color>
     <color name="grey_60">#666666</color>
     <color name="grey_80">#37474F</color>

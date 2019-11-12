@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,15 +27,21 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 public class CinemaListFragment extends Fragment
-        implements CinemaListAdapter.CinemaListAdapterOnItemClickHandler, OnSuccessListener<Location> {
+        implements CinemaListAdapter.CinemaListAdapterOnItemClickHandler {
 
     private static final int PERMISSIONS_REQUEST_FINE_LOCATION = 13;
 
     private FusedLocationProviderClient fusedLocationClient;
     private CinemaListAdapter cinemaListAdapter;
+    private CinemaListViewModel viewModel;
 
-    private double currentLat;
-    private double currentLng;
+    private RecyclerView recyclerView;
+    private View loadingIndicator;
+    private View noItemView;
+
+    private boolean showLoading = true;
+
+    private Location location = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +54,14 @@ public class CinemaListFragment extends Fragment
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_cinema_list, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_cinema_list);
+        loadingIndicator = view.findViewById(R.id.pb_loading_indicator);
+        noItemView = view.findViewById(R.id.cinemas_no_item);
+        view.findViewById(R.id.no_item_retry).setOnClickListener(v -> {
+            showLoading = true;
+            showCinemas();
+        });
+
+        recyclerView = view.findViewById(R.id.recycler_view_cinema_list);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -75,8 +89,8 @@ public class CinemaListFragment extends Fragment
         bundle.putString(Constants.PARAM.CINEMA_NAME, name);
         bundle.putDouble(Constants.PARAM.CINEMA_LAT, lat);
         bundle.putDouble(Constants.PARAM.CINEMA_LNG, lng);
-        bundle.putDouble(Constants.PARAM.CURRENT_LAT, currentLat);
-        bundle.putDouble(Constants.PARAM.CURRENT_LNG, currentLng);
+        bundle.putDouble(Constants.PARAM.CURRENT_LAT, location.getLatitude());
+        bundle.putDouble(Constants.PARAM.CURRENT_LNG, location.getLongitude());
 
         Navigation.findNavController(view).navigate(R.id.fragment_maps, bundle);
     }
@@ -98,25 +112,55 @@ public class CinemaListFragment extends Fragment
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             doShowCinemas();
+        } else {
+            showLoading = false;
+            updateDataView();
         }
     }
 
     private void doShowCinemas() {
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this);
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        this.location = location;
+                        loadData();
+                    }
+                });
+        updateDataView();
     }
 
-    @Override
-    public void onSuccess(Location location) {
-        if (location != null) {
-            currentLat = location.getLatitude();
-            currentLng = location.getLongitude();
-
+    private void loadData() {
+        if (viewModel != null && location != null) {
+            viewModel.forceUpdate(location.getLatitude(), location.getLongitude());
+        } else {
             CinemaListViewModelFactory factory =
-                    InjectorUtils.provideCinemaListViewModelFactory(currentLat, currentLng);
-            CinemaListViewModel viewModel = ViewModelProviders.of(this, factory).get(CinemaListViewModel.class);
+                    InjectorUtils.provideCinemaListViewModelFactory(location.getLatitude(), location.getLongitude());
+            viewModel = ViewModelProviders.of(this, factory).get(CinemaListViewModel.class);
             viewModel.getNearbyCinemas().observe(this,
-                    entries -> cinemaListAdapter.setItems(entries)
+                    entries -> {
+                        showLoading = false;
+                        cinemaListAdapter.setItems(entries);
+                        updateDataView();
+                    }
             );
+        }
+    }
+
+    private void updateDataView() {
+        if (cinemaListAdapter.getItemCount() == 0) {
+            if (showLoading) {
+                recyclerView.setVisibility(View.GONE);
+                loadingIndicator.setVisibility(View.VISIBLE);
+                noItemView.setVisibility(View.GONE);
+            } else {
+                recyclerView.setVisibility(View.GONE);
+                loadingIndicator.setVisibility(View.GONE);
+                noItemView.setVisibility(View.VISIBLE);
+            }
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            loadingIndicator.setVisibility(View.GONE);
+            noItemView.setVisibility(View.GONE);
         }
     }
 }

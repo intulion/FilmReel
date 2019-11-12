@@ -40,4 +40,8 @@ public class PlacesRepository {
         return networkDataSource.getNearbyCinemas();
     }
 
+    public void forceUpdate(double lat, double lng) {
+        initializeData(lat, lng);
+    }
+
 }

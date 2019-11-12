@@ -22,4 +22,8 @@ class CinemaListViewModel extends ViewModel {
         return cinemas;
     }
 
+    void forceUpdate(double lat, double lng) {
+        repository.forceUpdate(lat, lng);
+    }
+
 }

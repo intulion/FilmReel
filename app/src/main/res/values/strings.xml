@@ -14,6 +14,11 @@
     <string name="cinemas">Cinemas</string>
     <string name="nearby_cinemas">Nearby Cinemas</string>
 
+    <string name="no_bookmarks">No bookmarks</string>
+    <string name="long_tap_to_bookmark">Long tap on a movie to bookmark</string>
+    <string name="no_cinemas">No cinemas found</string>
+    <string name="retry">Retry</string>
+
     <string name="movie_bookmark">Bookmark</string>
     <string name="movie_share">Share</string>
     <string name="movie_share_text">Hi! Let\'s watch this movie: %s</string>

@@ -24,15 +24,19 @@ public class BookmarksFragment extends Fragment
         implements MovieListAdapter.MovieListAdapterOnItemClickHandler {
 
     private BookmarksViewModel viewModel;
-
     private MovieListAdapter movieListAdapter;
+
+    private RecyclerView recyclerView;
+    private View noItemView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_bookmarks, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_bookmarks);
+        noItemView = view.findViewById(R.id.bookmarks_no_item);
+
+        recyclerView = view.findViewById(R.id.recycler_view_bookmarks);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -57,6 +61,7 @@ public class BookmarksFragment extends Fragment
         viewModel = ViewModelProviders.of(this, factory).get(BookmarksViewModel.class);
         viewModel.getBookmarkedMovies().observe(this, entries -> {
             movieListAdapter.swapItems(entries);
+            updateDataView();
         });
     }
 
@@ -72,6 +77,16 @@ public class BookmarksFragment extends Fragment
     public void onItemLongClick(View view, int position, long movieId, boolean isBookmarked) {
         viewModel.setBookmark(movieId, isBookmarked);
         movieListAdapter.notifyItemChanged(position);
+        updateDataView();
     }
 
+    private void updateDataView() {
+        if (movieListAdapter.getItemCount() == 0) {
+            noItemView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
+        } else {
+            noItemView.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+    }
 }

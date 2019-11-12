@@ -12,11 +12,14 @@
         android:scrollbars="none"
         tools:listitem="@layout/item_movie_list" />
 
-    <ProgressBar
+    <include
+        android:id="@+id/cinemas_no_item"
+        android:visibility="gone"
+        layout="@layout/no_item_cinemas"/>
+
+    <include
         android:id="@+id/pb_loading_indicator"
-        android:layout_width="@dimen/pb_width"
-        android:layout_height="@dimen/pb_height"
-        android:layout_gravity="center"
-        android:visibility="invisible" />
+        android:visibility="gone"
+        layout="@layout/no_item_loading_indicator"/>
 
 </FrameLayout>
