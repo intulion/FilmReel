@@ -8,6 +8,7 @@ public class Constants {
         public static final String POSTER_URL = IMAGE_URL + "w154";
         public static final String BACKDROP_URL = IMAGE_URL + "w500";
         public static final String DATE_FORMAT = "yyyy-MM-dd";
+        public static final int PAGE_SIZE = 20;
 
         public static final String PLACES_URL = "https://maps.googleapis.com/";
     }

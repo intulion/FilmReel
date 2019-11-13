@@ -52,12 +52,16 @@ public class Repository {
         return sInstance;
     }
 
-    private synchronized void initializeData() {
-        executors.diskIO().execute(networkDataSource::fetchTopRatedMovies);
+    private synchronized void fetchData(int currentPage) {
+        executors.diskIO().execute(() -> networkDataSource.fetchTopRatedMovies(currentPage));
+    }
+
+    public void loadNewData(int currentPage) {
+        fetchData(currentPage);
     }
 
     public LiveData<List<MovieWithBookmark>> getTopRatedMovies() {
-        initializeData();
+        fetchData(0);
         return topRatedDao.getTopRated();
     }
 

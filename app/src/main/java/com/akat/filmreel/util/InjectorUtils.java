@@ -21,7 +21,7 @@ public class InjectorUtils {
         AppExecutors executors = AppExecutors.getInstance();
         ApiManager manager = ApiManager.getInstance();
         NetworkDataSource networkDataSource =
-                NetworkDataSource.getInstance(executors, manager);
+                NetworkDataSource.getInstance(context, executors, manager);
         return Repository.getInstance(
                 database.topRatedDao(),
                 database.bookmarksDao(),

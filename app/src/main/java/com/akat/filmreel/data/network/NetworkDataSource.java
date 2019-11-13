@@ -1,11 +1,14 @@
 package com.akat.filmreel.data.network;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.util.AppExecutors;
+import com.akat.filmreel.util.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,20 +24,22 @@ public class NetworkDataSource {
 
     private final MutableLiveData<List<Movie>> downloadedMovies;
 
+    private final Context context;
     private final AppExecutors executors;
     private final ApiManager manager;
 
-    private NetworkDataSource(AppExecutors executors, ApiManager manager) {
+    private NetworkDataSource(Context context, AppExecutors executors, ApiManager manager) {
+        this.context = context;
         this.executors = executors;
         this.manager = manager;
 
         downloadedMovies = new MutableLiveData<>();
     }
 
-    public static NetworkDataSource getInstance(AppExecutors executors, ApiManager manager) {
+    public static NetworkDataSource getInstance(Context context, AppExecutors executors, ApiManager manager) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new NetworkDataSource(executors, manager);
+                sInstance = new NetworkDataSource(context, executors, manager);
             }
         }
         return sInstance;
@@ -44,18 +49,31 @@ public class NetworkDataSource {
         return downloadedMovies;
     }
 
-    public void fetchTopRatedMovies() {
+    public void fetchTopRatedMovies(int currentPage) {
         executors.networkIO().execute(() -> {
+            // Page data
+            int lastPage = Preferences.getLastPage(context);
+            int totalPages = Preferences.getTotalPages(context);
 
-            Call<ApiResponse> call = manager.getApiService().getTopRatedMovies();
+            if (currentPage < lastPage || lastPage >= totalPages) {
+                return;
+            }
+
+            // Make request
+            Call<ApiResponse> call = manager.getApiService().getTopRatedMovies(lastPage + 1);
             //noinspection NullableProblems
             call.enqueue(new Callback<ApiResponse>() {
                 @Override
                 public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                     if (!response.isSuccessful()) return;
 
-                    ArrayList<Movie> result = (ArrayList<Movie>) response.body().getResults();
-                    downloadedMovies.postValue(result);
+                    ApiResponse apiResponse = response.body();
+                    if (apiResponse != null) {
+                        ArrayList<Movie> result = (ArrayList<Movie>) apiResponse.getResults();
+                        downloadedMovies.postValue(result);
+
+                        Preferences.setPageData(context, apiResponse.getPage(), apiResponse.getTotalPages());
+                    }
                 }
 
                 @Override

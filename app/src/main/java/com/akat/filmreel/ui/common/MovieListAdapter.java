@@ -24,13 +24,18 @@ import java.util.List;
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListAdapterViewHolder> {
 
     private final Context context;
-    private final MovieListAdapterOnItemClickHandler clickHandler;
+    private final OnItemClickHandler clickHandler;
+    private OnBottomReachedListener onBottomReachedListener;
     private List<MovieWithBookmark> movies;
     private int lastPosition = -1;
 
-    public MovieListAdapter(@NonNull Context context, MovieListAdapterOnItemClickHandler clickHandler) {
+    public MovieListAdapter(@NonNull Context context, OnItemClickHandler clickHandler) {
         this.context = context;
         this.clickHandler = clickHandler;
+    }
+
+    public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener){
+        this.onBottomReachedListener = onBottomReachedListener;
     }
 
     @NonNull
@@ -66,6 +71,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             Glide.with(holder.poster.getContext())
                     .load(Constants.HTTP.POSTER_URL + posterPath)
                     .into(holder.poster);
+        }
+
+        if (position == getItemCount() - 3) {
+            onBottomReachedListener.onBottomReached(position);
         }
 
         setAnimation(holder.itemView, position);
@@ -113,9 +122,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         return movies.size();
     }
 
-    public interface MovieListAdapterOnItemClickHandler {
+    public interface OnItemClickHandler {
         void onItemClick(View view, long movieId);
         void onItemLongClick(View view, int position, long movieId, boolean isBookmarked);
+    }
+
+    public interface OnBottomReachedListener {
+        void onBottomReached(int position);
     }
 
     class MovieListAdapterViewHolder extends RecyclerView.ViewHolder

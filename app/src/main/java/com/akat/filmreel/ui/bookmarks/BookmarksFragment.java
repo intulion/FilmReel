@@ -16,12 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.akat.filmreel.R;
 import com.akat.filmreel.ui.common.MovieListAdapter;
-import com.akat.filmreel.ui.movieList.MovieListViewModelFactory;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.InjectorUtils;
 
 public class BookmarksFragment extends Fragment
-        implements MovieListAdapter.MovieListAdapterOnItemClickHandler {
+        implements MovieListAdapter.OnItemClickHandler {
 
     private BookmarksViewModel viewModel;
     private MovieListAdapter movieListAdapter;

@@ -1,6 +1,7 @@
 package com.akat.filmreel.ui.movieList;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.InjectorUtils;
 
 public class MovieListFragment extends Fragment
-        implements MovieListAdapter.MovieListAdapterOnItemClickHandler {
+        implements MovieListAdapter.OnItemClickHandler, MovieListAdapter.OnBottomReachedListener {
 
     private MovieListViewModel viewModel;
 
@@ -46,6 +47,7 @@ public class MovieListFragment extends Fragment
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
         movieListAdapter = new MovieListAdapter(requireActivity(), this);
+        movieListAdapter.setOnBottomReachedListener(this);
         recyclerView.setAdapter(movieListAdapter);
 
         return view;
@@ -78,6 +80,12 @@ public class MovieListFragment extends Fragment
     public void onItemLongClick(View view, int position, long movieId, boolean isBookmarked) {
         viewModel.setBookmark(movieId, isBookmarked);
         movieListAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void onBottomReached(int position) {
+        int currentPage = 1 + position / Constants.HTTP.PAGE_SIZE;
+        viewModel.loadNewData(currentPage);
     }
 
     private void showDataView() {

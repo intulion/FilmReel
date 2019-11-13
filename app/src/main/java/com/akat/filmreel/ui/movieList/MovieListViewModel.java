@@ -13,13 +13,17 @@ public class MovieListViewModel extends ViewModel {
     private final Repository repository;
     private LiveData<List<MovieWithBookmark>> movies;
 
-    public MovieListViewModel(Repository repository) {
+    MovieListViewModel(Repository repository) {
         this.repository = repository;
         this.movies = this.repository.getTopRatedMovies();
     }
 
-    public LiveData<List<MovieWithBookmark>> getMovies() {
+    LiveData<List<MovieWithBookmark>> getMovies() {
         return movies;
+    }
+
+    void loadNewData(int currentPage) {
+        repository.loadNewData(currentPage);
     }
 
     public void setBookmark(long movieId, boolean isBookmarked) {
