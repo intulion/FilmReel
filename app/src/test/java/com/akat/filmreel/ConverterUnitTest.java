@@ -18,6 +18,14 @@ public class ConverterUnitTest {
     }
 
     @Test
+    public void EmptyTooList_isCorrect() {
+        List<Integer> list = Arrays.asList(10, 52, 1);
+        assertNull(IntListConverter.toList(null));
+        assertNull(IntListConverter.toList(""));
+    }
+
+
+    @Test
     public void fromList_isCorrect() {
         List<Integer> list = Arrays.asList(10, 52, 1);
         assertEquals("10,52,1", IntListConverter.fromList(list));
