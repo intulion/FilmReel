@@ -73,7 +73,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                     .into(holder.poster);
         }
 
-        if (position == getItemCount() - 3) {
+        if (onBottomReachedListener != null && position == getItemCount() - 3) {
             onBottomReachedListener.onBottomReached(position);
         }
 
