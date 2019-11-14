@@ -54,7 +54,7 @@ public class Movie {
     private Date releaseDate;
     @SerializedName("genre_ids")
     @Expose
-    public List<Integer> genreIds = null;
+    private List<Integer> genreIds = null;
 
     public long getId() {
         return id;

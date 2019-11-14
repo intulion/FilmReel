@@ -3,19 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.topRated.TopRatedViewModel">
+    tools:context=".ui.movieList.MovieListViewModel">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_top_rated"
+        android:id="@+id/recycler_view_cinema_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        tools:listitem="@layout/item_movie_list" />
 
-    <ProgressBar
+    <include
+        android:id="@+id/cinemas_no_item"
+        android:visibility="gone"
+        layout="@layout/no_item_cinemas"/>
+
+    <include
         android:id="@+id/pb_loading_indicator"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:layout_gravity="center"
-        android:visibility="invisible" />
+        android:visibility="gone"
+        layout="@layout/no_item_loading_indicator"/>
 
 </FrameLayout>

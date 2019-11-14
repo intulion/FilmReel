@@ -10,7 +10,7 @@ public class IntListConverter {
 
     @TypeConverter
     public static List<Integer> toList(String data) {
-        if (data == null) {
+        if (data == null || data.isEmpty()) {
             return null;
         }
 

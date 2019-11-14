@@ -1,9 +1,32 @@
 <resources>
     <string name="app_name">Film Reel</string>
-    <string name="menu_top_rated">Top Rated</string>
-    <string name="top_rated_movies">Top Rated Movies</string>
-    <string name="top_rated_rating"><b>%1$s</b> (%2$s)</string>
-    <string name="desc_movies_poster">Movie Poster</string>
 
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="movie_details">Movie Details</string>
+
+    <string name="more">More</string>
+    <string name="more_info">More Info</string>
+    <string name="genres">Genres</string>
+    <string name="close">Close</string>
+    <string name="menu_top_rated">Top Rated</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="map">Map</string>
+    <string name="cinemas">Cinemas</string>
+    <string name="nearby_cinemas">Nearby Cinemas</string>
+
+    <string name="no_bookmarks">No bookmarks</string>
+    <string name="long_tap_to_bookmark">Long tap on a movie to bookmark</string>
+    <string name="no_cinemas">No cinemas found</string>
+    <string name="retry">Retry</string>
+
+    <string name="movie_bookmark">Bookmark</string>
+    <string name="movie_share">Share</string>
+    <string name="movie_share_text">Hi! Let\'s watch this movie: %s</string>
+
+    <string name="desc_movies_poster">Movie Poster</string>
+    <string name="desc_movies_bookmark">Movie Bookmark</string>
+    <string name="desc_icon_places">Places Icon</string>
+
+    <string name="movie_rating_format">%1$.1f (%2$d)</string>
     <string name="date_format">%1$td.%1$tm.%1$tY</string>
 </resources>
