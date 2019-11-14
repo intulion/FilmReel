@@ -23,6 +23,7 @@ buildscript {
         retrofitVersion = '2.6.2'
         roomVersion = '2.2.1'
         testExtJunit = '1.1.1'
+        workVersion = '2.2.0'
     }
 
     repositories {

@@ -53,7 +53,7 @@ public class Repository {
     }
 
     private synchronized void fetchData(int currentPage) {
-        executors.diskIO().execute(() -> networkDataSource.fetchTopRatedMovies(currentPage));
+        executors.diskIO().execute(() -> networkDataSource.startMovieFetchService(currentPage));
     }
 
     public void loadNewData(int currentPage) {

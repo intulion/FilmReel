@@ -10,9 +10,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.akat.filmreel.R;
+import com.akat.filmreel.data.network.MovieSyncWorker;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +39,13 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        // TODO: Schedule sync
+//        WorkManager workManager = WorkManager.getInstance(this);
+//        PeriodicWorkRequest periodicRequest = new PeriodicWorkRequest.Builder(
+//                MovieSyncWorker.class, 15, TimeUnit.MINUTES
+//        ).build();
+//        workManager.enqueue(periodicRequest);
     }
 
     @Override
