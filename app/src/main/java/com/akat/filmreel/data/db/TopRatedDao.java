@@ -32,6 +32,10 @@ public interface TopRatedDao {
             "WHERE top_rated.id = :id")
     LiveData<MovieWithBookmark> getById(long id);
 
+    @Query("DELETE FROM top_rated " +
+            "WHERE id NOT IN (SELECT movie_id FROM bookmarks)")
+    void deleteNotMarked();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void bulkInsert(List<Movie> list);
 }

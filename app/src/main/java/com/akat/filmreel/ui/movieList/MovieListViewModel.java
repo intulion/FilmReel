@@ -30,4 +30,8 @@ public class MovieListViewModel extends ViewModel {
         repository.setBookmark(movieId, isBookmarked);
     }
 
+    public void reloadMovies() {
+        repository.reloadMovies();
+    }
+
 }

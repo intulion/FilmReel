@@ -5,18 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".ui.movieList.MovieListViewModel">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_movie_list"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        tools:listitem="@layout/item_movie_list" />
+        android:layout_height="match_parent">
 
-    <ProgressBar
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_movie_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            tools:listitem="@layout/item_movie_list" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include
         android:id="@+id/pb_loading_indicator"
-        android:layout_width="@dimen/pb_width"
-        android:layout_height="@dimen/pb_height"
-        android:layout_gravity="center"
-        android:visibility="invisible" />
+        android:visibility="gone"
+        layout="@layout/no_item_loading_indicator"/>
 
 </FrameLayout>

@@ -83,4 +83,10 @@ public class Repository {
         });
     }
 
+    public void reloadMovies() {
+        executors.diskIO().execute(() -> {
+            topRatedDao.deleteNotMarked();
+            networkDataSource.reloadTopRatedMovies();
+        });
+    }
 }

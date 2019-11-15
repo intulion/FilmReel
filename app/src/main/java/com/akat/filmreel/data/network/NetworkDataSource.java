@@ -51,6 +51,11 @@ public class NetworkDataSource {
         return downloadedMovies;
     }
 
+    public void reloadTopRatedMovies() {
+        Preferences.setPageData(context, 0, 1);
+        startMovieFetchService(0);
+    }
+
     public void startMovieFetchService(int currentPage) {
         Intent intent = new Intent(context, MovieSyncService.class);
         intent.putExtra(Constants.PARAM.CURRENT_PAGE, currentPage);
