@@ -10,6 +10,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -40,12 +42,18 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // TODO: Schedule sync
-//        WorkManager workManager = WorkManager.getInstance(this);
-//        PeriodicWorkRequest periodicRequest = new PeriodicWorkRequest.Builder(
-//                MovieSyncWorker.class, 15, TimeUnit.MINUTES
-//        ).build();
-//        workManager.enqueue(periodicRequest);
+        // Schedule sync
+        WorkManager workManager = WorkManager.getInstance(this);
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        PeriodicWorkRequest periodicRequest =
+                new PeriodicWorkRequest.Builder(MovieSyncWorker.class, 1, TimeUnit.DAYS)
+                        .setConstraints(constraints)
+                        .build();
+        workManager.enqueue(periodicRequest);
     }
 
     @Override

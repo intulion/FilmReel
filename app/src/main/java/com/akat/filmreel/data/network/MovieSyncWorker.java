@@ -13,12 +13,19 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.akat.filmreel.R;
+import com.akat.filmreel.data.db.AppDatabase;
+import com.akat.filmreel.data.model.ApiResponse;
+import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.ui.MainActivity;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import retrofit2.Call;
 
 public class MovieSyncWorker extends Worker {
 
     private static final String CHANNEL_ID = "sync_channel";
-    private static final String CHANNEL_NAME = "Synchronization";
 
     public MovieSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -27,14 +34,33 @@ public class MovieSyncWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        // TODO: Update first page
+        Context context = getApplicationContext();
+        AppDatabase database = AppDatabase.getInstance(context);
+        ApiManager manager = ApiManager.getInstance();
 
-        showNotification(getApplicationContext(), "Synchronization", "Movies has been synced");
+        // Make request - update first page
+        Call<ApiResponse> call = manager.getApiService().getTopRatedMovies(1);
+
+        try {
+            ApiResponse apiResponse = call.execute().body();
+            if (apiResponse != null) {
+                ArrayList<Movie> result = (ArrayList<Movie>) apiResponse.getResults();
+                database.topRatedDao().bulkInsert(result);
+
+                showNotification(
+                        context,
+                        context.getString(R.string.sync_title),
+                        context.getString(R.string.sync_desc)
+                );
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return Result.success();
     }
 
     private void showNotification(Context context, String title, String desc) {
-
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
@@ -42,9 +68,10 @@ public class MovieSyncWorker extends Worker {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelName = context.getString(R.string.sync_channel_name);
 
             NotificationChannel channel = new
-                    NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+                    NotificationChannel(CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_DEFAULT);
             manager.createNotificationChannel(channel);
         }
 
