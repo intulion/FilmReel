@@ -75,5 +75,10 @@ dependencies {
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-module-junit4:$rootProject.powermockVersion"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.testExtJunit"
+    androidTestImplementation "androidx.test:rules:$rootProject.testVersion"
+    androidTestImplementation "androidx.test:runner:$rootProject.testVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
 }
