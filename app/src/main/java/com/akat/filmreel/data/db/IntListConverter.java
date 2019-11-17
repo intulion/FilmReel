@@ -23,7 +23,7 @@ public class IntListConverter {
 
     @TypeConverter
     public static String fromList(List<Integer> list) {
-        if (list == null) {
+        if (list == null || list.isEmpty()) {
             return null;
         }
 
