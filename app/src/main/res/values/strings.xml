@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Film Reel</string>
 
+    <string name="default_notification_channel_id" translatable="false">default_channel</string>
+    <string name="default_notification_channel_name" translatable="true">Default</string>
+    <string name="sync_notification_channel_id" translatable="false">sync_channel</string>
+    <string name="sync_notification_channel_name" translatable="true">Synchronization</string>
+
     <string name="top_rated_movies">Top Rated Movies</string>
     <string name="movie_details">Movie Details</string>
 
@@ -27,7 +32,6 @@
     <string name="desc_movies_bookmark">Movie Bookmark</string>
     <string name="desc_icon_places">Places Icon</string>
 
-    <string name="sync_channel_name">Synchronization</string>
     <string name="sync_title">Synchronization</string>
     <string name="sync_desc">Movies has been synced</string>
 

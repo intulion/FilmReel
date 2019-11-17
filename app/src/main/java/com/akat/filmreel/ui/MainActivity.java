@@ -1,6 +1,9 @@
 package com.akat.filmreel.ui;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 
@@ -42,7 +45,21 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // Schedule sync
+        createNotificationChannels();
+        scheduleSync();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(drawerLayout.getWindowToken(), 0);
+        }
+
+        return NavigationUI.navigateUp(navController, drawerLayout);
+    }
+
+    private void scheduleSync() {
         WorkManager workManager = WorkManager.getInstance(this);
 
         Constraints constraints = new Constraints.Builder()
@@ -56,13 +73,29 @@ public class MainActivity extends AppCompatActivity {
         workManager.enqueue(periodicRequest);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(drawerLayout.getWindowToken(), 0);
-        }
+    private void createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
 
-        return NavigationUI.navigateUp(navController, drawerLayout);
+            if (notificationManager != null) {
+                // Default channel
+                notificationManager.createNotificationChannel(
+                        new NotificationChannel(
+                                getString(R.string.default_notification_channel_id),
+                                getString(R.string.default_notification_channel_name),
+                                NotificationManager.IMPORTANCE_HIGH)
+                );
+
+                // Sync channel
+                notificationManager.createNotificationChannel(
+                        new NotificationChannel(
+                                getString(R.string.sync_notification_channel_id),
+                                getString(R.string.sync_notification_channel_name),
+                                NotificationManager.IMPORTANCE_LOW)
+                );
+            }
+        }
     }
+
 }
