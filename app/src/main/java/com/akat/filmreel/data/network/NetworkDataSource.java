@@ -1,6 +1,7 @@
 package com.akat.filmreel.data.network;
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -8,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.util.AppExecutors;
+import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.Preferences;
 
 import java.util.ArrayList;
@@ -49,7 +51,18 @@ public class NetworkDataSource {
         return downloadedMovies;
     }
 
-    public void fetchTopRatedMovies(int currentPage) {
+    public void reloadTopRatedMovies() {
+        Preferences.setPageData(context, 0, 1);
+        startMovieFetchService(0);
+    }
+
+    public void startMovieFetchService(int currentPage) {
+        Intent intent = new Intent(context, MovieSyncService.class);
+        intent.putExtra(Constants.PARAM.CURRENT_PAGE, currentPage);
+        context.startService(intent);
+    }
+
+    void fetchTopRatedMovies(int currentPage) {
         executors.networkIO().execute(() -> {
             // Page data
             int lastPage = Preferences.getLastPage(context);

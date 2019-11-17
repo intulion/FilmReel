@@ -1,6 +1,9 @@
 package com.akat.filmreel.ui;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 
@@ -10,9 +13,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.akat.filmreel.R;
+import com.akat.filmreel.data.network.MovieSyncWorker;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        createNotificationChannels();
+        scheduleSync();
     }
 
     @Override
@@ -45,4 +58,44 @@ public class MainActivity extends AppCompatActivity {
 
         return NavigationUI.navigateUp(navController, drawerLayout);
     }
+
+    private void scheduleSync() {
+        WorkManager workManager = WorkManager.getInstance(this);
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        PeriodicWorkRequest periodicRequest =
+                new PeriodicWorkRequest.Builder(MovieSyncWorker.class, 1, TimeUnit.DAYS)
+                        .setConstraints(constraints)
+                        .build();
+        workManager.enqueue(periodicRequest);
+    }
+
+    private void createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+
+            if (notificationManager != null) {
+                // Default channel
+                notificationManager.createNotificationChannel(
+                        new NotificationChannel(
+                                getString(R.string.default_notification_channel_id),
+                                getString(R.string.default_notification_channel_name),
+                                NotificationManager.IMPORTANCE_HIGH)
+                );
+
+                // Sync channel
+                notificationManager.createNotificationChannel(
+                        new NotificationChannel(
+                                getString(R.string.sync_notification_channel_id),
+                                getString(R.string.sync_notification_channel_name),
+                                NotificationManager.IMPORTANCE_LOW)
+                );
+            }
+        }
+    }
+
 }

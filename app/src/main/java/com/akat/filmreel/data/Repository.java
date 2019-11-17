@@ -53,7 +53,7 @@ public class Repository {
     }
 
     private synchronized void fetchData(int currentPage) {
-        executors.diskIO().execute(() -> networkDataSource.fetchTopRatedMovies(currentPage));
+        executors.diskIO().execute(() -> networkDataSource.startMovieFetchService(currentPage));
     }
 
     public void loadNewData(int currentPage) {
@@ -83,4 +83,10 @@ public class Repository {
         });
     }
 
+    public void reloadMovies() {
+        executors.diskIO().execute(() -> {
+            topRatedDao.deleteNotMarked();
+            networkDataSource.reloadTopRatedMovies();
+        });
+    }
 }

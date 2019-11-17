@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.akat.filmreel.R;
 import com.akat.filmreel.ui.common.MovieListAdapter;
@@ -27,7 +28,7 @@ public class MovieListFragment extends Fragment
     private MovieListViewModel viewModel;
 
     private MovieListAdapter movieListAdapter;
-    private ProgressBar loadingIndicator;
+    private View loadingIndicator;
     private RecyclerView recyclerView;
 
     @Override
@@ -49,6 +50,12 @@ public class MovieListFragment extends Fragment
         movieListAdapter = new MovieListAdapter(requireActivity(), this);
         movieListAdapter.setOnBottomReachedListener(this);
         recyclerView.setAdapter(movieListAdapter);
+
+        SwipeRefreshLayout refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        refreshLayout.setOnRefreshListener(() -> {
+            viewModel.reloadMovies();
+            refreshLayout.setRefreshing(false);
+        });
 
         return view;
     }
@@ -89,12 +96,12 @@ public class MovieListFragment extends Fragment
     }
 
     private void showDataView() {
-        loadingIndicator.setVisibility(View.INVISIBLE);
+        loadingIndicator.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
 
     private void showLoading() {
         loadingIndicator.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 }

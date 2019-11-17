@@ -30,6 +30,12 @@ public class InjectorUtils {
         );
     }
 
+    public static NetworkDataSource provideNetworkDataSource(Context context) {
+        AppExecutors executors = AppExecutors.getInstance();
+        ApiManager manager = ApiManager.getInstance();
+        return NetworkDataSource.getInstance(context, executors, manager);
+    }
+
     public static MovieListViewModelFactory provideMovieListViewModelFactory(Context context) {
         Repository repository = provideRepository(context);
         return new MovieListViewModelFactory(repository);

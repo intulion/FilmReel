@@ -16,6 +16,8 @@ public class Constants {
     public static final class PARAM {
         private static final String PACKAGE = "com.akat.filmreel.";
         public static final String MOVIE_ID = PACKAGE + "movieId";
+        public static final String CURRENT_PAGE = PACKAGE + "currentPage";
+
         public static final String CINEMA_NAME = PACKAGE + "cinemaName";
         public static final String CINEMA_LAT = PACKAGE + "cinemaLat";
         public static final String CINEMA_LNG = PACKAGE + "cinemaLng";
