@@ -44,7 +44,7 @@ public class MovieListFragmentTest {
     }
 
     @Test
-    public void onListItemClick() throws InterruptedException {
+    public void onListItemClick() {
         onView(withId(R.id.recycler_view_movie_list))
                 .perform(actionOnItemAtPosition(1, click()));
 
@@ -53,27 +53,28 @@ public class MovieListFragmentTest {
     }
 
     @Test
-    public void onListItemLongClick() throws InterruptedException {
+    public void onListItemLongClick() {
+        int position = 1;
 
         // Set bookmark and check
         onView(withId(R.id.recycler_view_movie_list))
-                .perform(actionOnItemAtPosition(1, longClick()));
+                .perform(actionOnItemAtPosition(position, longClick()));
 
         onView(withId(R.id.recycler_view_movie_list))
                 .check(
                         matches(
-                                atPositionWithId(1, R.id.movie_list_bookmark, isDisplayed())
+                                atPositionWithId(position, R.id.movie_list_bookmark, isDisplayed())
                         )
                 );
 
         // Remove bookmark and check
         onView(withId(R.id.recycler_view_movie_list))
-                .perform(actionOnItemAtPosition(1, longClick()));
+                .perform(actionOnItemAtPosition(position, longClick()));
 
         onView(withId(R.id.recycler_view_movie_list))
                 .check(
                         matches(
-                                atPositionWithId(1, R.id.movie_list_bookmark, not(isDisplayed()))
+                                atPositionWithId(position, R.id.movie_list_bookmark, not(isDisplayed()))
                         )
                 );
     }
