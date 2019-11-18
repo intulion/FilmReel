@@ -70,6 +70,8 @@ dependencies {
 
     implementation "androidx.work:work-runtime:$rootProject.workVersion"
 
+    implementation "androidx.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
+
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"

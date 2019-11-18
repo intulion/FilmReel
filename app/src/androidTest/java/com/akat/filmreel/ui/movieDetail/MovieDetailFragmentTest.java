@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.navigation.Navigation;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.IdlingResource;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -33,11 +36,21 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class MovieDetailFragmentTest {
 
+    private IdlingResource idlingResource;
+
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Before
     public void jumpToMovieDetailFragment() {
+        // Register idling resource
+        ActivityScenario activityScenario = ActivityScenario.launch(MainActivity.class);
+        activityScenario.onActivity((ActivityScenario.ActivityAction<MainActivity>) activity -> {
+            idlingResource = activity.getIdlingResource();
+            // To prove that the test fails, omit this call:
+            IdlingRegistry.getInstance().register(idlingResource);
+        });
+
         Activity act = this.activityTestRule.getActivity();
         act.runOnUiThread(() -> {
             Bundle bundle = new Bundle();
@@ -47,7 +60,7 @@ public class MovieDetailFragmentTest {
     }
 
     @Test
-    public void testShareTextIntent() {
+    public void testShareTextIntent() throws InterruptedException {
         String shareText = activityTestRule.getActivity().getString(
                 R.string.movie_share_text, testMovie.getTitle()
         );

@@ -1,4 +1,4 @@
-package com.akat.filmreel.ui.movieDetail;
+package com.akat.filmreel.ui.movieList;
 
 import android.content.Context;
 
@@ -9,25 +9,23 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.akat.filmreel.data.Repository;
 import com.akat.filmreel.data.db.AppDatabase;
 import com.akat.filmreel.data.model.MovieWithBookmark;
-import com.akat.filmreel.data.network.ApiManager;
-import com.akat.filmreel.data.network.NetworkDataSource;
-import com.akat.filmreel.util.AppExecutors;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.List;
+
 import static com.akat.filmreel.util.LiveDataTestUtil.getValue;
 import static com.akat.filmreel.util.TestUtils.getRepository;
-import static com.akat.filmreel.util.TestUtils.testMovie;
 import static com.akat.filmreel.util.TestUtils.testMovies;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class MovieDetailViewModelTest {
+public class MovieListViewModelTest {
     private AppDatabase database;
-    private MovieDetailViewModel viewModel;
+    private MovieListViewModel viewModel;
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -40,7 +38,7 @@ public class MovieDetailViewModelTest {
 
         Repository repository = getRepository(context, database);
 
-        viewModel = new MovieDetailViewModel(repository, testMovie.getId());
+        viewModel = new MovieListViewModel(repository);
     }
 
     @After
@@ -49,12 +47,10 @@ public class MovieDetailViewModelTest {
     }
 
     @Test
-    public void getMovie() throws InterruptedException {
-        MovieWithBookmark movie = getValue(viewModel.getMovie());
+    public void getMovies() throws InterruptedException {
+        List<MovieWithBookmark> movieList = getValue(viewModel.getMovies());
 
-        assertNotNull(movie);
-        assertEquals(testMovie.getId(), movie.getId());
-        assertEquals(testMovie.getTitle(), movie.getTitle());
+        assertNotNull(movieList);
+        assertEquals(testMovies.size(), movieList.size());
     }
-
 }
