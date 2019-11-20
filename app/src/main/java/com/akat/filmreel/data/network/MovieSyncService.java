@@ -22,7 +22,7 @@ public class MovieSyncService extends IntentService {
 
         int currentPage = intent.getIntExtra(Constants.PARAM.CURRENT_PAGE, 0);
 
-        NetworkDataSource networkDataSource = InjectorUtils.provideNetworkDataSource(getApplicationContext());
+        MovieNetworkDataSource networkDataSource = InjectorUtils.provideNetworkDataSource(getApplicationContext());
         networkDataSource.fetchTopRatedMovies(currentPage);
     }
 

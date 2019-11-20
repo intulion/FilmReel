@@ -1,4 +1,4 @@
-package com.akat.filmreel.data.model.places;
+package com.akat.filmreel.places.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

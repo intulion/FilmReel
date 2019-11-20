@@ -3,7 +3,7 @@ package com.akat.filmreel.ui.cinemas;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.akat.filmreel.data.PlacesRepository;
+import com.akat.filmreel.places.PlacesRepository;
 
 public class CinemaListViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     private final PlacesRepository repository;

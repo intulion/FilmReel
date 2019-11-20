@@ -1,9 +1,8 @@
-package com.akat.filmreel.data;
+package com.akat.filmreel.places;
 
 import androidx.lifecycle.LiveData;
 
-import com.akat.filmreel.data.model.places.Cinema;
-import com.akat.filmreel.data.network.PlacesNetworkDataSource;
+import com.akat.filmreel.places.dto.Cinema;
 import com.akat.filmreel.util.AppExecutors;
 
 import java.util.List;
@@ -13,15 +12,15 @@ public class PlacesRepository {
     private static final Object LOCK = new Object();
     private static PlacesRepository sInstance;
     private final AppExecutors executors;
-    private final PlacesNetworkDataSource networkDataSource;
+    private final PlacesDataSource networkDataSource;
 
-    private PlacesRepository(PlacesNetworkDataSource networkDataSource, AppExecutors executors) {
+    private PlacesRepository(PlacesDataSource networkDataSource, AppExecutors executors) {
         this.networkDataSource = networkDataSource;
         this.executors = executors;
     }
 
     public synchronized static PlacesRepository getInstance(
-            PlacesNetworkDataSource networkDataSource,
+            PlacesDataSource networkDataSource,
             AppExecutors executors) {
         if (sInstance == null) {
             synchronized (LOCK) {

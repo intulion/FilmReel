@@ -1,4 +1,4 @@
-package com.akat.filmreel.data.network;
+package com.akat.filmreel.places;
 
 import com.akat.filmreel.BuildConfig;
 import com.akat.filmreel.util.Constants;

@@ -2,13 +2,16 @@ package com.akat.filmreel.util;
 
 import android.content.Context;
 
-import com.akat.filmreel.data.PlacesRepository;
 import com.akat.filmreel.data.Repository;
 import com.akat.filmreel.data.db.AppDatabase;
+import com.akat.filmreel.data.db.LocalDataSource;
+import com.akat.filmreel.data.db.MovieLocalDataSource;
 import com.akat.filmreel.data.network.ApiManager;
+import com.akat.filmreel.data.network.MovieNetworkDataSource;
 import com.akat.filmreel.data.network.NetworkDataSource;
-import com.akat.filmreel.data.network.PlacesApiManager;
-import com.akat.filmreel.data.network.PlacesNetworkDataSource;
+import com.akat.filmreel.places.PlacesApiManager;
+import com.akat.filmreel.places.PlacesDataSource;
+import com.akat.filmreel.places.PlacesRepository;
 import com.akat.filmreel.ui.bookmarks.BookmarksViewModelFactory;
 import com.akat.filmreel.ui.cinemas.CinemaListViewModelFactory;
 import com.akat.filmreel.ui.movieDetail.MovieDetailViewModelFactory;
@@ -19,21 +22,19 @@ public class InjectorUtils {
     private static Repository provideRepository(Context context) {
         AppDatabase database = AppDatabase.getInstance(context.getApplicationContext());
         AppExecutors executors = AppExecutors.getInstance();
-        ApiManager manager = ApiManager.getInstance();
-        NetworkDataSource networkDataSource =
-                NetworkDataSource.getInstance(context, executors, manager);
+        NetworkDataSource networkDataSource = provideNetworkDataSource(context);
+        LocalDataSource localDataSource =
+                MovieLocalDataSource.getInstance(database.topRatedDao(), database.bookmarksDao());
         return Repository.getInstance(
-                database.topRatedDao(),
-                database.bookmarksDao(),
+                localDataSource,
                 networkDataSource,
                 executors
         );
     }
 
-    public static NetworkDataSource provideNetworkDataSource(Context context) {
-        AppExecutors executors = AppExecutors.getInstance();
+    public static MovieNetworkDataSource provideNetworkDataSource(Context context) {
         ApiManager manager = ApiManager.getInstance();
-        return NetworkDataSource.getInstance(context, executors, manager);
+        return MovieNetworkDataSource.getInstance(context, manager);
     }
 
     public static MovieListViewModelFactory provideMovieListViewModelFactory(Context context) {
@@ -54,8 +55,8 @@ public class InjectorUtils {
     private static PlacesRepository providePlacesRepository() {
         AppExecutors executors = AppExecutors.getInstance();
         PlacesApiManager manager = PlacesApiManager.getInstance();
-        PlacesNetworkDataSource networkDataSource =
-                PlacesNetworkDataSource.getInstance(executors, manager);
+        PlacesDataSource networkDataSource =
+                PlacesDataSource.getInstance(executors, manager);
         return PlacesRepository.getInstance(
                 networkDataSource,
                 executors
