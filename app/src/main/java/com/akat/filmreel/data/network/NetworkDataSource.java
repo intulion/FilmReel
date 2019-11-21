@@ -7,7 +7,7 @@ import com.akat.filmreel.data.model.Movie;
 import java.util.List;
 
 public interface NetworkDataSource {
-    LiveData<List<Movie>> getMovies();
+    LiveData<List<Movie>> observeMovies();
 
     void fetchMovies(int currentPage);
 

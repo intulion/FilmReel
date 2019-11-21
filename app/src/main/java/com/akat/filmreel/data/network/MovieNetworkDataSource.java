@@ -45,7 +45,7 @@ public class MovieNetworkDataSource implements NetworkDataSource {
     }
 
     @Override
-    public LiveData<List<Movie>> getMovies() {
+    public LiveData<List<Movie>> observeMovies() {
         return downloadedMovies;
     }
 

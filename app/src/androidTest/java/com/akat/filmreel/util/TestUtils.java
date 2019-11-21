@@ -13,8 +13,12 @@ import androidx.test.espresso.matcher.BoundedMatcher;
 
 import com.akat.filmreel.data.Repository;
 import com.akat.filmreel.data.db.AppDatabase;
+import com.akat.filmreel.data.db.LocalDataSource;
+import com.akat.filmreel.data.db.MovieLocalDataSource;
 import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.data.model.MovieWithBookmark;
 import com.akat.filmreel.data.network.ApiManager;
+import com.akat.filmreel.data.network.MovieNetworkDataSource;
 import com.akat.filmreel.data.network.NetworkDataSource;
 
 import org.hamcrest.Description;
@@ -51,15 +55,27 @@ public class TestUtils {
         return movie;
     }
 
+    public static MovieWithBookmark createMovieWithBookmark(long id, String title, double voteAverage, int voteCount, boolean bookmark) {
+        MovieWithBookmark movie = new MovieWithBookmark();
+        movie.setId(id);
+        movie.setTitle(title);
+        movie.setVoteAverage(voteAverage);
+        movie.setVoteCount(voteCount);
+        movie.setBookmark(bookmark);
+
+        return movie;
+    }
+
     public static Repository getRepository(Context context, AppDatabase database) {
         AppExecutors executors = AppExecutors.getInstance();
         ApiManager manager = ApiManager.getInstance();
         NetworkDataSource networkDataSource =
-                NetworkDataSource.getInstance(context, executors, manager);
+                MovieNetworkDataSource.getInstance(context, manager);
+        LocalDataSource localDataSource =
+                MovieLocalDataSource.getInstance(database.topRatedDao(), database.bookmarksDao());
 
         return Repository.getInstance(
-                database.topRatedDao(),
-                database.bookmarksDao(),
+                localDataSource,
                 networkDataSource,
                 executors
         );

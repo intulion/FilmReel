@@ -11,7 +11,7 @@ import com.akat.filmreel.util.AppExecutors;
 
 import java.util.List;
 
-public class Repository {
+public class Repository implements DefaultRepository {
 
     private static final Object LOCK = new Object();
     private static Repository sInstance;
@@ -26,7 +26,7 @@ public class Repository {
         this.networkDataSource = networkDataSource;
         this.executors = executors;
 
-        LiveData<List<Movie>> networkData = this.networkDataSource.getMovies();
+        LiveData<List<Movie>> networkData = this.networkDataSource.observeMovies();
         networkData.observeForever(newItemsFromNetwork -> {
             this.executors.diskIO().execute(() -> {
                 this.localDataSource.addMovies(newItemsFromNetwork);
@@ -47,27 +47,32 @@ public class Repository {
         return sInstance;
     }
 
-    private synchronized void fetchData(int currentPage) {
+    private synchronized void updateMoviesFromNetwork(int currentPage) {
         executors.diskIO().execute(() -> networkDataSource.fetchMovies(currentPage));
     }
 
+    @Override
     public void loadNewData(int currentPage) {
-        fetchData(currentPage);
+        updateMoviesFromNetwork(currentPage);
     }
 
+    @Override
     public LiveData<List<MovieWithBookmark>> getTopRatedMovies() {
-        fetchData(0);
+        updateMoviesFromNetwork(0);
         return localDataSource.getMovies();
     }
 
+    @Override
     public LiveData<List<MovieWithBookmark>> getBookmarkedMovies() {
         return localDataSource.getBookmarkedMovies();
     }
 
+    @Override
     public LiveData<MovieWithBookmark> getMovie(long id) {
         return localDataSource.getMovie(id);
     }
 
+    @Override
     public void setBookmark(long movieId, boolean isBookmarked) {
         executors.diskIO().execute(() -> {
             if (isBookmarked) {
@@ -78,6 +83,7 @@ public class Repository {
         });
     }
 
+    @Override
     public void reloadMovies() {
         executors.diskIO().execute(() -> {
             localDataSource.deleteNotMarkedMovies();

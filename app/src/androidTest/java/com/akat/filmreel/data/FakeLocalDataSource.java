@@ -12,7 +12,7 @@ import java.util.List;
 
 public class FakeLocalDataSource implements LocalDataSource {
 
-    private MutableLiveData<List<MovieWithBookmark>> movies  = new MutableLiveData<>();
+    private MutableLiveData<List<MovieWithBookmark>> movies = new MutableLiveData<>();
 
     public FakeLocalDataSource(List<MovieWithBookmark> movies) {
         this.movies.postValue(movies);
@@ -40,7 +40,7 @@ public class FakeLocalDataSource implements LocalDataSource {
 
     @Override
     public void deleteNotMarkedMovies() {
-
+        movies.setValue(null);
     }
 
     @Override

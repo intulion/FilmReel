@@ -4,9 +4,9 @@ buildscript {
 
     ext {
         // SDK and tools
-        compileSdkVersion = 28
+        compileSdkVersion = 29
         minSdkVersion = 21
-        targetSdkVersion = 28
+        targetSdkVersion = 29
         buildToolsVersion = "29.0.2"
 
         // App dependencies
@@ -26,7 +26,6 @@ buildscript {
         playServicesVersion = '17.0.0'
         recyclerViewVersion = '1.0.0'
         retrofitVersion = '2.6.2'
-        robolectricVersion = '4.3.1'
         roomVersion = '2.2.1'
         testExtJunit = '1.1.1'
         testVersion = '1.2.0'
