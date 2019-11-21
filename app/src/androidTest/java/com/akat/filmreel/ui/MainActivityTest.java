@@ -53,7 +53,7 @@ public class MainActivityTest {
         onView(withId(R.id.nav_view))
                 .perform(navigateTo(R.id.fragment_bookmarks));
 
-        onView(withId(R.id.recycler_view_bookmarks))
+        onView(withId(R.id.bookmarks_container))
                 .check(matches(isDisplayed()));
     }
 
