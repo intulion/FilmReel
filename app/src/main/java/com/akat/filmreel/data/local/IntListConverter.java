@@ -1,4 +1,4 @@
-package com.akat.filmreel.data.db;
+package com.akat.filmreel.data.local;
 
 import androidx.room.TypeConverter;
 

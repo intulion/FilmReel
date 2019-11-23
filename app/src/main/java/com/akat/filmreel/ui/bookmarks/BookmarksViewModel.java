@@ -3,19 +3,19 @@ package com.akat.filmreel.ui.bookmarks;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.akat.filmreel.data.Repository;
+import com.akat.filmreel.data.MovieInteractor;
 import com.akat.filmreel.data.model.MovieWithBookmark;
 
 import java.util.List;
 
 public class BookmarksViewModel extends ViewModel {
 
-    private final Repository repository;
+    private final MovieInteractor interactor;
     private LiveData<List<MovieWithBookmark>> movies;
 
-    public BookmarksViewModel(Repository repository) {
-        this.repository = repository;
-        this.movies = this.repository.getBookmarkedMovies();
+    public BookmarksViewModel(MovieInteractor interactor) {
+        this.interactor = interactor;
+        this.movies = this.interactor.observeBookmarkedMovies();
     }
 
     public LiveData<List<MovieWithBookmark>> getBookmarkedMovies() {
@@ -23,6 +23,6 @@ public class BookmarksViewModel extends ViewModel {
     }
 
     public void setBookmark(long movieId, boolean isBookmarked) {
-        repository.setBookmark(movieId, isBookmarked);
+        interactor.setBookmark(movieId, isBookmarked);
     }
 }

@@ -11,13 +11,16 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.db.AppDatabase;
+import com.akat.filmreel.data.local.AppDatabase;
+import com.akat.filmreel.data.local.LocalDataSource;
 import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.ui.MainActivity;
+import com.akat.filmreel.util.InjectorUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -34,29 +37,22 @@ public class MovieSyncWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        AppDatabase database = AppDatabase.getInstance(context);
-        ApiManager manager = ApiManager.getInstance();
+        LocalDataSource localDataSource = InjectorUtils.provideLocalDataSource(context);
+        NetworkDataSource networkDataSource = InjectorUtils.provideNetworkDataSource(context);
 
         // Make request - update first page only
-        Call<ApiResponse> call = manager.getApiService().getTopRatedMovies(1);
+        List<Movie> movieList = networkDataSource.getTopRatedMovies(1);
 
-        try {
-            Response<ApiResponse> response = call.execute();
-            if (response.isSuccessful()) {
-                ApiResponse apiResponse = response.body();
-                if (apiResponse != null) {
-                    ArrayList<Movie> result = (ArrayList<Movie>) apiResponse.getResults();
-                    database.topRatedDao().bulkInsert(result);
+        if (!movieList.isEmpty()) {
+            localDataSource.addMovies(movieList);
 
-                    sendNotification(context.getString(R.string.sync_title),
-                            context.getString(R.string.sync_desc));
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            sendNotification(context.getString(R.string.sync_title),
+                    context.getString(R.string.sync_desc));
+
+            return Result.success();
         }
 
-        return Result.success();
+        return Result.failure();
     }
 
     private void sendNotification(String messageTitle, String messageBody) {
