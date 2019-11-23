@@ -1,7 +1,6 @@
 package com.akat.filmreel.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
@@ -11,20 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.intent.matcher.IntentMatchers;
 import androidx.test.espresso.matcher.BoundedMatcher;
 
-import com.akat.filmreel.data.Repository;
-import com.akat.filmreel.data.db.AppDatabase;
-import com.akat.filmreel.data.db.LocalDataSource;
-import com.akat.filmreel.data.db.MovieLocalDataSource;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.model.MovieWithBookmark;
-import com.akat.filmreel.data.network.ApiManager;
-import com.akat.filmreel.data.network.MovieNetworkDataSource;
-import com.akat.filmreel.data.network.NetworkDataSource;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,19 +59,15 @@ public class TestUtils {
         return movie;
     }
 
-    public static Repository getRepository(Context context, AppDatabase database) {
-        AppExecutors executors = AppExecutors.getInstance();
-        ApiManager manager = ApiManager.getInstance();
-        NetworkDataSource networkDataSource =
-                MovieNetworkDataSource.getInstance(context, manager);
-        LocalDataSource localDataSource =
-                MovieLocalDataSource.getInstance(database.topRatedDao(), database.bookmarksDao());
+    public static MovieWithBookmark toMovieWithBookmark(Movie movie) {
+        MovieWithBookmark movieWithBookmark = new MovieWithBookmark();
+        movieWithBookmark.setId(movie.getId());
+        movieWithBookmark.setTitle(movie.getTitle());
+        movieWithBookmark.setVoteAverage(movie.getVoteAverage());
+        movieWithBookmark.setVoteCount(movie.getVoteCount());
+        movieWithBookmark.setBookmark(false);
 
-        return Repository.getInstance(
-                localDataSource,
-                networkDataSource,
-                executors
-        );
+        return movieWithBookmark;
     }
 
     public static Matcher<Intent> chooser(Matcher<Intent> matcher) {
@@ -120,6 +109,12 @@ public class TestUtils {
     public static String getToolbarNavigationContentDescription(Activity activity, int toolbarId) {
         return checkNotNull(((Toolbar) activity.findViewById(toolbarId))
                 .getNavigationContentDescription()).toString();
+    }
+
+    public static void clearSingleton(Class singleton) throws NoSuchFieldException, IllegalAccessException {
+        Field instance = singleton.getDeclaredField("sInstance");
+        instance.setAccessible(true);
+        instance.set(null, null);
     }
 
 }

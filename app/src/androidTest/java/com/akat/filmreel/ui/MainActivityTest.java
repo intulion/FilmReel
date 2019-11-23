@@ -3,6 +3,7 @@ package com.akat.filmreel.ui;
 import android.view.Gravity;
 
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
 
 import com.akat.filmreel.R;
 
@@ -23,6 +24,9 @@ import static com.akat.filmreel.util.TestUtils.getToolbarNavigationContentDescri
 public class MainActivityTest {
     @Rule
     public ActivityTestRule activityTestRule = new ActivityTestRule<>(MainActivity.class);
+
+    @Rule
+    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
 
     @Test
     public void clickOnAndroidHomeIcon() {
@@ -65,7 +69,7 @@ public class MainActivityTest {
         onView(withId(R.id.nav_view))
                 .perform(navigateTo(R.id.fragment_cinema_list));
 
-        onView(withId(R.id.recycler_view_cinema_list))
+        onView(withId(R.id.cinemas_container))
                 .check(matches(isDisplayed()));
     }
 

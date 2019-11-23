@@ -1,6 +1,6 @@
 package com.akat.filmreel;
 
-import com.akat.filmreel.data.db.DateConverter;
+import com.akat.filmreel.data.local.DateConverter;
 
 import org.junit.Before;
 import org.junit.Test;

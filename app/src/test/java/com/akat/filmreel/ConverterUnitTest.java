@@ -1,6 +1,6 @@
 package com.akat.filmreel;
 
-import com.akat.filmreel.data.db.IntListConverter;
+import com.akat.filmreel.data.local.IntListConverter;
 
 import org.junit.Before;
 import org.junit.Test;

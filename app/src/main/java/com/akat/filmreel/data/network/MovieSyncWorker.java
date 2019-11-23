@@ -11,19 +11,12 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.local.AppDatabase;
 import com.akat.filmreel.data.local.LocalDataSource;
-import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.ui.MainActivity;
 import com.akat.filmreel.util.InjectorUtils;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class MovieSyncWorker extends Worker {
 
