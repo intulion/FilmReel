@@ -15,7 +15,7 @@ public interface LocalDataSource {
 
     LiveData<MovieWithBookmark> getMovie(long movieId);
 
-    void addMovies(List<Movie> movies);
+    void addMovies(List<Movie> movies, int page);
 
     void deleteNotMarkedMovies();
 

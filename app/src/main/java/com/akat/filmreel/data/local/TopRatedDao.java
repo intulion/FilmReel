@@ -5,37 +5,67 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
+import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.TopRatedEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
-public interface TopRatedDao {
+abstract class TopRatedDao {
 
-    @Query("SELECT top_rated.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
-            "FROM top_rated " +
-            "LEFT JOIN bookmarks ON top_rated.id = bookmarks.movie_id " +
-            "ORDER BY voteAverage DESC, voteCount DESC")
-    LiveData<List<MovieWithBookmark>> getTopRated();
+    @Transaction
+    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+            "FROM movies " +
+            "INNER JOIN top_rated ON movies.id = top_rated.movie_id " +
+            "LEFT JOIN bookmarks ON movies.id = bookmarks.movie_id " +
+            "ORDER BY top_rated.`row`")
+    abstract LiveData<List<MovieWithBookmark>> getTopRated();
 
-    @Query("SELECT top_rated.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
-            "FROM top_rated " +
-            "INNER JOIN bookmarks ON top_rated.id = bookmarks.movie_id " +
+    @Transaction
+    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+            "FROM movies " +
+            "INNER JOIN top_rated ON movies.id = top_rated.movie_id " +
+            "INNER JOIN bookmarks ON movies.id = bookmarks.movie_id " +
             "ORDER BY bookmarkDate DESC")
-    LiveData<List<MovieWithBookmark>> getBookmarkedMovies();
+    abstract LiveData<List<MovieWithBookmark>> getBookmarkedMovies();
 
-    @Query("SELECT top_rated.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
-            "FROM top_rated " +
-            "LEFT JOIN bookmarks ON top_rated.id = bookmarks.movie_id " +
-            "WHERE top_rated.id = :id")
-    LiveData<MovieWithBookmark> getById(long id);
+    @Transaction
+    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+            "FROM movies " +
+            "LEFT JOIN bookmarks ON movies.id = bookmarks.movie_id " +
+            "WHERE movies.id = :id")
+    abstract LiveData<MovieWithBookmark> getById(long id);
 
     @Query("DELETE FROM top_rated " +
-            "WHERE id NOT IN (SELECT movie_id FROM bookmarks)")
-    void deleteNotMarked();
+            "WHERE movie_id NOT IN (SELECT movie_id FROM bookmarks)")
+    abstract void deleteNotMarked();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void bulkInsert(List<Movie> list);
+    abstract void insertMovies(List<Movie> list);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract void insertTopRated(List<TopRatedEntity> list);
+
+    @Transaction
+    void addTopRatedMovies(List<Movie> list, int page) {
+        if (list == null || list.isEmpty()) return;
+
+        List<TopRatedEntity> topRatedList = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            int row = i + list.size() * (page - 1);
+
+            topRatedList.add(
+                    new TopRatedEntity(list.get(i).getId(), row)
+            );
+        }
+
+        insertMovies(list);
+        insertTopRated(topRatedList);
+    }
 }

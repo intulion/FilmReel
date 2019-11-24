@@ -21,6 +21,7 @@ import java.util.List;
 
 import static com.akat.filmreel.util.LiveDataTestUtil.getValue;
 import static com.akat.filmreel.util.TestUtils.createMovie;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -44,7 +45,7 @@ public class BookmarksDaoTest {
         topRatedDao = database.topRatedDao();
         bookmarksDao = database.bookmarksDao();
 
-        topRatedDao.bulkInsert(Arrays.asList(movieA, movieB, movieC));
+        topRatedDao.addTopRatedMovies(Arrays.asList(movieA, movieB, movieC), 1);
     }
 
     @After
@@ -77,8 +78,8 @@ public class BookmarksDaoTest {
 
         List<MovieWithBookmark> movieList = getValue(topRatedDao.getBookmarkedMovies());
 
-        assertThat(movieList.size(), Matchers.equalTo(1));
-        assertThat(movieList.get(0).getId(), Matchers.equalTo(bookmark.getMovieId()));
+        assertThat(movieList.size(), equalTo(1));
+        assertThat(movieList.get(0).getId(), equalTo(bookmark.getMovieId()));
     }
 
     @Test
@@ -89,7 +90,7 @@ public class BookmarksDaoTest {
         // Get all movies
         List<MovieWithBookmark> movieList = getValue(topRatedDao.getTopRated());
 
-        assertThat(movieList.size(), Matchers.equalTo(1));
-        assertThat(movieList.get(0).getId(), Matchers.equalTo(bookmark.getMovieId()));
+        assertThat(movieList.size(), equalTo(1));
+        assertThat(movieList.get(0).getId(), equalTo(bookmark.getMovieId()));
     }
 }

@@ -34,10 +34,11 @@ public class MovieSyncWorker extends Worker {
         NetworkDataSource networkDataSource = InjectorUtils.provideNetworkDataSource(context);
 
         // Make request - update first page only
-        List<Movie> movieList = networkDataSource.getTopRatedMovies(1);
+        int page = 1;
+        List<Movie> movieList = networkDataSource.getTopRatedMovies(page);
 
         if (!movieList.isEmpty()) {
-            localDataSource.addMovies(movieList);
+            localDataSource.addMovies(movieList, page);
 
             sendNotification(context.getString(R.string.sync_title),
                     context.getString(R.string.sync_desc));

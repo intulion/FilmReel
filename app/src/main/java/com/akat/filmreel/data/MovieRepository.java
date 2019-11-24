@@ -47,7 +47,7 @@ public class MovieRepository implements Repository {
             }
 
             List<Movie> movieList = networkDataSource.getTopRatedMovies(pageNumber);
-            localDataSource.addMovies(movieList);
+            localDataSource.addMovies(movieList, pageNumber);
         });
     }
 

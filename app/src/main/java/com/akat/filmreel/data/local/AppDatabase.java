@@ -9,10 +9,12 @@ import androidx.room.TypeConverters;
 
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.data.model.TopRatedEntity;
 
 @Database(version = 1, entities = {
         Movie.class,
-        Bookmark.class
+        Bookmark.class,
+        TopRatedEntity.class
 })
 @TypeConverters({
         DateConverter.class,
@@ -23,7 +25,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TopRatedDao topRatedDao();
     public abstract BookmarksDao bookmarksDao();
 
-    private static final String DATABASE_NAME = "movies";
+    private static final String DATABASE_NAME = "movies_db";
 
     private static final Object LOCK = new Object();
     private static volatile AppDatabase sInstance;

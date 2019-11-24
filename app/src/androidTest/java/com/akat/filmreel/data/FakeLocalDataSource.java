@@ -48,7 +48,7 @@ public class FakeLocalDataSource implements LocalDataSource {
     }
 
     @Override
-    public void addMovies(List<Movie> movies) {
+    public void addMovies(List<Movie> movies, int page) {
         List<MovieWithBookmark> newList = new ArrayList<>();
         for (Movie movie : movies) {
             newList.add(toMovieWithBookmark(movie));

@@ -47,8 +47,8 @@ public class MovieLocalDataSource implements LocalDataSource {
     }
 
     @Override
-    public void addMovies(List<Movie> movies) {
-        topRatedDao.bulkInsert(movies);
+    public void addMovies(List<Movie> movies, int page) {
+        topRatedDao.addTopRatedMovies(movies, page);
     }
 
     @Override
