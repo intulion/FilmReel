@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/about_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/about_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <View
+        android:id="@+id/about_line"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/about_version_title"
+        app:layout_constraintEnd_toEndOf="@+id/about_app"
+        app:layout_constraintStart_toStartOf="@+id/about_app"
+        app:layout_constraintTop_toBottomOf="@+id/about_app" />
+
+    <TextView
+        android:id="@+id/about_version_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:text="@string/version"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textColor="@color/grey_60"
+        app:layout_constraintBottom_toTopOf="@+id/about_version"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_line" />
+
+    <TextView
+        android:id="@+id/about_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textColor="@color/grey_40"
+        app:layout_constraintBottom_toTopOf="@+id/about_developer_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_version_title"
+        tools:text="1.0.0" />
+
+    <TextView
+        android:id="@+id/about_developer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:text="@string/developer"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textColor="@color/grey_60"
+        app:layout_constraintBottom_toTopOf="@+id/about_developer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_version" />
+
+    <TextView
+        android:id="@+id/about_developer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:text="@string/author"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textColor="@color/grey_40"
+        app:layout_constraintBottom_toTopOf="@+id/about_github"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_developer_title" />
+
+    <ImageView
+        android:id="@+id/about_github"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:contentDescription="@string/desc_about_github"
+        android:src="@drawable/ic_github_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_developer" />
+
+    <ImageView
+        android:id="@+id/about_mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:contentDescription="@string/desc_about_mail"
+        android:src="@drawable/ic_mail_outline"
+        app:layout_constraintStart_toEndOf="@+id/about_github"
+        app:layout_constraintTop_toBottomOf="@+id/about_developer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

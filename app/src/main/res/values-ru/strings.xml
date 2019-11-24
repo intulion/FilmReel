@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Film Reel</string>
+    <string name="about">О приложении</string>
+    <string name="author">Антон Карпенко</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="cinemas">Кинотеатры</string>
+    <string name="close">Закрыть</string>
+    <string name="date_format">%1$td.%1$tm.%1$tY</string>
+    <string name="default_notification_channel_name">По умолчанию</string>
+    <string name="desc_about_github">Github</string>
+    <string name="desc_about_mail">Почта</string>
+    <string name="desc_icon_places">Значок местополжения</string>
+    <string name="desc_movies_bookmark">Закладка фильма</string>
+    <string name="desc_movies_poster">Постер фильма</string>
+    <string name="developer">Разработчик</string>
+    <string name="genres">Жанры</string>
+    <string name="long_tap_to_bookmark">Для добавления в закладки выполните долгое нажатие на фильме</string>
+    <string name="map">Карта</string>
+    <string name="menu_top_rated">Лучшие</string>
+    <string name="more">Еще</string>
+    <string name="more_info">Дополнительная информация</string>
+    <string name="movie_bookmark">Закладка</string>
+    <string name="movie_details">Детально о фильме</string>
+    <string name="movie_share">Поделиться</string>
+    <string name="movie_share_text">Привет! Давай посмотрим этот фильм: %s</string>
+    <string name="nearby_cinemas">Кинотеатры рядом</string>
+    <string name="no_cinemas">Кинотеатры не найдены</string>
+    <string name="no_bookmarks">Нет закладок</string>
+    <string name="retry">Повторить</string>
+    <string name="sync_desc">Фильмы синхронизированы</string>
+    <string name="sync_notification_channel_name">Синхронизация</string>
+    <string name="sync_title">Синхронизация</string>
+    <string name="top_rated_movies">Лучшие фильмы</string>
+    <string name="version">Версия</string>
+</resources>

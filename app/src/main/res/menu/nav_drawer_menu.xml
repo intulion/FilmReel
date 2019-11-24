@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_map"
         android:title="@string/cinemas" />
 
+    <item
+        android:id="@id/fragment_about"
+        android:icon="@drawable/ic_info"
+        android:title="@string/about" />
+
 </menu>
