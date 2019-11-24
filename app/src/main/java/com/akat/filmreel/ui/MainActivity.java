@@ -76,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         PeriodicWorkRequest periodicRequest =
-                new PeriodicWorkRequest.Builder(MovieSyncWorker.class, 1, TimeUnit.DAYS)
+                new PeriodicWorkRequest.Builder(MovieSyncWorker.class,
+                        1, TimeUnit.DAYS, 12, TimeUnit.HOURS)
                         .setConstraints(constraints)
                         .build();
         workManager.enqueue(periodicRequest);
