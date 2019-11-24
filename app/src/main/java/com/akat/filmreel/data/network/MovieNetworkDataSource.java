@@ -36,7 +36,7 @@ public class MovieNetworkDataSource implements NetworkDataSource {
     public List<Movie> getTopRatedMovies(int pageNumber) {
         ArrayList<Movie> result = new ArrayList<>();
 
-        Call<ApiResponse> call = manager.getApiService().getTopRatedMovies(pageNumber);
+        Call<ApiResponse> call = manager.getApiService().getTopRatedMovies(pageNumber, preferences.getLocale());
         try {
             Response<ApiResponse> response = call.execute();
             if (response.isSuccessful()) {

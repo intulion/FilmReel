@@ -2,7 +2,10 @@ package com.akat.filmreel.data.local;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
+
+import java.util.Locale;
 
 public class AppPreferences {
 
@@ -43,5 +46,22 @@ public class AppPreferences {
     public int getTotalPages() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getInt(TOTAL_PAGES, 1);
+    }
+
+    public String getLocale() {
+        Locale currentLocale = getCurrentLocale(context);
+        if (currentLocale.getLanguage().equals("ru")) {
+            return "ru-RU";
+        }
+        return "en-US";
+    }
+
+    private Locale getCurrentLocale(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return context.getResources().getConfiguration().getLocales().get(0);
+        } else {
+            //noinspection deprecation
+            return context.getResources().getConfiguration().locale;
+        }
     }
 }
