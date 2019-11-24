@@ -1,9 +1,9 @@
-package com.akat.filmreel.data.network;
+package com.akat.filmreel.places;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.akat.filmreel.data.model.places.Cinema;
-import com.akat.filmreel.data.model.places.PlacesResponse;
+import com.akat.filmreel.places.dto.Cinema;
+import com.akat.filmreel.places.dto.PlacesResponse;
 import com.akat.filmreel.util.AppExecutors;
 
 import java.util.ArrayList;
@@ -13,27 +13,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PlacesNetworkDataSource {
+public class PlacesDataSource {
 
     private static final Object LOCK = new Object();
-    private static PlacesNetworkDataSource sInstance;
+    private static PlacesDataSource sInstance;
 
     private final MutableLiveData<List<Cinema>> downloadedCinemas;
 
     private final AppExecutors executors;
     private final PlacesApiManager manager;
 
-    private PlacesNetworkDataSource(AppExecutors executors, PlacesApiManager manager) {
+    private PlacesDataSource(AppExecutors executors, PlacesApiManager manager) {
         this.executors = executors;
         this.manager = manager;
 
         downloadedCinemas = new MutableLiveData<>();
     }
 
-    public static PlacesNetworkDataSource getInstance(AppExecutors executors, PlacesApiManager manager) {
+    public static PlacesDataSource getInstance(AppExecutors executors, PlacesApiManager manager) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new PlacesNetworkDataSource(executors, manager);
+                sInstance = new PlacesDataSource(executors, manager);
             }
         }
         return sInstance;

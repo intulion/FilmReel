@@ -1,4 +1,4 @@
-package com.akat.filmreel.data.db;
+package com.akat.filmreel.data.local;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -31,6 +31,10 @@ public interface TopRatedDao {
             "LEFT JOIN bookmarks ON top_rated.id = bookmarks.movie_id " +
             "WHERE top_rated.id = :id")
     LiveData<MovieWithBookmark> getById(long id);
+
+    @Query("DELETE FROM top_rated " +
+            "WHERE id NOT IN (SELECT movie_id FROM bookmarks)")
+    void deleteNotMarked();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void bulkInsert(List<Movie> list);

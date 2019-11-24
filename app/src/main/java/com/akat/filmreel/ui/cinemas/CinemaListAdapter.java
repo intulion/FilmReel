@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.model.places.Cinema;
-import com.akat.filmreel.data.model.places.Location;
+import com.akat.filmreel.places.dto.Cinema;
+import com.akat.filmreel.places.dto.Location;
 
 import java.util.List;
 

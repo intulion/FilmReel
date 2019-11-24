@@ -1,6 +1,6 @@
-package com.akat.filmreel.data.network;
+package com.akat.filmreel.places;
 
-import com.akat.filmreel.data.model.places.PlacesResponse;
+import com.akat.filmreel.places.dto.PlacesResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
