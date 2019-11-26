@@ -23,4 +23,19 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
     </style>
 
+    <style name="MovieDetailTitleTextView" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6</item>
+    </style>
+
+    <style name="MovieDetailSubtitleTextView" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="android:textColor">@color/grey_60</item>
+    </style>
+
+    <style name="MovieDetailCaptionTextView" parent="android:Widget.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>
+    </style>
+
 </resources>
