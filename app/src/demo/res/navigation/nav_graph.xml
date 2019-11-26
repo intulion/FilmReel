@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_movie_list">
+
+    <fragment
+        android:id="@+id/fragment_movie_list"
+        android:name="com.akat.filmreel.ui.movieList.MovieListFragment"
+        android:label="@string/top_rated_movies" >
+        <action
+            android:id="@+id/action_fragment_movie_list_to_movieDetailFragment"
+            app:destination="@id/fragment_movie_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_movie_detail"
+        android:name="com.akat.filmreel.ui.movieDetail.MovieDetailFragment"
+        android:label="@string/movie_details"
+        tools:layout="@layout/fragment_movie_detail" />
+    <fragment
+        android:id="@+id/fragment_bookmarks"
+        android:name="com.akat.filmreel.ui.bookmarks.BookmarksFragment"
+        android:label="@string/bookmarks"
+        tools:layout="@layout/fragment_bookmarks">
+        <action
+            android:id="@+id/action_bookmarksFragment_to_fragment_movie_detail"
+            app:destination="@id/fragment_movie_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_cinema_list"
+        android:name="com.akat.filmreel.ui.cinemas.CinemaListDemoFragment"
+        android:label="@string/nearby_cinemas">
+        <action
+            android:id="@+id/action_fragment_cinema_list_to_mapsFragment"
+            app:destination="@id/fragment_maps" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_maps"
+        android:name="com.akat.filmreel.ui.cinemas.MapsFragment"
+        android:label="@string/map"
+        tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/fragment_about"
+        android:name="com.akat.filmreel.ui.about.AboutFragment"
+        android:label="@string/about"
+        tools:layout="@layout/fragment_about" />
+</navigation>

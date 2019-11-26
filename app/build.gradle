@@ -33,6 +33,20 @@ android {
         }
     }
 
+    flavorDimensions "mode"
+
+    productFlavors {
+        full {
+            dimension "mode"
+            versionNameSuffix "-full"
+        }
+        demo {
+            dimension "mode"
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
