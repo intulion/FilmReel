@@ -40,4 +40,9 @@
         android:name="com.akat.filmreel.ui.cinemas.MapsFragment"
         android:label="@string/map"
         tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/fragment_about"
+        android:name="com.akat.filmreel.ui.about.AboutFragment"
+        android:label="@string/about"
+        tools:layout="@layout/fragment_about" />
 </navigation>

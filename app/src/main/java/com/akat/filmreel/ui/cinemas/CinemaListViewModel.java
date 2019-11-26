@@ -3,8 +3,8 @@ package com.akat.filmreel.ui.cinemas;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.akat.filmreel.data.PlacesRepository;
-import com.akat.filmreel.data.model.places.Cinema;
+import com.akat.filmreel.places.PlacesRepository;
+import com.akat.filmreel.places.dto.Cinema;
 
 import java.util.List;
 

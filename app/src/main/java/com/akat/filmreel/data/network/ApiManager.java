@@ -17,7 +17,7 @@ public class ApiManager {
     private static ApiManager sInstance;
     private final ApiService apiService;
 
-    private ApiManager(ApiService service) {
+    protected ApiManager(ApiService service) {
         this.apiService = service;
     }
 

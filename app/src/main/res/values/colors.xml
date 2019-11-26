@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2C5871</color>
-    <color name="colorPrimaryDark">#0F303F</color>
-    <color name="colorAccentLight">#FDC00F</color>
-    <color name="colorAccent">#F29A00</color>
+    <color name="primaryColor">#2c5871</color>
+    <color name="primaryLightColor">#5b85a0</color>
+    <color name="primaryDarkColor">#0f303f</color>
+    <color name="secondaryColor">#f29a00</color>
+    <color name="secondaryLightColor">#fdc00f</color>
+    <color name="secondaryDarkColor">#ba6c00</color>
+
+    <color name="iconColor">@color/secondaryDarkColor</color>
+    <color name="toolbarIconColor">#000000</color>
 
     <color name="grey_20">#CCCCCC</color>
     <color name="grey_40">#999999</color>

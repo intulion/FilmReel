@@ -1,9 +1,10 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/secondaryColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
     </style>
 
     <style name="MovieTitleTextView" parent="android:Widget.TextView">
@@ -20,6 +21,21 @@
     <style name="MovieCaptionTextView" parent="android:Widget.TextView">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+    </style>
+
+    <style name="MovieDetailTitleTextView" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6</item>
+    </style>
+
+    <style name="MovieDetailSubtitleTextView" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="android:textColor">@color/grey_60</item>
+    </style>
+
+    <style name="MovieDetailCaptionTextView" parent="android:Widget.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>
     </style>
 
 </resources>

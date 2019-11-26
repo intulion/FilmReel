@@ -34,8 +34,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".data.network.MovieSyncService" />
-
         <service
             android:name=".data.network.MovieMessagingService"
             android:exported="false">

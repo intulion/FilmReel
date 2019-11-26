@@ -27,7 +27,7 @@
 
             <TextView
                 android:id="@+id/movie_title"
-                style="@style/MovieTitleTextView"
+                style="@style/MovieDetailTitleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_large"
@@ -40,7 +40,7 @@
 
             <TextView
                 android:id="@+id/movie_orig_title"
-                style="@style/MovieSubtitleTextView"
+                style="@style/MovieDetailSubtitleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_large"
@@ -54,7 +54,7 @@
 
             <TextView
                 android:id="@+id/movie_language"
-                style="@style/MovieSubtitleTextView"
+                style="@style/MovieDetailSubtitleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_large"
@@ -69,7 +69,7 @@
 
             <TextView
                 android:id="@+id/movie_release_date"
-                style="@style/MovieSubtitleTextView"
+                style="@style/MovieDetailSubtitleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_large"
@@ -84,7 +84,7 @@
 
             <TextView
                 android:id="@+id/movie_popularity"
-                style="@style/MovieSubtitleTextView"
+                style="@style/MovieDetailSubtitleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_large"
@@ -100,7 +100,7 @@
 
             <TextView
                 android:id="@+id/movie_rating"
-                style="@style/MovieSubtitleTextView"
+                style="@style/MovieDetailSubtitleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_large"
@@ -136,7 +136,7 @@
 
             <TextView
                 android:id="@+id/movie_overview"
-                style="@style/MovieCaptionTextView"
+                style="@style/MovieDetailCaptionTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_large"
@@ -145,7 +145,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/movie_rating"
-                tools:maxLines="10"
                 tools:text="@tools:sample/lorem/random" />
 
             <Button
