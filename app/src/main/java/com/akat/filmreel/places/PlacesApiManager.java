@@ -3,6 +3,8 @@ package com.akat.filmreel.places;
 import com.akat.filmreel.BuildConfig;
 import com.akat.filmreel.util.Constants;
 
+import android.util.Base64;
+
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,8 +30,11 @@ public class PlacesApiManager {
                             Request original = chain.request();
                             HttpUrl originalHttpUrl = original.url();
 
+                            byte[] apiKey_64 = Base64.decode(BuildConfig.PlacesApiKey, Base64.DEFAULT);
+                            String apiKey = new String(apiKey_64);
+
                             HttpUrl url = originalHttpUrl.newBuilder()
-                                    .addQueryParameter("key", BuildConfig.PlacesApiKey)
+                                    .addQueryParameter("key", apiKey)
                                     .build();
 
                             Request.Builder requestBuilder = original.newBuilder()
