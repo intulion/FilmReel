@@ -13,7 +13,9 @@ interface Repository {
 
     LiveData<List<MovieWithBookmark>> getBookmarkedMovies();
 
-    LiveData<MovieWithBookmark> getMovie(long movieId);
+    LiveData<MovieWithBookmark> getMovie();
+
+    void selectMovie(long movieId);
 
     void setBookmark(long movieId, boolean oldState);
 }

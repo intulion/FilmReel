@@ -1,11 +1,9 @@
 package com.akat.filmreel.ui.movieList;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +17,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.akat.filmreel.R;
 import com.akat.filmreel.ui.common.MovieListAdapter;
+import com.akat.filmreel.ui.common.MovieListViewModel;
+import com.akat.filmreel.ui.common.MovieListViewModelFactory;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.InjectorUtils;
 
@@ -66,7 +66,7 @@ public class MovieListFragment extends Fragment
 
         MovieListViewModelFactory factory =
                 InjectorUtils.provideMovieListViewModelFactory(requireActivity());
-        viewModel = ViewModelProviders.of(this, factory).get(MovieListViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity(), factory).get(MovieListViewModel.class);
         viewModel.getMovies().observe(this, entries -> {
             movieListAdapter.swapItems(entries);
 
@@ -79,6 +79,8 @@ public class MovieListFragment extends Fragment
     public void onItemClick(View view, long movieId) {
         Bundle bundle = new Bundle();
         bundle.putLong(Constants.PARAM.MOVIE_ID, movieId);
+
+        viewModel.selectMovie(movieId);
 
         Navigation.findNavController(view).navigate(R.id.fragment_movie_detail, bundle);
     }

@@ -39,7 +39,7 @@ abstract class TopRatedDao {
             "FROM movies " +
             "LEFT JOIN bookmarks ON movies.id = bookmarks.movie_id " +
             "WHERE movies.id = :id")
-    abstract LiveData<MovieWithBookmark> getById(long id);
+    abstract MovieWithBookmark getById(long id);
 
     @Query("DELETE FROM top_rated " +
             "WHERE movie_id NOT IN (SELECT movie_id FROM bookmarks)")

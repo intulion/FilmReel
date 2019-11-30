@@ -41,8 +41,12 @@ public class MovieInteractor {
         return repository.getBookmarkedMovies();
     }
 
-    public LiveData<MovieWithBookmark> observeMovie(long movieId) {
-        return repository.getMovie(movieId);
+    public LiveData<MovieWithBookmark> observeMovie() {
+        return repository.getMovie();
+    }
+
+    public void selectMovie(long movieId) {
+        repository.selectMovie(movieId);
     }
 
     public void fetchNextPage(int currentPage) {

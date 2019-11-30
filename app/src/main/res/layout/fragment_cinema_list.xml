@@ -4,7 +4,7 @@
     android:id="@+id/cinemas_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.movieList.MovieListViewModel">
+    tools:context=".ui.common.MovieListViewModel">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_cinema_list"

@@ -1,6 +1,7 @@
 package com.akat.filmreel.data;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.akat.filmreel.data.local.LocalDataSource;
 import com.akat.filmreel.data.model.Bookmark;
@@ -18,6 +19,8 @@ public class MovieRepository implements Repository {
     private final AppExecutors executors;
     private final NetworkDataSource networkDataSource;
     private final LocalDataSource localDataSource;
+
+    private MutableLiveData<MovieWithBookmark> movie = new MutableLiveData<>();
 
     private MovieRepository(LocalDataSource localDataSource,
                             NetworkDataSource networkDataSource,
@@ -62,8 +65,13 @@ public class MovieRepository implements Repository {
     }
 
     @Override
-    public LiveData<MovieWithBookmark> getMovie(long movieId) {
-        return localDataSource.getMovie(movieId);
+    public LiveData<MovieWithBookmark> getMovie() {
+        return movie;
+    }
+
+    @Override
+    public void selectMovie(long movieId) {
+        executors.diskIO().execute(() -> movie.postValue(localDataSource.getMovie(movieId)));
     }
 
     @Override

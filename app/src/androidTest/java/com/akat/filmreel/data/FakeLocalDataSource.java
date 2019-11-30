@@ -43,7 +43,7 @@ public class FakeLocalDataSource implements LocalDataSource {
     }
 
     @Override
-    public LiveData<MovieWithBookmark> getMovie(long movieId) {
+    public MovieWithBookmark getMovie(long movieId) {
         return null;
     }
 

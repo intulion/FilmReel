@@ -16,8 +16,7 @@ import com.akat.filmreel.places.PlacesDataSource;
 import com.akat.filmreel.places.PlacesRepository;
 import com.akat.filmreel.ui.bookmarks.BookmarksViewModelFactory;
 import com.akat.filmreel.ui.cinemas.CinemaListViewModelFactory;
-import com.akat.filmreel.ui.movieDetail.MovieDetailViewModelFactory;
-import com.akat.filmreel.ui.movieList.MovieListViewModelFactory;
+import com.akat.filmreel.ui.common.MovieListViewModelFactory;
 
 public class InjectorUtils {
 
@@ -53,11 +52,6 @@ public class InjectorUtils {
     public static MovieListViewModelFactory provideMovieListViewModelFactory(Context context) {
         MovieInteractor interactor = provideInteractor(context);
         return new MovieListViewModelFactory(interactor);
-    }
-
-    public static MovieDetailViewModelFactory provideMovieDetailViewModelFactory(Context context, long movieId) {
-        MovieInteractor interactor = provideInteractor(context);
-        return new MovieDetailViewModelFactory(interactor, movieId);
     }
 
     public static BookmarksViewModelFactory provideBookmarksViewModelFactory(Context context) {

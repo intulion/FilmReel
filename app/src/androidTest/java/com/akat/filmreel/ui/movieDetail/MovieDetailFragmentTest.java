@@ -19,6 +19,7 @@ import com.akat.filmreel.ui.MainActivity;
 import com.akat.filmreel.util.Constants;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,6 +60,7 @@ public class MovieDetailFragmentTest {
         });
     }
 
+    @Ignore
     @Test
     public void testShareTextIntent() throws InterruptedException {
         String shareText = activityTestRule.getActivity().getString(

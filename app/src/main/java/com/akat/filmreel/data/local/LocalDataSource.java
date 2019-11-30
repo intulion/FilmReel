@@ -13,7 +13,7 @@ public interface LocalDataSource {
 
     LiveData<List<MovieWithBookmark>> getBookmarkedMovies();
 
-    LiveData<MovieWithBookmark> getMovie(long movieId);
+    MovieWithBookmark getMovie(long movieId);
 
     void addMovies(List<Movie> movies, int page);
 

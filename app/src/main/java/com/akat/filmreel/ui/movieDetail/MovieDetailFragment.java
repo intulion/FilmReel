@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.akat.filmreel.R;
+import com.akat.filmreel.ui.common.MovieListViewModel;
+import com.akat.filmreel.ui.common.MovieListViewModelFactory;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.InjectorUtils;
 import com.bumptech.glide.Glide;
@@ -37,7 +39,7 @@ public class MovieDetailFragment extends Fragment {
     private TextView popularityView;
     private TextView overviewView;
 
-    private MovieDetailViewModel viewModel;
+    private MovieListViewModel viewModel;
     private long movieId;
     private boolean isBookmarked;
     private List<Integer> genres;
@@ -76,9 +78,9 @@ public class MovieDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MovieDetailViewModelFactory factory =
-                InjectorUtils.provideMovieDetailViewModelFactory(requireActivity(), movieId);
-        viewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel.class);
+        MovieListViewModelFactory factory =
+                InjectorUtils.provideMovieListViewModelFactory(requireActivity());
+        viewModel = ViewModelProviders.of(requireActivity(), factory).get(MovieListViewModel.class);
         viewModel.getMovie().observe(this, entry -> {
             if (entry != null) {
                 titleView.setText(entry.getTitle());

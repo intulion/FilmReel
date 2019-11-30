@@ -61,14 +61,14 @@ public class BookmarksDaoTest {
         bookmarksDao.insert(bookmark);
 
         // Ensure that movie has been bookmarked
-        MovieWithBookmark movie = getValue(topRatedDao.getById(movieId));
+        MovieWithBookmark movie = topRatedDao.getById(movieId);
         assertTrue(movie.isBookmarked());
 
         // Remove bookmark
         bookmarksDao.deleteByMovieId(bookmark.getMovieId());
 
         // Ensure that movie has't been bookmarked
-        movie = getValue(topRatedDao.getById(movieId));
+        movie = topRatedDao.getById(movieId);
         assertFalse(movie.isBookmarked());
     }
 

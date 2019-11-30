@@ -62,7 +62,7 @@ public class TopRatedDaoTest {
 
     @Test
     public void getById() throws InterruptedException {
-        MovieWithBookmark movie = getValue(topRatedDao.getById(movieA.getId()));
+        MovieWithBookmark movie = topRatedDao.getById(movieA.getId());
 
         assertThat(movieA.getId(), equalTo(movie.getId()));
         assertThat(movieA.getTitle(), equalTo(movie.getTitle()));
