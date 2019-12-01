@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_margin">
-
-    <Button
-        android:id="@+id/sheet_more_close_btn"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_middle"
-        android:text="@string/close"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sheet_more_genres_group" />
 
     <TextView
         android:id="@+id/sheet_more_title"
@@ -46,5 +37,63 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sheet_more_genres" />
+
+    <TextView
+        android:id="@+id/sheet_more_reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/spacing_middle"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:text="@string/reminder"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sheet_more_genres_group" />
+
+    <TextView
+        android:id="@+id/sheet_more_date"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/spacing_middle"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:clickable="true"
+        android:focusable="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sheet_more_reminder"
+        tools:text="01.12.2019" />
+
+    <TextView
+        android:id="@+id/sheet_more_time"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/spacing_middle"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:clickable="true"
+        android:focusable="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintStart_toEndOf="@+id/sheet_more_date"
+        app:layout_constraintTop_toBottomOf="@+id/sheet_more_reminder"
+        tools:text="12:00" />
+
+    <Button
+        android:id="@+id/sheet_more_add_btn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_middle"
+        android:layout_marginEnd="@dimen/spacing_middle"
+        android:text="@string/add_reminder"
+        app:layout_constraintEnd_toStartOf="@+id/sheet_more_close_btn"
+        app:layout_constraintTop_toBottomOf="@+id/sheet_more_date" />
+
+    <Button
+        android:id="@+id/sheet_more_close_btn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_middle"
+        android:text="@string/close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sheet_more_date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
