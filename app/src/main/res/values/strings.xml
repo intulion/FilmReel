@@ -41,6 +41,7 @@
     <string name="sync_title">Synchronization</string>
     <string name="sync_desc">Movies has been synced</string>
 
-    <string name="movie_rating_format" translatable="false">%1$.1f (%2$d)</string>
+    <string name="rating_format" translatable="false">%1$.1f (%2$d)</string>
     <string name="date_format">%1$td.%1$tm.%1$tY</string>
+    <string name="popularity_format" translatable="false">"%.3f"</string>
 </resources>

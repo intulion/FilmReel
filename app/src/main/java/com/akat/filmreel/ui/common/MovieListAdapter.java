@@ -6,18 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akat.filmreel.R;
 import com.akat.filmreel.data.model.MovieWithBookmark;
-import com.akat.filmreel.util.Constants;
-import com.bumptech.glide.Glide;
+import com.akat.filmreel.databinding.ItemMovieListBinding;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         this.clickHandler = clickHandler;
     }
 
-    public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener){
+    public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener) {
         this.onBottomReachedListener = onBottomReachedListener;
     }
 
@@ -42,36 +40,17 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     @Override
     public MovieListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         int layoutId = R.layout.item_movie_list;
-        View view = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
-        view.setFocusable(true);
-        return new MovieListAdapterViewHolder(view);
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        ItemMovieListBinding binding =
+                DataBindingUtil.inflate(layoutInflater, layoutId, viewGroup, false);
+
+        return new MovieListAdapterViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MovieListAdapterViewHolder holder, int position) {
         MovieWithBookmark movie = movies.get(position);
-
-        holder.title.setText(movie.getTitle());
-        holder.originalTitle.setText(movie.getOriginalTitle());
-        holder.overview.setText(movie.getOverview());
-        holder.rating.setText(
-                String.format(holder.ratingFormat,
-                        movie.getVoteAverage(),
-                        movie.getVoteCount()
-                )
-        );
-        holder.releaseDate.setText(
-                String.format(holder.dateFormat, movie.getReleaseDate())
-        );
-
-        holder.bookmark.setVisibility(movie.isBookmarked() ? View.VISIBLE : View.GONE);
-
-        String posterPath = movie.getPosterPath();
-        if (posterPath != null) {
-            Glide.with(holder.poster.getContext())
-                    .load(Constants.HTTP.POSTER_URL + posterPath)
-                    .into(holder.poster);
-        }
+        holder.bind(movie);
 
         if (onBottomReachedListener != null && position == getItemCount() - 3) {
             onBottomReachedListener.onBottomReached(position);
@@ -124,6 +103,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     public interface OnItemClickHandler {
         void onItemClick(View view, long movieId);
+
         void onItemLongClick(View view, int position, long movieId, boolean isBookmarked);
     }
 
@@ -134,35 +114,23 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     class MovieListAdapterViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
 
+        private final ItemMovieListBinding binding;
+
         final CardView cardView;
-        final ImageView poster;
-        final ImageView bookmark;
-        final TextView title;
-        final TextView originalTitle;
-        final TextView overview;
-        final TextView rating;
-        final TextView releaseDate;
 
-        final String ratingFormat;
-        final String dateFormat;
-
-        MovieListAdapterViewHolder(View view) {
-            super(view);
+        MovieListAdapterViewHolder(ItemMovieListBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
             cardView = itemView.findViewById(R.id.movie_list_card);
-            poster = itemView.findViewById(R.id.movie_list_img);
-            bookmark = itemView.findViewById(R.id.movie_list_bookmark);
-            title = itemView.findViewById(R.id.movie_list_title);
-            originalTitle = itemView.findViewById(R.id.movie_list_orig_title);
-            overview = itemView.findViewById(R.id.movie_list_overview);
-            rating = itemView.findViewById(R.id.movie_list_rating);
-            releaseDate = itemView.findViewById(R.id.movie_list_release_date);
-
-            ratingFormat = itemView.getResources().getString(R.string.movie_rating_format);
-            dateFormat = itemView.getResources().getString(R.string.date_format);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+        }
+
+        void bind(MovieWithBookmark movie) {
+            binding.setMovieItem(movie);
+            binding.executePendingBindings();
         }
 
         @Override

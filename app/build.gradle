@@ -41,6 +41,10 @@ android {
     testOptions.unitTests {
         includeAndroidResources = true
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
