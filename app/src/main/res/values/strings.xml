@@ -41,9 +41,12 @@
     <string name="sync_title">Synchronization</string>
     <string name="sync_desc">Movies has been synced</string>
 
+    <string name="set_reminder">Set reminder</string>
+    <string name="remind">Add reminder</string>
+    <string name="reminder_title">Movie reminder</string>
+
     <string name="rating_format" translatable="false">%1$.1f (%2$d)</string>
     <string name="date_format">%1$td.%1$tm.%1$tY</string>
+    <string name="time_format">%1$tk.%1$tM</string>
     <string name="popularity_format" translatable="false">"%.3f"</string>
-    <string name="reminder">Reminder</string>
-    <string name="add_reminder">Add reminder</string>
 </resources>

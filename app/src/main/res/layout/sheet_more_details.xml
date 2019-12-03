@@ -44,7 +44,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/spacing_middle"
         android:layout_marginTop="@dimen/spacing_large"
-        android:text="@string/reminder"
+        android:text="@string/set_reminder"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sheet_more_genres_group" />
@@ -57,7 +57,7 @@
         android:layout_marginTop="@dimen/spacing_medium"
         android:clickable="true"
         android:focusable="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sheet_more_reminder"
         tools:text="01.12.2019" />
@@ -70,19 +70,19 @@
         android:layout_marginTop="@dimen/spacing_medium"
         android:clickable="true"
         android:focusable="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:layout_constraintStart_toEndOf="@+id/sheet_more_date"
         app:layout_constraintTop_toBottomOf="@+id/sheet_more_reminder"
         tools:text="12:00" />
 
     <Button
         android:id="@+id/sheet_more_add_btn"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_middle"
         android:layout_marginEnd="@dimen/spacing_middle"
-        android:text="@string/add_reminder"
+        android:text="@string/remind"
         app:layout_constraintEnd_toStartOf="@+id/sheet_more_close_btn"
         app:layout_constraintTop_toBottomOf="@+id/sheet_more_date" />
 

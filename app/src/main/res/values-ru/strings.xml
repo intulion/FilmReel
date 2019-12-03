@@ -33,4 +33,8 @@
     <string name="sync_title">Синхронизация</string>
     <string name="top_rated_movies">Лучшие фильмы</string>
     <string name="version">Версия</string>
+    <string name="remind">Напомнить</string>
+    <string name="set_reminder">Напоминание</string>
+    <string name="time_format">%1$tk.%1$tM</string>
+    <string name="reminder_title">Напоминание о фильме</string>
 </resources>

@@ -108,6 +108,7 @@ public class MovieDetailFragment extends Fragment {
         public void onMoreButtonClick(View v, MovieWithBookmark movie) {
             FragmentMoreInfo fragment = new FragmentMoreInfo();
             fragment.setGenres(movie.getGenreIds());
+            fragment.setTitle(movie.getTitle());
             fragment.show(requireActivity().getSupportFragmentManager(), fragment.getTag());
         }
     }
