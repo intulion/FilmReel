@@ -45,6 +45,10 @@
     <string name="remind">Add reminder</string>
     <string name="reminder_title">Movie reminder</string>
 
+    <string name="wifi_connected">WiFi connected</string>
+    <string name="internet_connected">Internet connected</string>
+    <string name="lost_connection">Lost connection</string>
+
     <string name="rating_format" translatable="false">%1$.1f (%2$d)</string>
     <string name="date_format">%1$td.%1$tm.%1$tY</string>
     <string name="time_format">%1$tk.%1$tM</string>

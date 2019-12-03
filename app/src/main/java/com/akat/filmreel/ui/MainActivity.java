@@ -3,6 +3,8 @@ package com.akat.filmreel.ui;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
@@ -24,6 +26,7 @@ import androidx.work.WorkManager;
 
 import com.akat.filmreel.R;
 import com.akat.filmreel.data.network.MovieSyncWorker;
+import com.akat.filmreel.util.NetworkReceiver;
 import com.akat.filmreel.util.SimpleIdlingResource;
 import com.google.android.material.navigation.NavigationView;
 
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     // The Idling Resource which will be null in production.
     @Nullable
     private SimpleIdlingResource idlingResource;
+
+    private NetworkReceiver receiver = new NetworkReceiver();
 
     private NavController navController;
     private DrawerLayout drawerLayout;
@@ -54,8 +59,23 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        // Sync
         createNotificationChannels();
         scheduleSync();
+
+        // Connectivity
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        receiver = new NetworkReceiver();
+        this.registerReceiver(receiver, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (receiver != null) {
+            this.unregisterReceiver(receiver);
+        }
     }
 
     @Override

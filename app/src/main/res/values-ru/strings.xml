@@ -37,4 +37,7 @@
     <string name="set_reminder">Напоминание</string>
     <string name="time_format">%1$tk.%1$tM</string>
     <string name="reminder_title">Напоминание о фильме</string>
+    <string name="internet_connected">Интернет доступен</string>
+    <string name="lost_connection">Нет соединения</string>
+    <string name="wifi_connected">WiFi подключен</string>
 </resources>
