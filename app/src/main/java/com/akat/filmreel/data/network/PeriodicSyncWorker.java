@@ -18,11 +18,11 @@ import com.akat.filmreel.util.InjectorUtils;
 
 import java.util.List;
 
-public class MovieSyncWorker extends Worker {
+public class PeriodicSyncWorker extends Worker {
 
     private Context context;
 
-    public MovieSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public PeriodicSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.context = context;
     }
