@@ -7,12 +7,14 @@ import androidx.room.Query;
 
 import com.akat.filmreel.data.model.Bookmark;
 
+import io.reactivex.Completable;
+
 @Dao
 public interface BookmarksDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Bookmark bookmark);
+    Completable insert(Bookmark bookmark);
 
     @Query("DELETE FROM bookmarks WHERE movie_id = :movieId")
-    void deleteByMovieId(long movieId);
+    Completable deleteByMovieId(long movieId);
 }

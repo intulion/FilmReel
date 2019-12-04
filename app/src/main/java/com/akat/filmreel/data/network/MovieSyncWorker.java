@@ -11,12 +11,15 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.local.LocalDataSource;
-import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.data.MovieRepository;
+import com.akat.filmreel.data.local.AppPreferences;
+import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.ui.MainActivity;
 import com.akat.filmreel.util.InjectorUtils;
 
-import java.util.List;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MovieSyncWorker extends Worker {
 
@@ -30,23 +33,35 @@ public class MovieSyncWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        LocalDataSource localDataSource = InjectorUtils.provideLocalDataSource(context);
-        NetworkDataSource networkDataSource = InjectorUtils.provideNetworkDataSource(context);
+        AppPreferences preferences = InjectorUtils.providePreferences(context);
+        MovieRepository repository = InjectorUtils.provideRepository(context);
 
         // Make request - update first page only
-        int page = 1;
-        List<Movie> movieList = networkDataSource.getTopRatedMovies(page);
+        int pageNumber = 1;
+        repository.fetchNowPlayingMovies(pageNumber, preferences.getLocale())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new SingleObserver<ApiResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-        if (!movieList.isEmpty()) {
-            localDataSource.addMovies(movieList, page);
+                    }
 
-            sendNotification(context.getString(R.string.sync_title),
-                    context.getString(R.string.sync_desc));
+                    @Override
+                    public void onSuccess(ApiResponse apiResponse) {
+                        preferences.setPageData(apiResponse.getPage(), apiResponse.getTotalPages());
+                        repository.addMovies(apiResponse.getResults(), pageNumber);
 
-            return Result.success();
-        }
+                        sendNotification(context.getString(R.string.sync_title),
+                                context.getString(R.string.sync_desc));
+                    }
 
-        return Result.failure();
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+
+        return Result.success();
     }
 
     private void sendNotification(String messageTitle, String messageBody) {

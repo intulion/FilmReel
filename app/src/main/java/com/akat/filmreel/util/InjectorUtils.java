@@ -21,28 +21,29 @@ import com.akat.filmreel.ui.movieList.MovieListViewModelFactory;
 
 public class InjectorUtils {
 
-    private static MovieRepository provideRepository(Context context) {
+    public static MovieRepository provideRepository(Context context) {
         LocalDataSource localDataSource = provideLocalDataSource(context);
-        NetworkDataSource networkDataSource = provideNetworkDataSource(context);
-        AppExecutors executors = AppExecutors.getInstance();
+        NetworkDataSource networkDataSource = provideNetworkDataSource();
         return MovieRepository.getInstance(
                 localDataSource,
-                networkDataSource,
-                executors
+                networkDataSource
         );
     }
 
     private static MovieInteractor provideInteractor(Context context) {
         MovieRepository repository = provideRepository(context);
-        AppPreferences preferences = AppPreferences.getInstance(context.getApplicationContext());
+        AppPreferences preferences = providePreferences(context);
 
         return MovieInteractor.getInstance(repository, preferences);
     }
 
-    public static MovieNetworkDataSource provideNetworkDataSource(Context context) {
+    public static AppPreferences providePreferences(Context context) {
+        return AppPreferences.getInstance(context.getApplicationContext());
+    }
+
+    public static MovieNetworkDataSource provideNetworkDataSource() {
         ApiManager manager = ApiManager.getInstance();
-        AppPreferences preferences = AppPreferences.getInstance(context.getApplicationContext());
-        return MovieNetworkDataSource.getInstance(manager, preferences);
+        return MovieNetworkDataSource.getInstance(manager);
     }
 
     public static MovieLocalDataSource provideLocalDataSource(Context context) {

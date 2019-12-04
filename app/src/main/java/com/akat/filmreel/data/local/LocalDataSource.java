@@ -1,25 +1,29 @@
 package com.akat.filmreel.data.local;
 
-import androidx.lifecycle.LiveData;
-
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.model.MovieWithBookmark;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
+
 public interface LocalDataSource {
-    LiveData<List<MovieWithBookmark>> getMovies();
+    Flowable<List<MovieWithBookmark>> getMovies();
 
-    LiveData<List<MovieWithBookmark>> getBookmarkedMovies();
+    Flowable<List<MovieWithBookmark>> getNowPlayingMovies();
 
-    LiveData<MovieWithBookmark> getMovie(long movieId);
+    Flowable<List<MovieWithBookmark>> getBookmarkedMovies();
+
+    Single<MovieWithBookmark> getMovie(long movieId);
 
     void addMovies(List<Movie> movies, int page);
 
-    void deleteNotMarkedMovies();
+    void deleteTopRatedMovies();
 
-    void setBookmark(Bookmark bookmark);
+    Completable setBookmark(Bookmark bookmark);
 
-    void removeBookmark(long movieId);
+    Completable removeBookmark(long movieId);
 }

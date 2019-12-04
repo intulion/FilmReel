@@ -1,12 +1,14 @@
 package com.akat.filmreel.data.local;
 
-import androidx.lifecycle.LiveData;
-
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.model.MovieWithBookmark;
 
 import java.util.List;
+
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 public class MovieLocalDataSource implements LocalDataSource {
 
@@ -30,19 +32,23 @@ public class MovieLocalDataSource implements LocalDataSource {
         return sInstance;
     }
 
-
     @Override
-    public LiveData<List<MovieWithBookmark>> getMovies() {
+    public Flowable<List<MovieWithBookmark>> getMovies() {
         return topRatedDao.getTopRated();
     }
 
     @Override
-    public LiveData<List<MovieWithBookmark>> getBookmarkedMovies() {
+    public Flowable<List<MovieWithBookmark>> getNowPlayingMovies() {
+        return topRatedDao.getNowPlaying();
+    }
+
+    @Override
+    public Flowable<List<MovieWithBookmark>> getBookmarkedMovies() {
         return topRatedDao.getBookmarkedMovies();
     }
 
     @Override
-    public LiveData<MovieWithBookmark> getMovie(long movieId) {
+    public Single<MovieWithBookmark> getMovie(long movieId) {
         return topRatedDao.getById(movieId);
     }
 
@@ -52,17 +58,17 @@ public class MovieLocalDataSource implements LocalDataSource {
     }
 
     @Override
-    public void deleteNotMarkedMovies() {
-        topRatedDao.deleteNotMarked();
+    public void deleteTopRatedMovies() {
+        topRatedDao.deleteAll();
     }
 
     @Override
-    public void setBookmark(Bookmark bookmark) {
-        bookmarksDao.insert(bookmark);
+    public Completable setBookmark(Bookmark bookmark) {
+        return bookmarksDao.insert(bookmark);
     }
 
     @Override
-    public void removeBookmark(long movieId) {
-        bookmarksDao.deleteByMovieId(movieId);
+    public Completable removeBookmark(long movieId) {
+        return bookmarksDao.deleteByMovieId(movieId);
     }
 }

@@ -9,6 +9,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiManager {
@@ -50,6 +51,7 @@ public class ApiManager {
                         .baseUrl(Constants.HTTP.BASE_URL)
                         .client(httpClient)
                         .addConverterFactory(GsonConverterFactory.create(gson))
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                         .build();
 
                 sInstance = new ApiManager(retrofit.create(ApiService.class));

@@ -1,55 +1,35 @@
 package com.akat.filmreel.data.network;
 
-import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.model.ApiResponse;
-import com.akat.filmreel.data.model.Movie;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Response;
+import io.reactivex.Single;
 
 public class MovieNetworkDataSource implements NetworkDataSource {
 
     private static final Object LOCK = new Object();
     private static MovieNetworkDataSource sInstance;
     private final ApiManager manager;
-    private final AppPreferences preferences;
 
-    private MovieNetworkDataSource(ApiManager manager, AppPreferences preferences) {
+    private MovieNetworkDataSource(ApiManager manager) {
         this.manager = manager;
-        this.preferences = preferences;
     }
 
-    public static MovieNetworkDataSource getInstance(ApiManager manager, AppPreferences preferences) {
+    public static MovieNetworkDataSource getInstance(ApiManager manager) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new MovieNetworkDataSource(manager, preferences);
+                sInstance = new MovieNetworkDataSource(manager);
             }
         }
         return sInstance;
     }
 
     @Override
-    public List<Movie> getTopRatedMovies(int pageNumber) {
-        ArrayList<Movie> result = new ArrayList<>();
+    public Single<ApiResponse> getTopRatedMovies(int pageNumber, String locale) {
+        return manager.getApiService().getTopRatedMovies(pageNumber, locale);
+    }
 
-        Call<ApiResponse> call = manager.getApiService().getTopRatedMovies(pageNumber, preferences.getLocale());
-        try {
-            Response<ApiResponse> response = call.execute();
-            if (response.isSuccessful()) {
-                ApiResponse apiResponse = response.body();
-                if (apiResponse != null) {
-                    result = (ArrayList<Movie>) apiResponse.getResults();
-                    preferences.setPageData(apiResponse.getPage(), apiResponse.getTotalPages());
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
+    @Override
+    public Single<ApiResponse> getNowPlayingMovies(int pageNumber, String locale) {
+        return manager.getApiService().getNowPlayingMovies(pageNumber, locale);
     }
 }

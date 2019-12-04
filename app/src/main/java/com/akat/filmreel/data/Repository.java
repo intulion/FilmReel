@@ -1,19 +1,21 @@
 package com.akat.filmreel.data;
 
-import androidx.lifecycle.LiveData;
-
 import com.akat.filmreel.data.model.MovieWithBookmark;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
+
 interface Repository {
-    void fetchPage(int pageNumber, boolean forceUpdate);
+    Flowable<List<MovieWithBookmark>> getTopRatedMovies();
 
-    LiveData<List<MovieWithBookmark>> getTopRatedMovies();
+    Flowable<List<MovieWithBookmark>> getNowPlayingMovies();
 
-    LiveData<List<MovieWithBookmark>> getBookmarkedMovies();
+    Flowable<List<MovieWithBookmark>> getBookmarkedMovies();
 
-    LiveData<MovieWithBookmark> getMovie(long movieId);
+    Single<MovieWithBookmark> getMovie(long movieId);
 
-    void setBookmark(long movieId, boolean oldState);
+    Completable setBookmark(long movieId, boolean oldState);
 }

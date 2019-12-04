@@ -28,6 +28,8 @@ buildscript {
         recyclerViewVersion = '1.1.0'
         retrofitVersion = '2.6.2'
         roomVersion = '2.2.1'
+        rxandroidVersion = '2.1.1'
+        rxjavaVersion = '2.2.15'
         swipeVersion = '1.0.0'
         testExtJunit = '1.1.1'
         testVersion = '1.2.0'
