@@ -1,16 +1,16 @@
 package com.akat.filmreel;
 
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.Movie;
 
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MovieWithBookmarkTest {
+public class MovieTest {
 
     @Test
     public void isBookmarked() {
-        MovieWithBookmark movie = new MovieWithBookmark();
+        Movie movie = new Movie();
 
         // default bookmark - false
         assertFalse(movie.isBookmarked());

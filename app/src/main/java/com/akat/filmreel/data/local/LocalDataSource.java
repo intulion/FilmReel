@@ -2,7 +2,7 @@ package com.akat.filmreel.data.local;
 
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.MovieEntity;
 
 import java.util.List;
 
@@ -11,15 +11,15 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 public interface LocalDataSource {
-    Flowable<List<MovieWithBookmark>> getMovies();
+    Flowable<List<Movie>> getMovies();
 
-    Flowable<List<MovieWithBookmark>> getNowPlayingMovies();
+    Flowable<List<Movie>> getNowPlayingMovies();
 
-    Flowable<List<MovieWithBookmark>> getBookmarkedMovies();
+    Flowable<List<Movie>> getBookmarkedMovies();
 
-    Single<MovieWithBookmark> getMovie(long movieId);
+    Single<Movie> getMovie(long movieId);
 
-    void addMovies(List<Movie> movies, int page);
+    void addMovies(List<MovieEntity> movies, int page);
 
     void deleteTopRatedMovies();
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.model.ApiResponse;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +23,9 @@ public class MovieInteractor {
     private final AppPreferences preferences;
     private CompositeDisposable disposable;
 
-    private final MutableLiveData<List<MovieWithBookmark>> movies = new MutableLiveData<>();
-    private final MutableLiveData<List<MovieWithBookmark>> bookmarkedMovies = new MutableLiveData<>();
-    private final MutableLiveData<MovieWithBookmark> movie = new MutableLiveData<>();
+    private final MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
+    private final MutableLiveData<List<Movie>> bookmarkedMovies = new MutableLiveData<>();
+    private final MutableLiveData<Movie> movie = new MutableLiveData<>();
 
     private MovieInteractor(MovieRepository repository, AppPreferences preferences) {
         this.repository = repository;
@@ -44,19 +44,19 @@ public class MovieInteractor {
         return sInstance;
     }
 
-    public LiveData<List<MovieWithBookmark>> observeMovies() {
+    public LiveData<List<Movie>> observeMovies() {
         if (preferences.getLastPage() == 0) {
             fetchPage(1, false);
         }
         return movies;
     }
 
-    public LiveData<List<MovieWithBookmark>> observeBookmarkedMovies() {
+    public LiveData<List<Movie>> observeBookmarkedMovies() {
         getBookmarkedMovies();
         return bookmarkedMovies;
     }
 
-    public LiveData<MovieWithBookmark> observeMovie(long movieId) {
+    public LiveData<Movie> observeMovie(long movieId) {
         getMovie(movieId);
         return movie;
     }

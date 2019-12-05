@@ -1,20 +1,20 @@
 package com.akat.filmreel.data;
 
-import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.data.model.MovieEntity;
 import com.akat.filmreel.data.network.NetworkDataSource;
 
 import java.util.List;
 
 public class FakeNetworkDataSource implements NetworkDataSource {
 
-    private List<Movie> movieList;
+    private List<MovieEntity> movieList;
 
-    public FakeNetworkDataSource(List<Movie> movieList) {
+    public FakeNetworkDataSource(List<MovieEntity> movieList) {
         this.movieList = movieList;
     }
 
     @Override
-    public List<Movie> getTopRatedMovies(int pageNumber) {
+    public List<MovieEntity> getTopRatedMovies(int pageNumber) {
         return movieList;
     }
 }

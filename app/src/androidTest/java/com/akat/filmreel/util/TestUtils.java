@@ -11,7 +11,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers;
 import androidx.test.espresso.matcher.BoundedMatcher;
 
 import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.MovieEntity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -25,8 +25,8 @@ import static androidx.core.util.Preconditions.checkNotNull;
 
 public class TestUtils {
 
-    public static final List<Movie> testMovies;
-    public static final Movie testMovie;
+    public static final List<MovieEntity> testMovies;
+    public static final MovieEntity testMovie;
 
     static {
         testMovies = Arrays.asList(
@@ -38,8 +38,8 @@ public class TestUtils {
         testMovie = testMovies.get(0);
     }
 
-    public static Movie createMovie(long id, String title, double voteAverage, int voteCount) {
-        Movie movie = new Movie();
+    public static MovieEntity createMovie(long id, String title, double voteAverage, int voteCount) {
+        MovieEntity movie = new MovieEntity();
         movie.setId(id);
         movie.setTitle(title);
         movie.setVoteAverage(voteAverage);
@@ -48,8 +48,8 @@ public class TestUtils {
         return movie;
     }
 
-    public static MovieWithBookmark createMovieWithBookmark(long id, String title, double voteAverage, int voteCount, boolean bookmark) {
-        MovieWithBookmark movie = new MovieWithBookmark();
+    public static Movie createMovieWithBookmark(long id, String title, double voteAverage, int voteCount, boolean bookmark) {
+        Movie movie = new Movie();
         movie.setId(id);
         movie.setTitle(title);
         movie.setVoteAverage(voteAverage);
@@ -59,8 +59,8 @@ public class TestUtils {
         return movie;
     }
 
-    public static MovieWithBookmark toMovieWithBookmark(Movie movie) {
-        MovieWithBookmark movieWithBookmark = new MovieWithBookmark();
+    public static Movie toMovieWithBookmark(MovieEntity movie) {
+        Movie movieWithBookmark = new Movie();
         movieWithBookmark.setId(movie.getId());
         movieWithBookmark.setTitle(movie.getTitle());
         movieWithBookmark.setVoteAverage(movie.getVoteAverage());

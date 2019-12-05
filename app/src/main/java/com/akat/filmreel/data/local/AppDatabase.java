@@ -8,11 +8,11 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.akat.filmreel.data.model.Bookmark;
-import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.data.model.MovieEntity;
 import com.akat.filmreel.data.model.TopRatedEntity;
 
 @Database(version = 1, entities = {
-        Movie.class,
+        MovieEntity.class,
         Bookmark.class,
         TopRatedEntity.class
 })

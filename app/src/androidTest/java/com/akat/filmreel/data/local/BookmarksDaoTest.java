@@ -8,9 +8,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.MovieEntity;
 
-import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,9 +29,9 @@ public class BookmarksDaoTest {
     private AppDatabase database;
     private BookmarksDao bookmarksDao;
     private TopRatedDao topRatedDao;
-    private Movie movieA = createMovie(238, "The Godfather", 8.6, 10889);
-    private Movie movieB = createMovie(278, "The Shawshank Redemption", 8.6, 14231);
-    private Movie movieC = createMovie(680, "Pulp Fiction", 8.5, 16614);
+    private MovieEntity movieA = createMovie(238, "The Godfather", 8.6, 10889);
+    private MovieEntity movieB = createMovie(278, "The Shawshank Redemption", 8.6, 14231);
+    private MovieEntity movieC = createMovie(680, "Pulp Fiction", 8.5, 16614);
     private Bookmark bookmark = new Bookmark(movieB.getId());
 
     @Rule
@@ -61,7 +60,7 @@ public class BookmarksDaoTest {
         bookmarksDao.insert(bookmark);
 
         // Ensure that movie has been bookmarked
-        MovieWithBookmark movie = getValue(topRatedDao.getById(movieId));
+        Movie movie = getValue(topRatedDao.getById(movieId));
         assertTrue(movie.isBookmarked());
 
         // Remove bookmark
@@ -76,7 +75,7 @@ public class BookmarksDaoTest {
     public void getBookmarkedMovies() throws InterruptedException {
         bookmarksDao.insert(bookmark);
 
-        List<MovieWithBookmark> movieList = getValue(topRatedDao.getBookmarkedMovies());
+        List<Movie> movieList = getValue(topRatedDao.getBookmarkedMovies());
 
         assertThat(movieList.size(), equalTo(1));
         assertThat(movieList.get(0).getId(), equalTo(bookmark.getMovieId()));
@@ -88,7 +87,7 @@ public class BookmarksDaoTest {
         topRatedDao.deleteNotMarked();
 
         // Get all movies
-        List<MovieWithBookmark> movieList = getValue(topRatedDao.getTopRated());
+        List<Movie> movieList = getValue(topRatedDao.getTopRated());
 
         assertThat(movieList.size(), equalTo(1));
         assertThat(movieList.get(0).getId(), equalTo(bookmark.getMovieId()));

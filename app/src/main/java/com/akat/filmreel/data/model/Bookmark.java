@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 import java.util.Date;
 
 @Entity(tableName = "bookmarks",
-        foreignKeys = @ForeignKey(entity = Movie.class,
+        foreignKeys = @ForeignKey(entity = MovieEntity.class,
                 parentColumns = "id",
                 childColumns = "movie_id"))
 public class Bookmark {

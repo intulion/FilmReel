@@ -10,7 +10,7 @@ import com.akat.filmreel.data.local.AppDatabase;
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.local.LocalDataSource;
 import com.akat.filmreel.data.local.MovieLocalDataSource;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.network.ApiManager;
 import com.akat.filmreel.data.network.MovieNetworkDataSource;
 import com.akat.filmreel.data.network.NetworkDataSource;
@@ -142,7 +142,7 @@ public class MovieInteractorTest {
 
     @Test
     public void getMovies_fromNetwork() throws InterruptedException {
-        List<MovieWithBookmark> movies = getValue(interactor.observeMovies());
+        List<Movie> movies = getValue(interactor.observeMovies());
 
         assertNotNull(movies);
         assertThat(movies.size(), equalTo(2));

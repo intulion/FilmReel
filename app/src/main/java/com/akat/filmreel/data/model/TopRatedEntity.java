@@ -6,7 +6,7 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "top_rated",
-        foreignKeys = @ForeignKey(entity = Movie.class,
+        foreignKeys = @ForeignKey(entity = MovieEntity.class,
                 parentColumns = "id",
                 childColumns = "movie_id"))
 public class TopRatedEntity {

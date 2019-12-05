@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.util.Constants;
 import com.bumptech.glide.Glide;
 
@@ -26,7 +26,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private final Context context;
     private final OnItemClickHandler clickHandler;
     private OnBottomReachedListener onBottomReachedListener;
-    private List<MovieWithBookmark> movies;
+    private List<Movie> movies;
     private int lastPosition = -1;
 
     public MovieListAdapter(@NonNull Context context, OnItemClickHandler clickHandler) {
@@ -49,7 +49,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     @Override
     public void onBindViewHolder(@NonNull MovieListAdapterViewHolder holder, int position) {
-        MovieWithBookmark movie = movies.get(position);
+        Movie movie = movies.get(position);
 
         holder.title.setText(movie.getTitle());
         holder.originalTitle.setText(movie.getOriginalTitle());
@@ -80,7 +80,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         setAnimation(holder.itemView, position);
     }
 
-    public void swapItems(final List<MovieWithBookmark> newMovies) {
+    public void swapItems(final List<Movie> newMovies) {
 
         if (movies == null) {
             movies = newMovies;
@@ -105,8 +105,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    MovieWithBookmark newMovie = newMovies.get(newItemPosition);
-                    MovieWithBookmark oldMovie = movies.get(oldItemPosition);
+                    Movie newMovie = newMovies.get(newItemPosition);
+                    Movie oldMovie = movies.get(oldItemPosition);
                     return newMovie.getId() == oldMovie.getId()
                             && newMovie.getTitle().equals(oldMovie.getTitle());
                 }
@@ -168,7 +168,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
-            MovieWithBookmark selectedMovie = movies.get(adapterPosition);
+            Movie selectedMovie = movies.get(adapterPosition);
 
             clickHandler.onItemClick(view, selectedMovie.getId());
         }
@@ -176,7 +176,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         @Override
         public boolean onLongClick(View view) {
             int adapterPosition = getAdapterPosition();
-            MovieWithBookmark selectedMovie = movies.get(adapterPosition);
+            Movie selectedMovie = movies.get(adapterPosition);
             boolean isBookmarked = selectedMovie.isBookmarked();
 
             setLongTapAnimation(cardView);

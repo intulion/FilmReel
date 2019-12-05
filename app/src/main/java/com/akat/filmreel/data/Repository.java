@@ -1,6 +1,6 @@
 package com.akat.filmreel.data;
 
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.Movie;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 interface Repository {
-    Flowable<List<MovieWithBookmark>> getTopRatedMovies();
+    Flowable<List<Movie>> getTopRatedMovies();
 
-    Flowable<List<MovieWithBookmark>> getNowPlayingMovies();
+    Flowable<List<Movie>> getNowPlayingMovies();
 
-    Flowable<List<MovieWithBookmark>> getBookmarkedMovies();
+    Flowable<List<Movie>> getBookmarkedMovies();
 
-    Single<MovieWithBookmark> getMovie(long movieId);
+    Single<Movie> getMovie(long movieId);
 
     Completable setBookmark(long movieId, boolean oldState);
 }

@@ -4,21 +4,21 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.akat.filmreel.data.MovieInteractor;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.Movie;
 
 import java.util.List;
 
 public class BookmarksViewModel extends ViewModel {
 
     private final MovieInteractor interactor;
-    private LiveData<List<MovieWithBookmark>> movies;
+    private LiveData<List<Movie>> movies;
 
     public BookmarksViewModel(MovieInteractor interactor) {
         this.interactor = interactor;
         this.movies = this.interactor.observeBookmarkedMovies();
     }
 
-    public LiveData<List<MovieWithBookmark>> getBookmarkedMovies() {
+    public LiveData<List<Movie>> getBookmarkedMovies() {
         return movies;
     }
 

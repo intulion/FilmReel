@@ -2,7 +2,7 @@ package com.akat.filmreel.data.local;
 
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.MovieEntity;
 
 import java.util.List;
 
@@ -33,27 +33,27 @@ public class MovieLocalDataSource implements LocalDataSource {
     }
 
     @Override
-    public Flowable<List<MovieWithBookmark>> getMovies() {
+    public Flowable<List<Movie>> getMovies() {
         return topRatedDao.getTopRated();
     }
 
     @Override
-    public Flowable<List<MovieWithBookmark>> getNowPlayingMovies() {
+    public Flowable<List<Movie>> getNowPlayingMovies() {
         return topRatedDao.getNowPlaying();
     }
 
     @Override
-    public Flowable<List<MovieWithBookmark>> getBookmarkedMovies() {
+    public Flowable<List<Movie>> getBookmarkedMovies() {
         return topRatedDao.getBookmarkedMovies();
     }
 
     @Override
-    public Single<MovieWithBookmark> getMovie(long movieId) {
+    public Single<Movie> getMovie(long movieId) {
         return topRatedDao.getById(movieId);
     }
 
     @Override
-    public void addMovies(List<Movie> movies, int page) {
+    public void addMovies(List<MovieEntity> movies, int page) {
         topRatedDao.addTopRatedMovies(movies, page);
     }
 

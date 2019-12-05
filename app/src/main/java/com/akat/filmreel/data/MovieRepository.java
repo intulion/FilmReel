@@ -4,7 +4,7 @@ import com.akat.filmreel.data.local.LocalDataSource;
 import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.MovieEntity;
 import com.akat.filmreel.data.network.NetworkDataSource;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class MovieRepository implements Repository {
         return networkDataSource.getNowPlayingMovies(pageNumber, locale);
     }
 
-    public void addMovies(List<Movie> movieList, int pageNumber) {
+    public void addMovies(List<MovieEntity> movieList, int pageNumber) {
         localDataSource.addMovies(movieList, pageNumber);
     }
 
@@ -49,22 +49,22 @@ public class MovieRepository implements Repository {
         localDataSource.deleteTopRatedMovies();
     }
 
-    public Flowable<List<MovieWithBookmark>> getNowPlayingMovies() {
+    public Flowable<List<Movie>> getNowPlayingMovies() {
         return localDataSource.getNowPlayingMovies();
     }
 
     @Override
-    public Flowable<List<MovieWithBookmark>> getTopRatedMovies() {
+    public Flowable<List<Movie>> getTopRatedMovies() {
         return localDataSource.getMovies();
     }
 
     @Override
-    public Flowable<List<MovieWithBookmark>> getBookmarkedMovies() {
+    public Flowable<List<Movie>> getBookmarkedMovies() {
         return localDataSource.getBookmarkedMovies();
     }
 
     @Override
-    public Single<MovieWithBookmark> getMovie(long movieId) {
+    public Single<Movie> getMovie(long movieId) {
         return localDataSource.getMovie(movieId);
     }
 
