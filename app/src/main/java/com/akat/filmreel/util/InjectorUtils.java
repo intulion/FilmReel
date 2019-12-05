@@ -2,8 +2,11 @@ package com.akat.filmreel.util;
 
 import android.content.Context;
 
-import com.akat.filmreel.data.MovieInteractor;
-import com.akat.filmreel.data.MovieRepository;
+import com.akat.filmreel.data.domain.MovieRepository;
+import com.akat.filmreel.data.domain.AddBookmarkUseCase;
+import com.akat.filmreel.data.domain.GetBookmarksUseCase;
+import com.akat.filmreel.data.domain.GetMovieDetailsUseCase;
+import com.akat.filmreel.data.domain.GetMoviesUseCase;
 import com.akat.filmreel.data.local.AppDatabase;
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.local.LocalDataSource;
@@ -24,46 +27,49 @@ public class InjectorUtils {
     public static MovieRepository provideRepository(Context context) {
         LocalDataSource localDataSource = provideLocalDataSource(context);
         NetworkDataSource networkDataSource = provideNetworkDataSource();
+        AppPreferences preferences = AppPreferences.getInstance(context.getApplicationContext());
         return MovieRepository.getInstance(
                 localDataSource,
-                networkDataSource
+                networkDataSource,
+                preferences
         );
     }
 
-    private static MovieInteractor provideInteractor(Context context) {
-        MovieRepository repository = provideRepository(context);
-        AppPreferences preferences = providePreferences(context);
-
-        return MovieInteractor.getInstance(repository, preferences);
-    }
-
-    public static AppPreferences providePreferences(Context context) {
-        return AppPreferences.getInstance(context.getApplicationContext());
-    }
-
-    public static MovieNetworkDataSource provideNetworkDataSource() {
+    private static MovieNetworkDataSource provideNetworkDataSource() {
         ApiManager manager = ApiManager.getInstance();
         return MovieNetworkDataSource.getInstance(manager);
     }
 
-    public static MovieLocalDataSource provideLocalDataSource(Context context) {
+    private static MovieLocalDataSource provideLocalDataSource(Context context) {
         AppDatabase database = AppDatabase.getInstance(context.getApplicationContext());
         return MovieLocalDataSource.getInstance(database.topRatedDao(), database.bookmarksDao());
     }
 
     public static MovieListViewModelFactory provideMovieListViewModelFactory(Context context) {
-        MovieInteractor interactor = provideInteractor(context);
-        return new MovieListViewModelFactory(interactor);
+        MovieRepository repository = provideRepository(context);
+
+        return new MovieListViewModelFactory(
+                new GetMoviesUseCase(repository),
+                new AddBookmarkUseCase(repository)
+        );
     }
 
     public static MovieDetailViewModelFactory provideMovieDetailViewModelFactory(Context context, long movieId) {
-        MovieInteractor interactor = provideInteractor(context);
-        return new MovieDetailViewModelFactory(interactor, movieId);
+        MovieRepository repository = provideRepository(context);
+
+        return new MovieDetailViewModelFactory(movieId,
+                new GetMovieDetailsUseCase(repository),
+                new AddBookmarkUseCase(repository)
+        );
     }
 
     public static BookmarksViewModelFactory provideBookmarksViewModelFactory(Context context) {
-        MovieInteractor interactor = provideInteractor(context);
-        return new BookmarksViewModelFactory(interactor);
+        MovieRepository repository = provideRepository(context);
+
+        return new BookmarksViewModelFactory(
+                new GetBookmarksUseCase(repository),
+                new AddBookmarkUseCase(repository)
+        );
     }
 
     private static PlacesRepository providePlacesRepository() {

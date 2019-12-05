@@ -11,8 +11,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.MovieRepository;
-import com.akat.filmreel.data.local.AppPreferences;
+import com.akat.filmreel.data.domain.MovieRepository;
 import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.ui.MainActivity;
 import com.akat.filmreel.util.InjectorUtils;
@@ -33,12 +32,11 @@ public class MovieSyncWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        AppPreferences preferences = InjectorUtils.providePreferences(context);
         MovieRepository repository = InjectorUtils.provideRepository(context);
 
         // Make request - update first page only
         int pageNumber = 1;
-        repository.fetchNowPlayingMovies(pageNumber, preferences.getLocale())
+        repository.fetchNowPlayingMovies(false)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new SingleObserver<ApiResponse>() {
                     @Override
@@ -48,8 +46,7 @@ public class MovieSyncWorker extends Worker {
 
                     @Override
                     public void onSuccess(ApiResponse apiResponse) {
-                        preferences.setPageData(apiResponse.getPage(), apiResponse.getTotalPages());
-                        repository.addMovies(apiResponse.getResults(), pageNumber);
+                        repository.saveMovies(apiResponse);
 
                         sendNotification(context.getString(R.string.sync_title),
                                 context.getString(R.string.sync_desc));

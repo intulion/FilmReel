@@ -1,5 +1,6 @@
-package com.akat.filmreel.data;
+package com.akat.filmreel.data.domain;
 
+import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Movie;
 
 import java.util.List;
@@ -17,5 +18,15 @@ interface Repository {
 
     Single<Movie> getMovie(long movieId);
 
-    Completable setBookmark(long movieId, boolean oldState);
+    void deleteTopRatedMovies();
+
+    int getLastPage();
+
+    Completable setBookmark(long movieId);
+
+    Completable removeBookmark(long movieId);
+
+    void saveMovies(ApiResponse response);
+
+    Single<ApiResponse> fetchNowPlayingMovies(boolean forceUpdate);
 }

@@ -1,28 +1,56 @@
 package com.akat.filmreel.ui.bookmarks;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.akat.filmreel.data.MovieInteractor;
+import com.akat.filmreel.data.domain.AddBookmarkUseCase;
+import com.akat.filmreel.data.domain.GetBookmarksUseCase;
 import com.akat.filmreel.data.model.Movie;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class BookmarksViewModel extends ViewModel {
 
-    private final MovieInteractor interactor;
-    private LiveData<List<Movie>> movies;
+    private final GetBookmarksUseCase getBookmarksUseCase;
+    private final AddBookmarkUseCase addBookmarkUseCase;
+    private final CompositeDisposable disposable = new CompositeDisposable();
+    private MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
 
-    public BookmarksViewModel(MovieInteractor interactor) {
-        this.interactor = interactor;
-        this.movies = this.interactor.observeBookmarkedMovies();
+    BookmarksViewModel(GetBookmarksUseCase getBookmarksUseCase,
+                       AddBookmarkUseCase addBookmarkUseCase) {
+        this.getBookmarksUseCase = getBookmarksUseCase;
+        this.addBookmarkUseCase = addBookmarkUseCase;
+
+        observeBookmarked();
     }
 
-    public LiveData<List<Movie>> getBookmarkedMovies() {
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        disposable.clear();
+    }
+
+    LiveData<List<Movie>> getBookmarkedMovies() {
         return movies;
     }
 
     public void setBookmark(long movieId, boolean isBookmarked) {
-        interactor.setBookmark(movieId, isBookmarked);
+        disposable.add(addBookmarkUseCase.setBookmark(movieId, isBookmarked)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        );
+    }
+
+    private void observeBookmarked() {
+        disposable.add(getBookmarksUseCase.observeBookmarked()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(movies::setValue)
+        );
     }
 }

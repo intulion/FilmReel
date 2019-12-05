@@ -34,7 +34,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         this.clickHandler = clickHandler;
     }
 
-    public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener){
+    public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener) {
         this.onBottomReachedListener = onBottomReachedListener;
     }
 
@@ -73,8 +73,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                     .into(holder.poster);
         }
 
-        if (onBottomReachedListener != null && position == getItemCount() - 3) {
-            onBottomReachedListener.onBottomReached(position);
+        if (onBottomReachedListener != null && position == getItemCount() - 5) {
+            onBottomReachedListener.onBottomReached();
         }
 
         setAnimation(holder.itemView, position);
@@ -124,11 +124,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     public interface OnItemClickHandler {
         void onItemClick(View view, long movieId);
+
         void onItemLongClick(View view, int position, long movieId, boolean isBookmarked);
     }
 
     public interface OnBottomReachedListener {
-        void onBottomReached(int position);
+        void onBottomReached();
     }
 
     class MovieListAdapterViewHolder extends RecyclerView.ViewHolder

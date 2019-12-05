@@ -1,11 +1,9 @@
 package com.akat.filmreel.ui.movieList;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -90,9 +88,8 @@ public class MovieListFragment extends Fragment
     }
 
     @Override
-    public void onBottomReached(int position) {
-        int currentPage = 1 + position / Constants.HTTP.PAGE_SIZE;
-        viewModel.loadNewData(currentPage);
+    public void onBottomReached() {
+        viewModel.loadNewData();
     }
 
     private void showDataView() {

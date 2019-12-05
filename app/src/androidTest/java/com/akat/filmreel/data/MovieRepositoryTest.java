@@ -2,6 +2,7 @@ package com.akat.filmreel.data;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
+import com.akat.filmreel.data.domain.MovieRepository;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.model.MovieEntity;
 import com.akat.filmreel.util.AppExecutors;
