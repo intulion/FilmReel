@@ -1,14 +1,15 @@
 package com.akat.filmreel.places;
 
+import android.util.Base64;
+
 import com.akat.filmreel.BuildConfig;
 import com.akat.filmreel.util.Constants;
-
-import android.util.Base64;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PlacesApiManager {
@@ -49,6 +50,7 @@ public class PlacesApiManager {
                         .baseUrl(Constants.HTTP.PLACES_URL)
                         .client(httpClient)
                         .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                         .build();
 
                 sInstance = new PlacesApiManager(retrofit.create(PlacesApiService.class));

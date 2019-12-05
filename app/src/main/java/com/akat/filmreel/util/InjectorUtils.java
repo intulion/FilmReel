@@ -2,11 +2,11 @@ package com.akat.filmreel.util;
 
 import android.content.Context;
 
-import com.akat.filmreel.data.domain.MovieRepository;
 import com.akat.filmreel.data.domain.AddBookmarkUseCase;
 import com.akat.filmreel.data.domain.GetBookmarksUseCase;
 import com.akat.filmreel.data.domain.GetMovieDetailsUseCase;
 import com.akat.filmreel.data.domain.GetMoviesUseCase;
+import com.akat.filmreel.data.domain.MovieRepository;
 import com.akat.filmreel.data.local.AppDatabase;
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.local.LocalDataSource;
@@ -73,14 +73,9 @@ public class InjectorUtils {
     }
 
     private static PlacesRepository providePlacesRepository() {
-        AppExecutors executors = AppExecutors.getInstance();
         PlacesApiManager manager = PlacesApiManager.getInstance();
-        PlacesDataSource networkDataSource =
-                PlacesDataSource.getInstance(executors, manager);
-        return PlacesRepository.getInstance(
-                networkDataSource,
-                executors
-        );
+        PlacesDataSource networkDataSource = PlacesDataSource.getInstance(manager);
+        return PlacesRepository.getInstance(networkDataSource);
     }
 
     public static CinemaListViewModelFactory provideCinemaListViewModelFactory(double lat, double lng) {

@@ -11,6 +11,9 @@ public class Constants {
         public static final int PAGE_SIZE = 20;
 
         public static final String PLACES_URL = "https://maps.googleapis.com/";
+        public static final String PLACES_STATUS_OK = "OK";
+        public static final String PLACES_STATUS_OVER = "OVER_QUERY_LIMIT";
+
     }
 
     public static final class PARAM {
@@ -24,6 +27,4 @@ public class Constants {
         public static final String CURRENT_LAT = PACKAGE + "currentLat";
         public static final String CURRENT_LNG = PACKAGE + "currentLng";
     }
-
-
 }
