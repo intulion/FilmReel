@@ -34,9 +34,8 @@ public class MovieSyncWorker extends Worker {
     public Result doWork() {
         MovieRepository repository = InjectorUtils.provideRepository(context);
 
-        // Make request - update first page only
-        int pageNumber = 1;
-        repository.fetchNowPlayingMovies(false)
+        // Make request - force update now playing movies
+        repository.fetchNowPlayingMovies(true)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new SingleObserver<ApiResponse>() {
                     @Override

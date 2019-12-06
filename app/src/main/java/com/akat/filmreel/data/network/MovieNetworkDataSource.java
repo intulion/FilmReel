@@ -32,4 +32,9 @@ public class MovieNetworkDataSource implements NetworkDataSource {
     public Single<ApiResponse> getNowPlayingMovies(int pageNumber, String locale) {
         return manager.getApiService().getNowPlayingMovies(pageNumber, locale);
     }
+
+    @Override
+    public Single<ApiResponse> searchMovies(String query, int pageNumber, String locale) {
+        return manager.getApiService().searchMovies(query, pageNumber, locale);
+    }
 }

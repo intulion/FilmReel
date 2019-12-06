@@ -8,4 +8,6 @@ public interface NetworkDataSource {
     Single<ApiResponse> getTopRatedMovies(int pageNumber, String locale);
 
     Single<ApiResponse> getNowPlayingMovies(int pageNumber, String locale);
+
+    Single<ApiResponse> searchMovies(String query, int pageNumber, String locale);
 }

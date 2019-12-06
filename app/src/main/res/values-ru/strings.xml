@@ -33,4 +33,5 @@
     <string name="sync_title">Синхронизация</string>
     <string name="top_rated_movies">Лучшие фильмы</string>
     <string name="version">Версия</string>
+    <string name="search">Поиск</string>
 </resources>

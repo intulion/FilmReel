@@ -49,6 +49,11 @@ public class MovieRepository implements Repository {
     }
 
     @Override
+    public Single<ApiResponse> searchMovies(String query, int pageNumber) {
+        return networkDataSource.searchMovies(query, pageNumber, preferences.getLocale());
+    }
+
+    @Override
     public Flowable<List<Movie>> getTopRatedMovies() {
         return localDataSource.getMovies();
     }
@@ -68,10 +73,12 @@ public class MovieRepository implements Repository {
         return localDataSource.getMovie(movieId);
     }
 
+    @Override
     public Completable setBookmark(long movieId) {
         return localDataSource.setBookmark(new Bookmark(movieId));
     }
 
+    @Override
     public Completable removeBookmark(long movieId) {
         return localDataSource.removeBookmark(movieId);
     }

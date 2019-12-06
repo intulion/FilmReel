@@ -7,6 +7,11 @@
         android:title="@string/menu_top_rated" />
 
     <item
+        android:id="@id/fragment_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search" />
+
+    <item
         android:id="@id/fragment_bookmarks"
         android:icon="@drawable/ic_bookmark_black"
         android:title="@string/bookmarks" />

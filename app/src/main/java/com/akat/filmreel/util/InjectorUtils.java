@@ -7,6 +7,7 @@ import com.akat.filmreel.data.domain.GetBookmarksUseCase;
 import com.akat.filmreel.data.domain.GetMovieDetailsUseCase;
 import com.akat.filmreel.data.domain.GetMoviesUseCase;
 import com.akat.filmreel.data.domain.MovieRepository;
+import com.akat.filmreel.data.domain.SearchMoviesUseCase;
 import com.akat.filmreel.data.local.AppDatabase;
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.local.LocalDataSource;
@@ -21,6 +22,7 @@ import com.akat.filmreel.ui.bookmarks.BookmarksViewModelFactory;
 import com.akat.filmreel.ui.cinemas.CinemaListViewModelFactory;
 import com.akat.filmreel.ui.movieDetail.MovieDetailViewModelFactory;
 import com.akat.filmreel.ui.movieList.MovieListViewModelFactory;
+import com.akat.filmreel.ui.search.SearchViewModelFactory;
 
 public class InjectorUtils {
 
@@ -70,6 +72,12 @@ public class InjectorUtils {
                 new GetBookmarksUseCase(repository),
                 new AddBookmarkUseCase(repository)
         );
+    }
+
+    public static SearchViewModelFactory provideSearchViewModelFactory(Context context) {
+        MovieRepository repository = provideRepository(context);
+
+        return new SearchViewModelFactory(new SearchMoviesUseCase(repository));
     }
 
     private static PlacesRepository providePlacesRepository() {

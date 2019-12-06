@@ -29,4 +29,6 @@ interface Repository {
     void saveMovies(ApiResponse response);
 
     Single<ApiResponse> fetchNowPlayingMovies(boolean forceUpdate);
+
+    Single<ApiResponse> searchMovies(String query, int pageNumber);
 }
