@@ -74,6 +74,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui:$rootProject.navigationVersion"
 
     implementation "androidx.work:work-runtime:$rootProject.workVersion"
+    implementation "androidx.work:work-rxjava2:$rootProject.workVersion"
 
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"

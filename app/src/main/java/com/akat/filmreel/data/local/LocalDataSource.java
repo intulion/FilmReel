@@ -26,4 +26,6 @@ public interface LocalDataSource {
     Completable setBookmark(Bookmark bookmark);
 
     Completable removeBookmark(long movieId);
+
+    Completable addMovie(MovieEntity movie);
 }

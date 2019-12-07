@@ -16,23 +16,27 @@ import com.akat.filmreel.data.model.MovieEntity;
 import com.akat.filmreel.util.Constants;
 import com.bumptech.glide.Glide;
 
+import java.util.Date;
 import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListAdapterViewHolder> {
 
     private final Context context;
     private final OnItemClickHandler clickHandler;
+    private final OnBottomReachedListener bottomReachedListener;
     private List<MovieEntity> movies;
 
-    public SearchAdapter(@NonNull Context context, OnItemClickHandler clickHandler) {
+    SearchAdapter(@NonNull Context context, OnItemClickHandler clickHandler,
+                         OnBottomReachedListener bottomReachedListener) {
         this.context = context;
         this.clickHandler = clickHandler;
+        this.bottomReachedListener = bottomReachedListener;
     }
 
     @NonNull
     @Override
     public MovieListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        int layoutId = R.layout.item_movie_list;
+        int layoutId = R.layout.item_search_list;
         View view = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
         view.setFocusable(true);
         return new MovieListAdapterViewHolder(view);
@@ -44,22 +48,29 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListA
 
         holder.title.setText(movie.getTitle());
         holder.originalTitle.setText(movie.getOriginalTitle());
-        holder.overview.setText(movie.getOverview());
         holder.rating.setText(
                 String.format(holder.ratingFormat,
                         movie.getVoteAverage(),
                         movie.getVoteCount()
                 )
         );
-        holder.releaseDate.setText(
-                String.format(holder.dateFormat, movie.getReleaseDate())
-        );
+
+        Date releaseDate = movie.getReleaseDate();
+        if (releaseDate != null) {
+            holder.releaseDate.setText(
+                    String.format(holder.dateFormat, releaseDate)
+            );
+        }
 
         String posterPath = movie.getPosterPath();
         if (posterPath != null) {
             Glide.with(holder.poster.getContext())
-                    .load(Constants.HTTP.POSTER_URL + posterPath)
+                    .load(Constants.HTTP.SMALL_POSTER_URL + posterPath)
                     .into(holder.poster);
+        }
+
+        if (position == getItemCount() - 3) {
+            bottomReachedListener.onBottomReached(position);
         }
     }
 
@@ -75,7 +86,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListA
     }
 
     public interface OnItemClickHandler {
-        void onItemClick(View view, long movieId);
+        void onItemClick(View view, MovieEntity movie);
+    }
+
+    public interface OnBottomReachedListener {
+        void onBottomReached(int position);
     }
 
     class MovieListAdapterViewHolder extends RecyclerView.ViewHolder
@@ -85,7 +100,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListA
         final ImageView poster;
         final TextView title;
         final TextView originalTitle;
-        final TextView overview;
         final TextView rating;
         final TextView releaseDate;
 
@@ -99,7 +113,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListA
             poster = itemView.findViewById(R.id.movie_list_img);
             title = itemView.findViewById(R.id.movie_list_title);
             originalTitle = itemView.findViewById(R.id.movie_list_orig_title);
-            overview = itemView.findViewById(R.id.movie_list_overview);
             rating = itemView.findViewById(R.id.movie_list_rating);
             releaseDate = itemView.findViewById(R.id.movie_list_release_date);
 
@@ -111,10 +124,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListA
 
         @Override
         public void onClick(View view) {
-            int adapterPosition = getAdapterPosition();
-            MovieEntity selectedMovie = movies.get(adapterPosition);
-
-            clickHandler.onItemClick(view, selectedMovie.getId());
+            int position = getAdapterPosition();
+            clickHandler.onItemClick(view, movies.get(position));
         }
     }
 }

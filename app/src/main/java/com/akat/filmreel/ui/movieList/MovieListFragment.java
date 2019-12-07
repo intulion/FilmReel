@@ -2,6 +2,9 @@ package com.akat.filmreel.ui.movieList;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -33,6 +36,8 @@ public class MovieListFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
+
+        setHasOptionsMenu(true);
 
         loadingIndicator = view.findViewById(R.id.pb_loading_indicator);
         recyclerView = view.findViewById(R.id.recycler_view_movie_list);
@@ -71,6 +76,20 @@ public class MovieListFragment extends Fragment
             if (entries != null && entries.size() != 0) showDataView();
             else showLoading();
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_search_action) {
+            Navigation.findNavController(recyclerView).navigate(R.id.fragment_search);
+            return false;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

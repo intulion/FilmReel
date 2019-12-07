@@ -34,4 +34,7 @@
     <string name="top_rated_movies">Лучшие фильмы</string>
     <string name="version">Версия</string>
     <string name="search">Поиск</string>
+    <string name="search_movies">Поиск фильмов</string>
+    <string name="search_no_result">Ничего не найдено</string>
+    <string name="error_occurred">Произошла ошибка</string>
 </resources>

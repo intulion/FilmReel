@@ -44,7 +44,7 @@ public class MovieLocalDataSource implements LocalDataSource {
 
     @Override
     public Flowable<List<Movie>> getBookmarkedMovies() {
-        return topRatedDao.getBookmarkedMovies();
+        return bookmarksDao.getBookmarkedMovies();
     }
 
     @Override
@@ -70,5 +70,10 @@ public class MovieLocalDataSource implements LocalDataSource {
     @Override
     public Completable removeBookmark(long movieId) {
         return bookmarksDao.deleteByMovieId(movieId);
+    }
+
+    @Override
+    public Completable addMovie(MovieEntity movie) {
+        return topRatedDao.insertMovie(movie);
     }
 }

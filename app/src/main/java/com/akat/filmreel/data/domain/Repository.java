@@ -2,6 +2,7 @@ package com.akat.filmreel.data.domain;
 
 import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.data.model.MovieEntity;
 
 import java.util.List;
 
@@ -28,7 +29,11 @@ interface Repository {
 
     void saveMovies(ApiResponse response);
 
+    Completable saveMovie(MovieEntity movie);
+
     Single<ApiResponse> fetchNowPlayingMovies(boolean forceUpdate);
+
+    Single<ApiResponse> fetchTopRatedMovies(boolean forceUpdate);
 
     Single<ApiResponse> searchMovies(String query, int pageNumber);
 }

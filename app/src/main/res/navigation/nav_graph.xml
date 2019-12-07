@@ -48,7 +48,7 @@
     <fragment
         android:id="@+id/fragment_search"
         android:name="com.akat.filmreel.ui.search.SearchFragment"
-        android:label="SearchFragment" >
+        android:label="@string/search_movies">
         <action
             android:id="@+id/action_fragment_search_to_fragment_movie_detail"
             app:destination="@id/fragment_movie_detail" />

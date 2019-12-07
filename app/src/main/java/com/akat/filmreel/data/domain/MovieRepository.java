@@ -49,6 +49,12 @@ public class MovieRepository implements Repository {
     }
 
     @Override
+    public Single<ApiResponse> fetchTopRatedMovies(boolean forceUpdate) {
+        int page = forceUpdate ? 1 : preferences.getLastPage() + 1;
+        return networkDataSource.getTopRatedMovies(page, preferences.getLocale());
+    }
+
+    @Override
     public Single<ApiResponse> searchMovies(String query, int pageNumber) {
         return networkDataSource.searchMovies(query, pageNumber, preferences.getLocale());
     }
@@ -101,5 +107,10 @@ public class MovieRepository implements Repository {
 
         preferences.setPageData(page, total);
         localDataSource.addMovies(movieList, page);
+    }
+
+    @Override
+    public Completable saveMovie(MovieEntity movie) {
+        return localDataSource.addMovie(movie);
     }
 }

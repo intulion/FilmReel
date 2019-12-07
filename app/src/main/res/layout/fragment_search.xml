@@ -13,4 +13,9 @@
         android:scrollbars="none"
         tools:listitem="@layout/item_movie_list" />
 
+    <include
+        android:id="@+id/search_no_item"
+        android:visibility="gone"
+        layout="@layout/no_item_search"/>
+
 </FrameLayout>

@@ -13,6 +13,7 @@ import com.akat.filmreel.data.model.TopRatedEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
@@ -38,14 +39,6 @@ abstract class TopRatedDao {
     @Transaction
     @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
             "FROM movies " +
-            "INNER JOIN top_rated ON movies.id = top_rated.movie_id " +
-            "INNER JOIN bookmarks ON movies.id = bookmarks.movie_id " +
-            "ORDER BY bookmarkDate DESC")
-    abstract Flowable<List<Movie>> getBookmarkedMovies();
-
-    @Transaction
-    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
-            "FROM movies " +
             "LEFT JOIN bookmarks ON movies.id = bookmarks.movie_id " +
             "WHERE movies.id = :id")
     abstract Single<Movie> getById(long id);
@@ -59,6 +52,9 @@ abstract class TopRatedDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void insertMovies(List<MovieEntity> list);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract Completable insertMovie(MovieEntity movie);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void insertTopRated(List<TopRatedEntity> list);

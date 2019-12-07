@@ -45,4 +45,8 @@
     <string name="sync_desc">Movies has been synced</string>
 
     <string name="search">Search</string>
+    <string name="search_movies">Search for Movies</string>
+    <string name="search_no_result">No movies found</string>
+
+    <string name="error_occurred">An error has occurred</string>
 </resources>

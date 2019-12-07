@@ -62,14 +62,14 @@ public class MovieListViewModel extends ViewModel {
     }
 
     private void observeNowPlaying() {
-        disposable.add(getMoviesUseCase.observeNowPlaying()
+        disposable.add(getMoviesUseCase.observeTopRated()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movies::setValue)
         );
     }
 
     private void fetchNextPage(boolean forceUpdate) {
-        disposable.add(getMoviesUseCase.fetchNowPlaying(forceUpdate)
+        disposable.add(getMoviesUseCase.fetchTopRated(forceUpdate)
                 .subscribeOn(Schedulers.io())
                 .subscribeWith(new DisposableSingleObserver<ApiResponse>() {
 

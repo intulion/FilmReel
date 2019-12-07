@@ -28,6 +28,10 @@ public class GetMoviesUseCase {
         return repository.fetchNowPlayingMovies(forceUpdate);
     }
 
+    public Single<ApiResponse> fetchTopRated(boolean forceUpdate) {
+        return repository.fetchTopRatedMovies(forceUpdate);
+    }
+
     public void saveMovies(ApiResponse response) {
         repository.saveMovies(response);
     }

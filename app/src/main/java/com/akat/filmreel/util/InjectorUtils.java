@@ -3,6 +3,7 @@ package com.akat.filmreel.util;
 import android.content.Context;
 
 import com.akat.filmreel.data.domain.AddBookmarkUseCase;
+import com.akat.filmreel.data.domain.AddMoviesUseCase;
 import com.akat.filmreel.data.domain.GetBookmarksUseCase;
 import com.akat.filmreel.data.domain.GetMovieDetailsUseCase;
 import com.akat.filmreel.data.domain.GetMoviesUseCase;
@@ -77,7 +78,10 @@ public class InjectorUtils {
     public static SearchViewModelFactory provideSearchViewModelFactory(Context context) {
         MovieRepository repository = provideRepository(context);
 
-        return new SearchViewModelFactory(new SearchMoviesUseCase(repository));
+        return new SearchViewModelFactory(
+                new SearchMoviesUseCase(repository),
+                new AddMoviesUseCase(repository)
+        );
     }
 
     private static PlacesRepository providePlacesRepository() {

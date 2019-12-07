@@ -18,6 +18,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.test.espresso.IdlingResource;
 import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -76,11 +77,13 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         PeriodicWorkRequest periodicRequest =
-                new PeriodicWorkRequest.Builder(MovieSyncWorker.class,
-                        1, TimeUnit.DAYS, 12, TimeUnit.HOURS)
+                new PeriodicWorkRequest.Builder(PeriodicSyncWorker.class,
+                        1, TimeUnit.HOURS, 12, TimeUnit.HOURS)
                         .setConstraints(constraints)
                         .build();
-        workManager.enqueue(periodicRequest);
+        workManager.enqueueUniquePeriodicWork("PeriodicSyncWorker",
+                ExistingPeriodicWorkPolicy.KEEP,
+                periodicRequest);
     }
 
     private void createNotificationChannels() {
