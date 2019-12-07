@@ -4,6 +4,16 @@ import com.akat.filmreel.BuildConfig;
 import com.akat.filmreel.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+
+import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -43,14 +53,10 @@ public class ApiManager {
                         })
                         .build();
 
-                Gson gson = new GsonBuilder()
-                        .setDateFormat(Constants.HTTP.DATE_FORMAT)
-                        .create();
-
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(Constants.HTTP.BASE_URL)
                         .client(httpClient)
-                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .addConverterFactory(GsonConverterFactory.create(getGson()))
                         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                         .build();
 
@@ -60,7 +66,30 @@ public class ApiManager {
         return sInstance;
     }
 
-    public ApiService getApiService() {
+    private static Gson getGson() {
+        JsonDeserializer<Date> deserializer = new JsonDeserializer<Date>() {
+            SimpleDateFormat format = new SimpleDateFormat(Constants.HTTP.DATE_FORMAT, Locale.getDefault());
+
+            @Override
+            public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                if (json == null || json.getAsString().isEmpty()) {
+                    return null;
+                }
+
+                try {
+                    return format.parse(json.getAsString());
+                } catch (ParseException e) {
+                    return null;
+                }
+            }
+        };
+
+        return new GsonBuilder()
+                .registerTypeAdapter(Date.class, deserializer)
+                .create();
+    }
+
+    ApiService getApiService() {
         return apiService;
     }
 }
