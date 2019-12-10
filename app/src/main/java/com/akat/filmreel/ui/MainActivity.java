@@ -24,7 +24,7 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.network.MovieSyncWorker;
+import com.akat.filmreel.data.network.PeriodicSyncWorker;
 import com.akat.filmreel.util.SimpleIdlingResource;
 import com.google.android.material.navigation.NavigationView;
 
