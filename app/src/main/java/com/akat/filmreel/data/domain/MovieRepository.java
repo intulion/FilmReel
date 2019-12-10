@@ -1,7 +1,8 @@
 package com.akat.filmreel.data.domain;
 
-import com.akat.filmreel.data.local.AppPreferences;
+import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.data.local.LocalDataSource;
+import com.akat.filmreel.data.local.Preferences;
 import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
@@ -10,36 +11,26 @@ import com.akat.filmreel.data.network.NetworkDataSource;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
+@Singleton
 public class MovieRepository implements Repository {
 
-    private static final Object LOCK = new Object();
-    private static MovieRepository sInstance;
-    private final NetworkDataSource networkDataSource;
-    private final LocalDataSource localDataSource;
-    private final AppPreferences preferences;
+    @Inject
+    NetworkDataSource networkDataSource;
+    @Inject
+    LocalDataSource localDataSource;
+    @Inject
+    Preferences preferences;
 
-    private MovieRepository(LocalDataSource localDataSource,
-                            NetworkDataSource networkDataSource,
-                            AppPreferences preferences) {
-        this.localDataSource = localDataSource;
-        this.networkDataSource = networkDataSource;
-        this.preferences = preferences;
-    }
-
-    public synchronized static MovieRepository getInstance(
-            LocalDataSource localDataSource,
-            NetworkDataSource networkDataSource,
-            AppPreferences preferences) {
-        if (sInstance == null) {
-            synchronized (LOCK) {
-                sInstance = new MovieRepository(localDataSource, networkDataSource, preferences);
-            }
-        }
-        return sInstance;
+    @Inject
+    public MovieRepository() {
+        MovieApplication.getAppComponent().inject(this);
     }
 
     @Override

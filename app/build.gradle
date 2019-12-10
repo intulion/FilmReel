@@ -79,6 +79,9 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
 
+    implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+
     implementation "androidx.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
 
     testImplementation "junit:junit:$rootProject.junitVersion"

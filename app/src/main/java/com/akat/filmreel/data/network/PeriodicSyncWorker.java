@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -18,6 +19,8 @@ import com.akat.filmreel.util.InjectorUtils;
 import io.reactivex.Single;
 
 public class PeriodicSyncWorker extends RxWorker {
+    private static final String TAG = "PeriodicSyncWorker";
+
     private Context context;
 
     public PeriodicSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -28,12 +31,12 @@ public class PeriodicSyncWorker extends RxWorker {
     @NonNull
     @Override
     public Single<Result> createWork() {
-        MovieRepository repository = InjectorUtils.provideRepository(context);
+        MovieRepository repository = (MovieRepository) InjectorUtils.provideRepository();
 
         return repository.fetchTopRatedMovies(true)
                 .doOnSuccess(apiResponse -> {
+                    Log.d(TAG, "Successful sync.");
                     repository.saveMovies(apiResponse);
-
                     sendNotification(context.getString(R.string.sync_title),
                             context.getString(R.string.sync_desc));
                 })
