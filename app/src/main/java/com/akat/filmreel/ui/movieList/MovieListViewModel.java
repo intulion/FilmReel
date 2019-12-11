@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.akat.filmreel.data.domain.AddBookmarkUseCase;
 import com.akat.filmreel.data.domain.GetMoviesUseCase;
-import com.akat.filmreel.data.domain.MovieRepository;
-import com.akat.filmreel.data.domain.Repository;
 import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Movie;
 

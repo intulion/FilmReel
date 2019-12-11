@@ -20,15 +20,17 @@ import io.reactivex.Single;
 @Singleton
 public class MovieRepository implements Repository {
 
-    @Inject
-    NetworkDataSource networkDataSource;
-    @Inject
-    LocalDataSource localDataSource;
-    @Inject
-    Preferences preferences;
+    private NetworkDataSource networkDataSource;
+    private LocalDataSource localDataSource;
+    private Preferences preferences;
 
     @Inject
-    public MovieRepository() {
+    public MovieRepository(LocalDataSource localDataSource,
+                           NetworkDataSource networkDataSource,
+                           Preferences preferences) {
+        this.localDataSource = localDataSource;
+        this.networkDataSource = networkDataSource;
+        this.preferences = preferences;
     }
 
     @Override

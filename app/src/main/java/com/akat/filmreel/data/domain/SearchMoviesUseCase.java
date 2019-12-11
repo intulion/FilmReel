@@ -13,7 +13,7 @@ public class SearchMoviesUseCase {
     private final Repository repository;
 
     @Inject
-    SearchMoviesUseCase(MovieRepository repository) {
+    SearchMoviesUseCase(Repository repository) {
         this.repository = repository;
     }
 

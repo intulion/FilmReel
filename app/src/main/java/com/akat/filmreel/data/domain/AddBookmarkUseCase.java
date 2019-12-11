@@ -9,7 +9,7 @@ public class AddBookmarkUseCase {
     private final Repository repository;
 
     @Inject
-    AddBookmarkUseCase(MovieRepository repository) {
+    AddBookmarkUseCase(Repository repository) {
         this.repository = repository;
     }
 

@@ -37,8 +37,10 @@ class AppModule {
 
     @Singleton
     @Provides
-    Repository provideRepository() {
-        return new MovieRepository();
+    Repository provideRepository(LocalDataSource localDataSource,
+                                 NetworkDataSource networkDataSource,
+                                 Preferences preferences) {
+        return new MovieRepository(localDataSource, networkDataSource, preferences);
     }
 
     @Singleton

@@ -23,7 +23,7 @@ public class MovieDetailViewModel extends ViewModel {
 
     @Inject
     MovieDetailViewModel(GetMovieDetailsUseCase getMovieDetailsUseCase,
-                                AddBookmarkUseCase addBookmarkUseCase) {
+                         AddBookmarkUseCase addBookmarkUseCase) {
         this.getMovieDetailsUseCase = getMovieDetailsUseCase;
         this.addBookmarkUseCase = addBookmarkUseCase;
     }

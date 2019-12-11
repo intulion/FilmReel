@@ -2,7 +2,6 @@ package com.akat.filmreel.di;
 
 import android.content.Context;
 
-import com.akat.filmreel.data.domain.MovieRepository;
 import com.akat.filmreel.data.domain.Repository;
 import com.akat.filmreel.ui.bookmarks.BookmarksFragment;
 import com.akat.filmreel.ui.movieDetail.MovieDetailFragment;
@@ -22,7 +21,7 @@ import dagger.Component;
 })
 public interface AppComponent {
 
-    MovieRepository provideRepository();
+    Repository provideRepository();
 
     void inject(MovieListFragment fragment);
 

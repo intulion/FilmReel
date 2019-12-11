@@ -15,7 +15,7 @@ public class GetBookmarksUseCase {
     private final Repository repository;
 
     @Inject
-    GetBookmarksUseCase(MovieRepository repository) {
+    GetBookmarksUseCase(Repository repository) {
         this.repository = repository;
     }
 
