@@ -2,14 +2,14 @@ package com.akat.filmreel.di;
 
 import android.content.Context;
 
-import com.akat.filmreel.data.domain.MovieRepository;
-import com.akat.filmreel.data.domain.Repository;
+import androidx.room.Room;
+
 import com.akat.filmreel.data.local.AppDatabase;
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.local.LocalDataSource;
 import com.akat.filmreel.data.local.MovieLocalDataSource;
 import com.akat.filmreel.data.local.Preferences;
-import com.akat.filmreel.data.network.ApiManager;
+import com.akat.filmreel.data.network.ApiService;
 import com.akat.filmreel.data.network.MovieNetworkDataSource;
 import com.akat.filmreel.data.network.NetworkDataSource;
 
@@ -20,11 +20,6 @@ import dagger.Provides;
 
 @Module
 class AppModule {
-//    @Singleton
-//    @Provides
-//    Repository provideRepository() {
-//        return new MovieRepository();
-//    }
 
     @Singleton
     @Provides
@@ -34,15 +29,21 @@ class AppModule {
 
     @Singleton
     @Provides
-    NetworkDataSource provideNetworkDataSource() {
-        ApiManager manager = ApiManager.getInstance();
-        return MovieNetworkDataSource.getInstance(manager);
+    NetworkDataSource provideNetworkDataSource(ApiService apiService) {
+        return new MovieNetworkDataSource(apiService);
     }
 
     @Singleton
     @Provides
-    LocalDataSource provideLocalDataSource(Context context) {
-        AppDatabase database = AppDatabase.getInstance(context);
-        return MovieLocalDataSource.getInstance(database.topRatedDao(), database.bookmarksDao());
+    LocalDataSource provideLocalDataSource(AppDatabase database) {
+        return new MovieLocalDataSource(database);
+    }
+
+    @Singleton
+    @Provides
+    AppDatabase provideAppDatabase(Context context) {
+        return Room.databaseBuilder(context,
+                AppDatabase.class, AppDatabase.DATABASE_NAME)
+                .build();
     }
 }

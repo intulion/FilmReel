@@ -6,30 +6,21 @@ import com.akat.filmreel.data.model.MovieEntity;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 public class MovieLocalDataSource implements LocalDataSource {
 
-    private static final Object LOCK = new Object();
-    private static MovieLocalDataSource sInstance;
-
     private final TopRatedDao topRatedDao;
     private final BookmarksDao bookmarksDao;
 
-    private MovieLocalDataSource(TopRatedDao topRatedDao, BookmarksDao bookmarksDao) {
-        this.topRatedDao = topRatedDao;
-        this.bookmarksDao = bookmarksDao;
-    }
-
-    public static MovieLocalDataSource getInstance(TopRatedDao topRatedDao, BookmarksDao bookmarksDao) {
-        if (sInstance == null) {
-            synchronized (LOCK) {
-                sInstance = new MovieLocalDataSource(topRatedDao, bookmarksDao);
-            }
-        }
-        return sInstance;
+    @Inject
+    public MovieLocalDataSource(AppDatabase database) {
+        topRatedDao = database.topRatedDao();
+        bookmarksDao = database.bookmarksDao();
     }
 
     @Override
