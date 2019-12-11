@@ -2,25 +2,19 @@ package com.akat.filmreel.places;
 
 import com.akat.filmreel.places.dto.PlacesResponse;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Single;
 
+@Singleton
 public class PlacesRepository {
 
-    private static final Object LOCK = new Object();
-    private static PlacesRepository sInstance;
     private final PlacesDataSource networkDataSource;
 
-    private PlacesRepository(PlacesDataSource networkDataSource) {
+    @Inject
+    public PlacesRepository(PlacesDataSource networkDataSource) {
         this.networkDataSource = networkDataSource;
-    }
-
-    public synchronized static PlacesRepository getInstance(PlacesDataSource networkDataSource) {
-        if (sInstance == null) {
-            synchronized (LOCK) {
-                sInstance = new PlacesRepository(networkDataSource);
-            }
-        }
-        return sInstance;
     }
 
     public Single<PlacesResponse> getNearbyCinemas(double lat, double lng) {

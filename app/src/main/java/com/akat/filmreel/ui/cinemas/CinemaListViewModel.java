@@ -11,20 +11,22 @@ import com.akat.filmreel.util.Constants;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
-class CinemaListViewModel extends ViewModel {
+public class CinemaListViewModel extends ViewModel {
 
     private final PlacesRepository repository;
     private final CompositeDisposable disposable = new CompositeDisposable();
     private MutableLiveData<List<Cinema>> cinemas = new MutableLiveData<>();
 
-    CinemaListViewModel(PlacesRepository repository, double lat, double lng) {
+    @Inject
+    CinemaListViewModel(PlacesRepository repository) {
         this.repository = repository;
-        fetchCinemas(lat, lng);
     }
 
     @Override
@@ -33,7 +35,11 @@ class CinemaListViewModel extends ViewModel {
         disposable.clear();
     }
 
-    LiveData<List<Cinema>> getNearbyCinemas() {
+    LiveData<List<Cinema>> getNearbyCinemas(double lat, double lng) {
+        if (cinemas.getValue() == null) {
+            fetchCinemas(lat, lng);
+        }
+
         return cinemas;
     }
 

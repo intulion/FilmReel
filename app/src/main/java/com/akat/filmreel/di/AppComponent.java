@@ -17,9 +17,12 @@ import dagger.Component;
 @Component(modules = {
         AppModule.class,
         NetworkModule.class,
-        ViewModelModule.class
+        ViewModelModule.class,
+        PlacesModule.class
 })
 public interface AppComponent {
+
+    PlacesComponent.Factory placesComponent();
 
     Repository provideRepository();
 

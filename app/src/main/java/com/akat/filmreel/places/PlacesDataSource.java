@@ -2,30 +2,21 @@ package com.akat.filmreel.places;
 
 import com.akat.filmreel.places.dto.PlacesResponse;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 
-public class PlacesDataSource {
+class PlacesDataSource {
 
-    private static final Object LOCK = new Object();
-    private static PlacesDataSource sInstance;
+    private final PlacesApiService apiService;
 
-    private final PlacesApiManager manager;
-
-    private PlacesDataSource(PlacesApiManager manager) {
-        this.manager = manager;
-    }
-
-    public static PlacesDataSource getInstance(PlacesApiManager manager) {
-        if (sInstance == null) {
-            synchronized (LOCK) {
-                sInstance = new PlacesDataSource(manager);
-            }
-        }
-        return sInstance;
+    @Inject
+    public PlacesDataSource(PlacesApiService apiService) {
+        this.apiService = apiService;
     }
 
     Single<PlacesResponse> fetchNearbyCinemas(double lat, double lng) {
         String location = String.format("%s,%s", lat, lng);
-        return manager.getApiService().getNearbyCinemas(location);
+        return apiService.getNearbyCinemas(location);
     }
 }

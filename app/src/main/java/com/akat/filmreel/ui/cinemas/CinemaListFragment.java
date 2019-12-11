@@ -7,29 +7,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.util.Constants;
-import com.akat.filmreel.util.InjectorUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
+
+import javax.inject.Inject;
 
 public class CinemaListFragment extends Fragment
         implements CinemaListAdapter.CinemaListAdapterOnItemClickHandler {
 
     private static final int PERMISSIONS_REQUEST_FINE_LOCATION = 13;
+
+    @Inject
+    public ViewModelProvider.Factory factory;
 
     private FusedLocationProviderClient fusedLocationClient;
     private CinemaListAdapter cinemaListAdapter;
@@ -47,6 +51,7 @@ public class CinemaListFragment extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        MovieApplication.getPlacesComponent().inject(this);
     }
 
     @Override
@@ -133,10 +138,9 @@ public class CinemaListFragment extends Fragment
         if (viewModel != null && location != null) {
             viewModel.forceUpdate(location.getLatitude(), location.getLongitude());
         } else {
-            CinemaListViewModelFactory factory =
-                    InjectorUtils.provideCinemaListViewModelFactory(location.getLatitude(), location.getLongitude());
             viewModel = ViewModelProviders.of(this, factory).get(CinemaListViewModel.class);
-            viewModel.getNearbyCinemas().observe(this,
+            viewModel.getNearbyCinemas(location.getLatitude(),
+                    location.getLongitude()).observe(this,
                     entries -> {
                         showLoading = false;
                         cinemaListAdapter.setItems(entries);

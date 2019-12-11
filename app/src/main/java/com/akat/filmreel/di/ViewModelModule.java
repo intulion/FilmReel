@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.akat.filmreel.ui.bookmarks.BookmarksViewModel;
+import com.akat.filmreel.ui.cinemas.CinemaListViewModel;
 import com.akat.filmreel.ui.common.ViewModelFactory;
 import com.akat.filmreel.ui.movieDetail.MovieDetailViewModel;
 import com.akat.filmreel.ui.movieList.MovieListViewModel;
@@ -38,4 +39,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MovieDetailViewModel.class)
     abstract ViewModel bindsMovieDetailViewModel(MovieDetailViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CinemaListViewModel.class)
+    abstract ViewModel bindsCinemaListViewModel(CinemaListViewModel viewModel);
 }
