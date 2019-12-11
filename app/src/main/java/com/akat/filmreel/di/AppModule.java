@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.room.Room;
 
+import com.akat.filmreel.data.domain.MovieRepository;
+import com.akat.filmreel.data.domain.Repository;
 import com.akat.filmreel.data.local.AppDatabase;
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.local.LocalDataSource;
@@ -31,6 +33,12 @@ class AppModule {
     @Provides
     NetworkDataSource provideNetworkDataSource(ApiService apiService) {
         return new MovieNetworkDataSource(apiService);
+    }
+
+    @Singleton
+    @Provides
+    Repository provideRepository() {
+        return new MovieRepository();
     }
 
     @Singleton

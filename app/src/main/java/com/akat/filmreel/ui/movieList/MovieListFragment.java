@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -18,19 +19,31 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.ui.common.MovieListAdapter;
 import com.akat.filmreel.util.Constants;
-import com.akat.filmreel.util.InjectorUtils;
+
+import javax.inject.Inject;
 
 public class MovieListFragment extends Fragment
         implements MovieListAdapter.OnItemClickHandler, MovieListAdapter.OnBottomReachedListener {
+
+    @Inject
+    public ViewModelProvider.Factory factory;
 
     private MovieListViewModel viewModel;
 
     private MovieListAdapter movieListAdapter;
     private View loadingIndicator;
     private RecyclerView recyclerView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        MovieApplication.getAppComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -67,8 +80,6 @@ public class MovieListFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MovieListViewModelFactory factory =
-                InjectorUtils.provideMovieListViewModelFactory(requireActivity());
         viewModel = ViewModelProviders.of(this, factory).get(MovieListViewModel.class);
         viewModel.getMovies().observe(this, entries -> {
             movieListAdapter.swapItems(entries);

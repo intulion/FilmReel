@@ -8,24 +8,24 @@ import com.akat.filmreel.data.domain.AddBookmarkUseCase;
 import com.akat.filmreel.data.domain.GetMovieDetailsUseCase;
 import com.akat.filmreel.data.model.Movie;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-class MovieDetailViewModel extends ViewModel {
+public class MovieDetailViewModel extends ViewModel {
 
     private final GetMovieDetailsUseCase getMovieDetailsUseCase;
     private final AddBookmarkUseCase addBookmarkUseCase;
     private final CompositeDisposable disposable = new CompositeDisposable();
     private MutableLiveData<Movie> movie = new MutableLiveData<>();
 
-    MovieDetailViewModel(long movieId,
-                         GetMovieDetailsUseCase getMovieDetailsUseCase,
-                         AddBookmarkUseCase addBookmarkUseCase) {
+    @Inject
+    MovieDetailViewModel(GetMovieDetailsUseCase getMovieDetailsUseCase,
+                                AddBookmarkUseCase addBookmarkUseCase) {
         this.getMovieDetailsUseCase = getMovieDetailsUseCase;
         this.addBookmarkUseCase = addBookmarkUseCase;
-
-        observeMovie(movieId);
     }
 
     @Override
@@ -34,7 +34,8 @@ class MovieDetailViewModel extends ViewModel {
         disposable.clear();
     }
 
-    public LiveData<Movie> getMovie() {
+    LiveData<Movie> getMovie(long movieId) {
+        observeMovie(movieId);
         return movie;
     }
 

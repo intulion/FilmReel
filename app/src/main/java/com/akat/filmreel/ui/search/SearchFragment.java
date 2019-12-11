@@ -12,20 +12,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.data.model.MovieEntity;
 import com.akat.filmreel.util.Constants;
-import com.akat.filmreel.util.InjectorUtils;
 import com.akat.filmreel.util.SnackbarMessage;
 import com.akat.filmreel.util.SnackbarUtils;
 
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -35,12 +38,22 @@ import io.reactivex.schedulers.Schedulers;
 public class SearchFragment extends Fragment
         implements SearchAdapter.OnItemClickHandler, SearchAdapter.OnBottomReachedListener {
 
+    @Inject
+    public ViewModelProvider.Factory factory;
+
     private final CompositeDisposable disposable = new CompositeDisposable();
 
     private SearchViewModel viewModel;
     private SearchAdapter movieListAdapter;
     private RecyclerView recyclerView;
     private View noItemView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        MovieApplication.getAppComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -71,8 +84,6 @@ public class SearchFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SearchViewModelFactory factory =
-                InjectorUtils.provideSearchViewModelFactory(requireActivity());
         viewModel = ViewModelProviders.of(this, factory).get(SearchViewModel.class);
         viewModel.getSearchResult().observe(this, entries -> {
             movieListAdapter.swapItems(entries);

@@ -4,13 +4,18 @@ import com.akat.filmreel.data.model.Movie;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Flowable;
 
+@Singleton
 public class GetBookmarksUseCase {
 
     private final Repository repository;
 
-    public GetBookmarksUseCase(Repository repository) {
+    @Inject
+    GetBookmarksUseCase(MovieRepository repository) {
         this.repository = repository;
     }
 

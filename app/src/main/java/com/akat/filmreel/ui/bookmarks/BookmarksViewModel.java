@@ -10,19 +10,22 @@ import com.akat.filmreel.data.model.Movie;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class BookmarksViewModel extends ViewModel {
 
-    private final GetBookmarksUseCase getBookmarksUseCase;
-    private final AddBookmarkUseCase addBookmarkUseCase;
+    private GetBookmarksUseCase getBookmarksUseCase;
+    private AddBookmarkUseCase addBookmarkUseCase;
+
     private final CompositeDisposable disposable = new CompositeDisposable();
     private MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
 
-    BookmarksViewModel(GetBookmarksUseCase getBookmarksUseCase,
-                       AddBookmarkUseCase addBookmarkUseCase) {
+    @Inject
+    BookmarksViewModel(GetBookmarksUseCase getBookmarksUseCase, AddBookmarkUseCase addBookmarkUseCase) {
         this.getBookmarksUseCase = getBookmarksUseCase;
         this.addBookmarkUseCase = addBookmarkUseCase;
 

@@ -6,11 +6,15 @@ import androidx.lifecycle.ViewModel;
 
 import com.akat.filmreel.data.domain.AddBookmarkUseCase;
 import com.akat.filmreel.data.domain.GetMoviesUseCase;
+import com.akat.filmreel.data.domain.MovieRepository;
+import com.akat.filmreel.data.domain.Repository;
 import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -19,19 +23,20 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MovieListViewModel extends ViewModel {
 
-    private final GetMoviesUseCase getMoviesUseCase;
-    private final AddBookmarkUseCase addBookmarkUseCase;
+    private GetMoviesUseCase getMoviesUseCase;
+    private AddBookmarkUseCase addBookmarkUseCase;
     private final CompositeDisposable disposable = new CompositeDisposable();
     private MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
 
+    @Inject
     MovieListViewModel(GetMoviesUseCase getMoviesUseCase, AddBookmarkUseCase addBookmarkUseCase) {
         this.getMoviesUseCase = getMoviesUseCase;
         this.addBookmarkUseCase = addBookmarkUseCase;
 
-        if (getMoviesUseCase.getLastPage() == 0) {
+        if (this.getMoviesUseCase.getLastPage() == 0) {
             fetchNextPage(false);
         }
-        observeNowPlaying();
+        observeTopRated();
     }
 
     @Override
@@ -61,7 +66,7 @@ public class MovieListViewModel extends ViewModel {
         fetchNextPage(true);
     }
 
-    private void observeNowPlaying() {
+    private void observeTopRated() {
         disposable.add(getMoviesUseCase.observeTopRated()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movies::setValue)

@@ -13,6 +13,8 @@ import com.akat.filmreel.util.SnackbarMessage;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -21,8 +23,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SearchViewModel extends ViewModel {
 
-    private final SearchMoviesUseCase searchMoviesUseCase;
-    private final AddMoviesUseCase addMoviesUseCase;
+    @Inject
+    SearchMoviesUseCase searchMoviesUseCase;
+    @Inject
+    AddMoviesUseCase addMoviesUseCase;
+
     private final CompositeDisposable disposable = new CompositeDisposable();
     private MutableLiveData<List<MovieEntity>> movies = new MutableLiveData<>();
     private SnackbarMessage snackbarText = new SnackbarMessage();
@@ -31,11 +36,8 @@ public class SearchViewModel extends ViewModel {
     private int nextPage = 1;
     private int totalPages = 1;
 
-    SearchViewModel(SearchMoviesUseCase searchMoviesUseCase,
-                    AddMoviesUseCase addMoviesUseCase) {
-        this.searchMoviesUseCase = searchMoviesUseCase;
-        this.addMoviesUseCase = addMoviesUseCase;
-    }
+    @Inject
+    SearchViewModel() {}
 
     @Override
     protected void onCleared() {

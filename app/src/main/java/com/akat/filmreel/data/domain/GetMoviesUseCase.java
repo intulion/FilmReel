@@ -5,14 +5,19 @@ import com.akat.filmreel.data.model.Movie;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
+@Singleton
 public class GetMoviesUseCase {
 
     private final Repository repository;
 
-    public GetMoviesUseCase(Repository repository) {
+    @Inject
+    GetMoviesUseCase(MovieRepository repository) {
         this.repository = repository;
     }
 

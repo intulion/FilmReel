@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.work.RxWorker;
 import androidx.work.WorkerParameters;
 
+import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.data.domain.MovieRepository;
 import com.akat.filmreel.ui.MainActivity;
@@ -31,7 +32,7 @@ public class PeriodicSyncWorker extends RxWorker {
     @NonNull
     @Override
     public Single<Result> createWork() {
-        MovieRepository repository = (MovieRepository) InjectorUtils.provideRepository();
+        MovieRepository repository = MovieApplication.getAppComponent().provideRepository();
 
         return repository.fetchTopRatedMovies(true)
                 .doOnSuccess(apiResponse -> {

@@ -1,6 +1,5 @@
 package com.akat.filmreel.data.domain;
 
-import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.data.local.LocalDataSource;
 import com.akat.filmreel.data.local.Preferences;
 import com.akat.filmreel.data.model.ApiResponse;
@@ -30,7 +29,6 @@ public class MovieRepository implements Repository {
 
     @Inject
     public MovieRepository() {
-        MovieApplication.getAppComponent().inject(this);
     }
 
     @Override

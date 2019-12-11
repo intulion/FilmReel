@@ -15,17 +15,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.util.Constants;
-import com.akat.filmreel.util.InjectorUtils;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 public class MovieDetailFragment extends Fragment {
+
+    @Inject
+    public ViewModelProvider.Factory factory;
 
     private ImageView posterView;
     private ImageView backdropView;
@@ -41,6 +47,13 @@ public class MovieDetailFragment extends Fragment {
     private long movieId;
     private boolean isBookmarked;
     private List<Integer> genres;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        MovieApplication.getAppComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -76,10 +89,8 @@ public class MovieDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MovieDetailViewModelFactory factory =
-                InjectorUtils.provideMovieDetailViewModelFactory(requireActivity(), movieId);
         viewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel.class);
-        viewModel.getMovie().observe(this, entry -> {
+        viewModel.getMovie(movieId).observe(this, entry -> {
             if (entry != null) {
                 titleView.setText(entry.getTitle());
                 origTitleView.setText(entry.getOriginalTitle());

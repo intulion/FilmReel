@@ -1,12 +1,15 @@
 package com.akat.filmreel.data.domain;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
 
 public class AddBookmarkUseCase {
 
     private final Repository repository;
 
-    public AddBookmarkUseCase(Repository repository) {
+    @Inject
+    AddBookmarkUseCase(MovieRepository repository) {
         this.repository = repository;
     }
 
