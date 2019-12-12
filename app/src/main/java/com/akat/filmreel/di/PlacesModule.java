@@ -18,11 +18,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Module(subcomponents = PlacesComponent.class)
+@Module
 class PlacesModule {
 
-    @Singleton
     @Provides
+    @Singleton
     @Named("PlacesOkHttp")
     OkHttpClient provideOkHttp() {
         return new OkHttpClient.Builder()
@@ -46,8 +46,8 @@ class PlacesModule {
                 .build();
     }
 
-    @Singleton
     @Provides
+    @Singleton
     @Named("PlacesRetrofit")
     Retrofit provideRetrofit(@Named("PlacesOkHttp") OkHttpClient client) {
         return new Retrofit.Builder()
@@ -58,8 +58,8 @@ class PlacesModule {
                 .build();
     }
 
-    @Singleton
     @Provides
+    @Singleton
     PlacesApiService providePlacesApi(@Named("PlacesRetrofit") Retrofit retrofit) {
         return retrofit.create(PlacesApiService.class);
     }

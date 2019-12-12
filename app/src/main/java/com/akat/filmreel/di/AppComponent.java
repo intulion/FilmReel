@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.akat.filmreel.data.network.PeriodicSyncWorker;
 import com.akat.filmreel.ui.bookmarks.BookmarksFragment;
+import com.akat.filmreel.ui.cinemas.CinemaListFragment;
 import com.akat.filmreel.ui.movieDetail.MovieDetailFragment;
 import com.akat.filmreel.ui.movieList.MovieListFragment;
 import com.akat.filmreel.ui.search.SearchFragment;
@@ -17,12 +18,10 @@ import dagger.Component;
 @Component(modules = {
         AppModule.class,
         NetworkModule.class,
-        ViewModelModule.class,
-        PlacesModule.class
+        PlacesModule.class,
+        ViewModelModule.class
 })
 public interface AppComponent {
-
-    PlacesComponent.Factory placesComponent();
 
     void inject(PeriodicSyncWorker worker);
 
@@ -33,6 +32,8 @@ public interface AppComponent {
     void inject(BookmarksFragment fragment);
 
     void inject(MovieDetailFragment fragment);
+
+    void inject(CinemaListFragment fragment);
 
     @Component.Factory
     interface Factory {

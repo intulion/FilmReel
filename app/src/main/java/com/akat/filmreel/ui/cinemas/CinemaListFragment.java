@@ -51,7 +51,7 @@ public class CinemaListFragment extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
-        MovieApplication.getPlacesComponent().inject(this);
+        MovieApplication.getAppComponent().inject(this);
     }
 
     @Override
