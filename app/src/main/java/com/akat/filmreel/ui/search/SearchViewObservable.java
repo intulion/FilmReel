@@ -5,9 +5,9 @@ import androidx.appcompat.widget.SearchView;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
-public class RxSearchObservable {
+public class SearchViewObservable {
 
-    private RxSearchObservable() {
+    private SearchViewObservable() {
         // no instance
     }
 

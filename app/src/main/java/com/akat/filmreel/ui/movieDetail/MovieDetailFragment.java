@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.util.Constants;
+import com.akat.filmreel.util.SnackbarMessage;
+import com.akat.filmreel.util.SnackbarUtils;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -91,50 +93,50 @@ public class MovieDetailFragment extends Fragment {
 
         viewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel.class);
         viewModel.getMovie(movieId).observe(this, entry -> {
-            if (entry != null) {
-                titleView.setText(entry.getTitle());
-                origTitleView.setText(entry.getOriginalTitle());
-                overviewView.setText(entry.getOverview());
-                languageView.setText(entry.getOriginalLanguage());
-                popularityView.setText(
-                        String.format(Locale.getDefault(), "%.3f", entry.getPopularity())
-                );
+            titleView.setText(entry.getTitle());
+            origTitleView.setText(entry.getOriginalTitle());
+            overviewView.setText(entry.getOverview());
+            languageView.setText(entry.getOriginalLanguage());
+            popularityView.setText(
+                    String.format(Locale.getDefault(), "%.3f", entry.getPopularity())
+            );
 
-                String dateFormat = requireActivity().getResources().getString(R.string.date_format);
-                releaseDateView.setText(
-                        String.format(dateFormat, entry.getReleaseDate())
-                );
+            String dateFormat = requireActivity().getResources().getString(R.string.date_format);
+            releaseDateView.setText(
+                    String.format(dateFormat, entry.getReleaseDate())
+            );
 
-                String ratingFormat = requireActivity().getResources().getString(R.string.movie_rating_format);
-                ratingView.setText(
-                        String.format(ratingFormat,
-                                entry.getVoteAverage(),
-                                entry.getVoteCount()
-                        )
-                );
+            String ratingFormat = requireActivity().getResources().getString(R.string.movie_rating_format);
+            ratingView.setText(
+                    String.format(ratingFormat,
+                            entry.getVoteAverage(),
+                            entry.getVoteCount()
+                    )
+            );
 
-                String posterPath = entry.getPosterPath();
-                if (posterPath != null) {
-                    Glide.with(posterView.getContext())
-                            .load(Constants.HTTP.POSTER_URL + posterPath)
-                            .into(posterView);
-                }
-
-                String backdropPath = entry.getBackdropPath();
-                if (posterPath != null) {
-                    Glide.with(posterView.getContext())
-                            .load(Constants.HTTP.BACKDROP_URL + backdropPath)
-                            .into(backdropView);
-                }
-
-                // set bookmark icon
-                isBookmarked = entry.isBookmarked();
-                requireActivity().invalidateOptionsMenu();
-
-                // set genres array
-                genres = entry.getGenreIds();
+            String posterPath = entry.getPosterPath();
+            if (posterPath != null) {
+                Glide.with(posterView.getContext())
+                        .load(Constants.HTTP.POSTER_URL + posterPath)
+                        .into(posterView);
             }
+
+            String backdropPath = entry.getBackdropPath();
+            if (posterPath != null) {
+                Glide.with(posterView.getContext())
+                        .load(Constants.HTTP.BACKDROP_URL + backdropPath)
+                        .into(backdropView);
+            }
+
+            // set bookmark icon
+            isBookmarked = entry.isBookmarked();
+            requireActivity().invalidateOptionsMenu();
+
+            // set genres array
+            genres = entry.getGenreIds();
         });
+
+        setupSnackbar();
     }
 
     @Override
@@ -179,4 +181,10 @@ public class MovieDetailFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    private void setupSnackbar() {
+        viewModel.getSnackbarMessage().observe(this,
+                (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
+                        SnackbarUtils.showSnackbar(getView(), getString(snackbarMessageResourceId))
+        );
+    }
 }

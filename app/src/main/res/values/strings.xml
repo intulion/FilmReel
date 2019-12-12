@@ -49,4 +49,11 @@
     <string name="search_no_result">No movies found</string>
 
     <string name="error_occurred">An error has occurred</string>
+    <string name="error_limit">Request limit exceeded</string>
+    <string name="error_access_denied">Access denied</string>
+    <string name="error_location">Failed to get current location</string>
+
+    <string name="message_bookmark_added">Bookmarked</string>
+    <string name="message_bookmark_removed">Removed from bookmarks</string>
+
 </resources>

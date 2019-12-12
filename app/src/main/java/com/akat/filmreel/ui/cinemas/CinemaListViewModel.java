@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.akat.filmreel.R;
 import com.akat.filmreel.places.PlacesRepository;
 import com.akat.filmreel.places.dto.Cinema;
 import com.akat.filmreel.places.dto.PlacesResponse;
 import com.akat.filmreel.util.Constants;
+import com.akat.filmreel.util.SnackbarMessage;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class CinemaListViewModel extends ViewModel {
     private final PlacesRepository repository;
     private final CompositeDisposable disposable = new CompositeDisposable();
     private MutableLiveData<List<Cinema>> cinemas = new MutableLiveData<>();
+    private SnackbarMessage snackbarText = new SnackbarMessage();
 
     @Inject
     CinemaListViewModel(PlacesRepository repository) {
@@ -33,6 +36,10 @@ public class CinemaListViewModel extends ViewModel {
     protected void onCleared() {
         super.onCleared();
         disposable.clear();
+    }
+
+    SnackbarMessage getSnackbarMessage() {
+        return snackbarText;
     }
 
     LiveData<List<Cinema>> getNearbyCinemas(double lat, double lng) {
@@ -60,16 +67,19 @@ public class CinemaListViewModel extends ViewModel {
                                 cinemas.setValue(placesResponse.getResults());
                                 break;
                             case Constants.HTTP.PLACES_STATUS_OVER:
-
+                                snackbarText.setValue(R.string.error_limit);
+                                break;
+                            case Constants.HTTP.PLACES_STATUS_DENIED:
+                                snackbarText.setValue(R.string.error_access_denied);
                                 break;
                             default:
-
+                                snackbarText.setValue(R.string.error_occurred);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        snackbarText.setValue(R.string.error_occurred);
                     }
                 })
         );

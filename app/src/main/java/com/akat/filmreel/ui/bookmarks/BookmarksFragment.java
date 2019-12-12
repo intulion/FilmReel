@@ -19,6 +19,8 @@ import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.ui.common.MovieListAdapter;
 import com.akat.filmreel.util.Constants;
+import com.akat.filmreel.util.SnackbarMessage;
+import com.akat.filmreel.util.SnackbarUtils;
 
 import javax.inject.Inject;
 
@@ -73,6 +75,7 @@ public class BookmarksFragment extends Fragment
             movieListAdapter.swapItems(entries);
             updateDataView();
         });
+        setupSnackbar();
     }
 
     @Override
@@ -98,5 +101,12 @@ public class BookmarksFragment extends Fragment
             noItemView.setVisibility(View.INVISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setupSnackbar() {
+        viewModel.getSnackbarMessage().observe(this,
+                (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
+                        SnackbarUtils.showSnackbar(getView(), getString(snackbarMessageResourceId))
+        );
     }
 }

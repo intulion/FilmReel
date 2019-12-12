@@ -108,7 +108,7 @@ public class SearchFragment extends Fragment
 
         SearchView searchView = (SearchView) searchItem.getActionView();
 
-        disposable.add(RxSearchObservable.fromView(searchView)
+        disposable.add(SearchViewObservable.fromView(searchView)
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .map(String::trim)
                 .filter(text -> {

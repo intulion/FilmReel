@@ -13,7 +13,7 @@ public class Constants {
         public static final String PLACES_URL = "https://maps.googleapis.com/";
         public static final String PLACES_STATUS_OK = "OK";
         public static final String PLACES_STATUS_OVER = "OVER_QUERY_LIMIT";
-
+        public static final String PLACES_STATUS_DENIED = "REQUEST_DENIED";
     }
 
     public static final class PARAM {

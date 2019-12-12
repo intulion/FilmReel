@@ -22,8 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.util.Constants;
+import com.akat.filmreel.util.SnackbarMessage;
+import com.akat.filmreel.util.SnackbarUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
@@ -126,7 +129,9 @@ public class CinemaListFragment extends Fragment
     private void doShowCinemas() {
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
-                    if (location != null) {
+                    if (location == null) {
+                        Snackbar.make(loadingIndicator, R.string.error_location, Snackbar.LENGTH_LONG).show();
+                    } else {
                         this.location = location;
                         loadData();
                     }
@@ -147,6 +152,7 @@ public class CinemaListFragment extends Fragment
                         updateDataView();
                     }
             );
+            setupSnackbar();
         }
     }
 
@@ -166,5 +172,12 @@ public class CinemaListFragment extends Fragment
             loadingIndicator.setVisibility(View.GONE);
             noItemView.setVisibility(View.GONE);
         }
+    }
+
+    private void setupSnackbar() {
+        viewModel.getSnackbarMessage().observe(this,
+                (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
+                        SnackbarUtils.showSnackbar(getView(), getString(snackbarMessageResourceId))
+        );
     }
 }
