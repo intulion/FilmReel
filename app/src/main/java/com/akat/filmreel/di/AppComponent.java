@@ -2,7 +2,7 @@ package com.akat.filmreel.di;
 
 import android.content.Context;
 
-import com.akat.filmreel.data.domain.Repository;
+import com.akat.filmreel.data.network.PeriodicSyncWorker;
 import com.akat.filmreel.ui.bookmarks.BookmarksFragment;
 import com.akat.filmreel.ui.movieDetail.MovieDetailFragment;
 import com.akat.filmreel.ui.movieList.MovieListFragment;
@@ -24,7 +24,7 @@ public interface AppComponent {
 
     PlacesComponent.Factory placesComponent();
 
-    Repository provideRepository();
+    void inject(PeriodicSyncWorker worker);
 
     void inject(MovieListFragment fragment);
 

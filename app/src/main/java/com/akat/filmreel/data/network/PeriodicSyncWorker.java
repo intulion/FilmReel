@@ -16,23 +16,26 @@ import com.akat.filmreel.R;
 import com.akat.filmreel.data.domain.Repository;
 import com.akat.filmreel.ui.MainActivity;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 
 public class PeriodicSyncWorker extends RxWorker {
     private static final String TAG = "PeriodicSyncWorker";
 
+    @Inject
+    Repository repository;
     private Context context;
 
     public PeriodicSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.context = context;
+        MovieApplication.getAppComponent().inject(this);
     }
 
     @NonNull
     @Override
     public Single<Result> createWork() {
-        Repository repository = MovieApplication.getAppComponent().provideRepository();
-
         return repository.fetchTopRatedMovies(true)
                 .doOnSuccess(apiResponse -> {
                     Log.d(TAG, "Successful sync.");

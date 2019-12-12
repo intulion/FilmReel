@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         PeriodicWorkRequest periodicRequest =
                 new PeriodicWorkRequest.Builder(PeriodicSyncWorker.class,
-                        1, TimeUnit.HOURS, 12, TimeUnit.HOURS)
+                        1, TimeUnit.DAYS, 12, TimeUnit.HOURS)
                         .setConstraints(constraints)
                         .build();
         workManager.enqueueUniquePeriodicWork("PeriodicSyncWorker",
