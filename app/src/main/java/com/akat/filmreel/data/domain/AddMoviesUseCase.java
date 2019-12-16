@@ -1,13 +1,13 @@
 package com.akat.filmreel.data.domain;
 
 import com.akat.filmreel.data.model.MovieEntity;
+import com.akat.filmreel.di.ApplicationScope;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 
-@Singleton
+@ApplicationScope
 public class AddMoviesUseCase {
 
     private final Repository repository;

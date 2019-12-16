@@ -2,16 +2,16 @@ package com.akat.filmreel.data.domain;
 
 import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.di.ApplicationScope;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-@Singleton
+@ApplicationScope
 public class GetMoviesUseCase {
 
     private final Repository repository;

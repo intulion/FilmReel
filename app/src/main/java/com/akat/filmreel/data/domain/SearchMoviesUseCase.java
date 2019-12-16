@@ -1,13 +1,13 @@
 package com.akat.filmreel.data.domain;
 
 import com.akat.filmreel.data.model.ApiResponse;
+import com.akat.filmreel.di.ApplicationScope;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Single;
 
-@Singleton
+@ApplicationScope
 public class SearchMoviesUseCase {
 
     private final Repository repository;

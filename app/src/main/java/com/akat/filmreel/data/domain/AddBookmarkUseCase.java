@@ -1,9 +1,12 @@
 package com.akat.filmreel.data.domain;
 
+import com.akat.filmreel.di.ApplicationScope;
+
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
 
+@ApplicationScope
 public class AddBookmarkUseCase {
 
     private final Repository repository;

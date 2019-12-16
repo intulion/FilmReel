@@ -1,15 +1,17 @@
 package com.akat.filmreel.ui.common;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.akat.filmreel.di.ApplicationScope;
 
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import javax.inject.Singleton;
 
-@Singleton
+@ApplicationScope
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private final Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
@@ -19,8 +21,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         this.creators = creators;
     }
 
+    @SuppressWarnings("unchecked")
+    @NonNull
     @Override
-    public <T extends ViewModel> T create(Class<T> modelClass) {
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         Provider<? extends ViewModel> creator = creators.get(modelClass);
         if (creator == null) {
             for (Map.Entry<Class<? extends ViewModel>, Provider<ViewModel>> entry : creators.entrySet()) {

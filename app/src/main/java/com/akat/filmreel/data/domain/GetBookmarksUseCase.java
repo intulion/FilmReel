@@ -1,15 +1,15 @@
 package com.akat.filmreel.data.domain;
 
 import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.di.ApplicationScope;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
 
-@Singleton
+@ApplicationScope
 public class GetBookmarksUseCase {
 
     private final Repository repository;

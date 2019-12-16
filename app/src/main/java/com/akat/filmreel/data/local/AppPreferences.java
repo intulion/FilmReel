@@ -5,12 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
+import com.akat.filmreel.di.ApplicationScope;
+
 import java.util.Locale;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
+@ApplicationScope
 public class AppPreferences implements Preferences {
 
     private static final String LAST_PAGE = "last_page";

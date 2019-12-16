@@ -9,12 +9,10 @@ import com.akat.filmreel.ui.movieDetail.MovieDetailFragment;
 import com.akat.filmreel.ui.movieList.MovieListFragment;
 import com.akat.filmreel.ui.search.SearchFragment;
 
-import javax.inject.Singleton;
-
 import dagger.BindsInstance;
 import dagger.Component;
 
-@Singleton
+@ApplicationScope
 @Component(modules = {
         AppModule.class,
         NetworkModule.class,
@@ -37,7 +35,6 @@ public interface AppComponent {
 
     @Component.Factory
     interface Factory {
-        // With @BindsInstance, the Context passed in will be available in the graph
         AppComponent create(@BindsInstance Context context);
     }
 }

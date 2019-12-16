@@ -7,7 +7,6 @@ import com.akat.filmreel.places.PlacesApiService;
 import com.akat.filmreel.util.Constants;
 
 import javax.inject.Named;
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -22,8 +21,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class PlacesModule {
 
     @Provides
-    @Singleton
-    @Named("PlacesOkHttp")
+    @ApplicationScope
+    @Named("places")
     OkHttpClient provideOkHttp() {
         return new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
@@ -47,9 +46,9 @@ class PlacesModule {
     }
 
     @Provides
-    @Singleton
-    @Named("PlacesRetrofit")
-    Retrofit provideRetrofit(@Named("PlacesOkHttp") OkHttpClient client) {
+    @ApplicationScope
+    @Named("places")
+    Retrofit provideRetrofit(@Named("places") OkHttpClient client) {
         return new Retrofit.Builder()
                 .baseUrl(Constants.HTTP.PLACES_URL)
                 .client(client)
@@ -59,8 +58,8 @@ class PlacesModule {
     }
 
     @Provides
-    @Singleton
-    PlacesApiService providePlacesApi(@Named("PlacesRetrofit") Retrofit retrofit) {
+    @ApplicationScope
+    PlacesApiService providePlacesApi(@Named("places") Retrofit retrofit) {
         return retrofit.create(PlacesApiService.class);
     }
 }

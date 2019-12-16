@@ -7,17 +7,17 @@ import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.model.MovieEntity;
 import com.akat.filmreel.data.network.NetworkDataSource;
+import com.akat.filmreel.di.ApplicationScope;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-@Singleton
+@ApplicationScope
 public class MovieRepository implements Repository {
 
     private NetworkDataSource networkDataSource;

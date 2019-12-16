@@ -15,42 +15,40 @@ import com.akat.filmreel.data.network.ApiService;
 import com.akat.filmreel.data.network.MovieNetworkDataSource;
 import com.akat.filmreel.data.network.NetworkDataSource;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
 @Module
 class AppModule {
 
-    @Singleton
     @Provides
+    @ApplicationScope
     Preferences providePreferences(Context context) {
         return new AppPreferences(context);
     }
 
-    @Singleton
     @Provides
+    @ApplicationScope
     NetworkDataSource provideNetworkDataSource(ApiService apiService) {
         return new MovieNetworkDataSource(apiService);
     }
 
-    @Singleton
     @Provides
+    @ApplicationScope
     Repository provideRepository(LocalDataSource localDataSource,
                                  NetworkDataSource networkDataSource,
                                  Preferences preferences) {
         return new MovieRepository(localDataSource, networkDataSource, preferences);
     }
 
-    @Singleton
     @Provides
+    @ApplicationScope
     LocalDataSource provideLocalDataSource(AppDatabase database) {
         return new MovieLocalDataSource(database);
     }
 
-    @Singleton
     @Provides
+    @ApplicationScope
     AppDatabase provideAppDatabase(Context context) {
         return Room.databaseBuilder(context,
                 AppDatabase.class, AppDatabase.DATABASE_NAME)

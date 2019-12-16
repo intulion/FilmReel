@@ -5,8 +5,6 @@ import com.akat.filmreel.data.network.ApiService;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.NetworkUtils;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.HttpUrl;
@@ -19,8 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 class NetworkModule {
 
-    @Singleton
     @Provides
+    @ApplicationScope
     OkHttpClient provideOkHttp() {
         return new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
@@ -41,7 +39,7 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     Retrofit provideRetrofit(OkHttpClient client) {
         return new Retrofit.Builder()
                 .baseUrl(Constants.HTTP.BASE_URL)
@@ -52,7 +50,7 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     ApiService provideApi(Retrofit retrofit) {
         return retrofit.create(ApiService.class);
     }

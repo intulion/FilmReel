@@ -1,13 +1,13 @@
 package com.akat.filmreel.places;
 
+import com.akat.filmreel.di.ApplicationScope;
 import com.akat.filmreel.places.dto.PlacesResponse;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Single;
 
-@Singleton
+@ApplicationScope
 public class PlacesRepository {
 
     private final PlacesDataSource networkDataSource;
