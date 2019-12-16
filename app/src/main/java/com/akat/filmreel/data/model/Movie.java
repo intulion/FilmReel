@@ -2,6 +2,7 @@ package com.akat.filmreel.data.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Movie {
 
@@ -153,5 +154,33 @@ public class Movie {
 
     public void setBookmarkDate(Date bookmarkDate) {
         this.bookmarkDate = bookmarkDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return id == movie.id &&
+                title.equals(movie.title) &&
+                Objects.equals(popularity, movie.popularity) &&
+                Objects.equals(voteCount, movie.voteCount) &&
+                Objects.equals(video, movie.video) &&
+                Objects.equals(posterPath, movie.posterPath) &&
+                Objects.equals(adult, movie.adult) &&
+                Objects.equals(backdropPath, movie.backdropPath) &&
+                Objects.equals(originalLanguage, movie.originalLanguage) &&
+                Objects.equals(originalTitle, movie.originalTitle) &&
+                Objects.equals(voteAverage, movie.voteAverage) &&
+                Objects.equals(overview, movie.overview) &&
+                Objects.equals(releaseDate, movie.releaseDate) &&
+                Objects.equals(genreIds, movie.genreIds) &&
+                Objects.equals(bookmark, movie.bookmark) &&
+                Objects.equals(bookmarkDate, movie.bookmarkDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, popularity, voteCount, video, posterPath, adult, backdropPath, originalLanguage, originalTitle, title, voteAverage, overview, releaseDate, genreIds, bookmark, bookmarkDate);
     }
 }

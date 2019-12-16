@@ -16,23 +16,17 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.List;
 
-import static com.akat.filmreel.util.LiveDataTestUtil.getValue;
-import static com.akat.filmreel.util.TestUtils.createMovie;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static com.akat.filmreel.util.TestUtils.createMovieEntity;
 
 public class BookmarksDaoTest {
     private AppDatabase database;
     private BookmarksDao bookmarksDao;
     private TopRatedDao topRatedDao;
-    private MovieEntity movieA = createMovie(238, "The Godfather", 8.6, 10889);
-    private MovieEntity movieB = createMovie(278, "The Shawshank Redemption", 8.6, 14231);
-    private MovieEntity movieC = createMovie(680, "Pulp Fiction", 8.5, 16614);
-    private Bookmark bookmark = new Bookmark(movieB.getId());
+    private final MovieEntity movieA = createMovieEntity(238, "A");
+    private final MovieEntity movieB = createMovieEntity(278, "B");
+    private final MovieEntity movieC = createMovieEntity(680, "C");
+    private final Bookmark bookmark = new Bookmark(movieB.getId());
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -53,43 +47,45 @@ public class BookmarksDaoTest {
     }
 
     @Test
-    public void deleteByMovieId() throws InterruptedException {
+    public void setBookmark() {
         long movieId = bookmark.getMovieId();
 
         // Set bookmark
-        bookmarksDao.insert(bookmark);
+        bookmarksDao.insert(bookmark)
+                .test()
+                .assertNoErrors();
 
         // Ensure that movie has been bookmarked
-        Movie movie = getValue(topRatedDao.getById(movieId));
-        assertTrue(movie.isBookmarked());
+        topRatedDao.getById(movieId)
+                .test()
+                .assertNoErrors()
+                .assertValue(Movie::isBookmarked);
 
         // Remove bookmark
-        bookmarksDao.deleteByMovieId(bookmark.getMovieId());
+        bookmarksDao.deleteByMovieId(bookmark.getMovieId())
+                .test()
+                .assertNoErrors();
 
         // Ensure that movie has't been bookmarked
-        movie = getValue(topRatedDao.getById(movieId));
-        assertFalse(movie.isBookmarked());
+        topRatedDao.getById(movieId)
+                .test()
+                .assertNoErrors()
+                .assertValue(movie -> !movie.isBookmarked());
+        ;
     }
 
     @Test
-    public void getBookmarkedMovies() throws InterruptedException {
-        bookmarksDao.insert(bookmark);
+    public void getBookmarkedMovies() {
+        // Set bookmark
+        bookmarksDao.insert(bookmark)
+                .test()
+                .assertNoErrors();
 
-        List<Movie> movieList = getValue(topRatedDao.getBookmarkedMovies());
-
-        assertThat(movieList.size(), equalTo(1));
-        assertThat(movieList.get(0).getId(), equalTo(bookmark.getMovieId()));
-    }
-
-    @Test
-    public void deleteNotMarked() throws InterruptedException {
-        bookmarksDao.insert(bookmark);
-        topRatedDao.deleteNotMarked();
-
-        // Get all movies
-        List<Movie> movieList = getValue(topRatedDao.getTopRated());
-
-        assertThat(movieList.size(), equalTo(1));
-        assertThat(movieList.get(0).getId(), equalTo(bookmark.getMovieId()));
+        // Ensure that we get just one movie with bookmark
+        bookmarksDao.getBookmarkedMovies()
+                .test()
+                .assertNoErrors()
+                .assertValue(movies -> movies.get(0).isBookmarked())
+                .assertValue(movies -> movies.get(0).getId() == bookmark.getMovieId());
     }
 }

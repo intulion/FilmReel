@@ -34,7 +34,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MovieInteractorTest {
+public class GetMoviesUseCaseTest {
     private AppDatabase database;
     private GetMoviesUseCase getMoviesUseCase;
     private MockWebServer mockWebServer = new MockWebServer();
@@ -56,24 +56,21 @@ public class MovieInteractorTest {
 
         // Local data source
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
-        LocalDataSource localDataSource = MovieLocalDataSource.getInstance(database.topRatedDao(), database.bookmarksDao());
+        LocalDataSource localDataSource = new MovieLocalDataSource(database);
 
         // Preferences
         AppPreferences preferences = mock(AppPreferences.class);
         when(preferences.getLastPage()).thenReturn(0);
         when(preferences.getTotalPages()).thenReturn(1);
 
-        // Network data source
-        ApiManager manager = new MockApiManager(mockWebServer.url("/"));
-        NetworkDataSource networkDataSource = MovieNetworkDataSource.getInstance(manager);
-
-        // Repository
-        MovieRepository repository = MovieRepository.getInstance(
-                localDataSource,
-                networkDataSource,
-                preferences);
-
-        getMoviesUseCase = new GetMoviesUseCase(repository);
+//        // Network data source
+//        ApiManager manager = new MockApiManager(mockWebServer.url("/"));
+//        NetworkDataSource networkDataSource = new MovieNetworkDataSource(manager);
+//
+//        // Repository
+//        MovieRepository repository = new MovieRepository(localDataSource, networkDataSource, preferences);
+//
+//        getMoviesUseCase = new GetMoviesUseCase(repository);
     }
 
     private String getBody() {
@@ -128,14 +125,10 @@ public class MovieInteractorTest {
     public void tearDown() throws Exception {
         database.close();
         mockWebServer.shutdown();
-
-        clearSingleton(MovieLocalDataSource.class);
-        clearSingleton(MovieNetworkDataSource.class);
-        clearSingleton(MovieRepository.class);
     }
 
     @Test
-    public void getMovies_fromNetwork() throws InterruptedException {
+    public void getMovies_fromNetwork() {
 //        List<Movie> movies = getValue(getMoviesUseCase.observeNowPlaying());
 //
 //        assertNotNull(movies);

@@ -1,8 +1,5 @@
 package com.akat.filmreel.data;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import com.akat.filmreel.data.local.LocalDataSource;
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
@@ -11,74 +8,81 @@ import com.akat.filmreel.data.model.MovieEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.akat.filmreel.util.TestUtils.toMovieWithBookmark;
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
+
+import static com.akat.filmreel.util.TestUtils.fromEntity;
 
 public class FakeLocalDataSource implements LocalDataSource {
 
     private List<Movie> movieList;
-    private MutableLiveData<List<Movie>> moviesLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<Movie>> bookmarkList = new MutableLiveData<>();
 
     public FakeLocalDataSource(List<Movie> movies) {
         this.movieList = movies;
-        this.moviesLiveData.setValue(movies);
     }
 
     @Override
-    public LiveData<List<Movie>> getMovies() {
-        return moviesLiveData;
+    public Flowable<List<Movie>> getMovies() {
+        return Flowable.just(movieList);
     }
 
     @Override
-    public LiveData<List<Movie>> getBookmarkedMovies() {
+    public Flowable<List<Movie>> getNowPlayingMovies() {
+        return Flowable.just(movieList);
+    }
+
+    @Override
+    public Flowable<List<Movie>> getBookmarkedMovies() {
         List<Movie> newList = new ArrayList<>();
         for (Movie movie : movieList) {
             if (movie.isBookmarked()) {
                 newList.add(movie);
             }
         }
-
-        bookmarkList.setValue(newList);
-        return bookmarkList;
+        return Flowable.just(newList);
     }
 
     @Override
-    public LiveData<Movie> getMovie(long movieId) {
+    public Single<Movie> getMovie(long movieId) {
         return null;
     }
 
     @Override
     public void addMovies(List<MovieEntity> movies, int page) {
-        List<Movie> newList = new ArrayList<>();
         for (MovieEntity movie : movies) {
-            newList.add(toMovieWithBookmark(movie));
+            movieList.add(fromEntity(movie));
         }
-        moviesLiveData.setValue(newList);
     }
 
     @Override
-    public void deleteNotMarkedMovies() {
-        List<Movie> newList = new ArrayList<>();
-        for (Movie movie : movieList) {
-            if (movie.isBookmarked()) {
-                newList.add(movie);
-            }
-        }
-        moviesLiveData.setValue(newList);
+    public void deleteTopRatedMovies() {
+
     }
 
     @Override
-    public void setBookmark(Bookmark bookmark) {
+    public Completable setBookmark(Bookmark bookmark) {
         for (Movie movie : movieList) {
             if (movie.getId() == bookmark.getMovieId()) {
                 movie.setBookmark(true);
             }
         }
-        moviesLiveData.setValue(movieList);
+        return Completable.complete();
     }
 
     @Override
-    public void removeBookmark(long movieId) {
+    public Completable removeBookmark(long movieId) {
+        for (Movie movie : movieList) {
+            if (movie.getId() == movieId) {
+                movie.setBookmark(false);
+            }
+        }
+        return Completable.complete();
+    }
 
+    @Override
+    public Completable addMovie(MovieEntity movie) {
+        movieList.add(fromEntity(movie));
+        return Completable.complete();
     }
 }

@@ -48,6 +48,30 @@ public class TestUtils {
         return movie;
     }
 
+    public static MovieEntity createMovieEntity(long id, String title) {
+        MovieEntity movie = new MovieEntity();
+        movie.setId(id);
+        movie.setTitle(title);
+
+        return movie;
+    }
+
+    public static Movie createMovie(long id, String title, boolean bookmark) {
+        Movie movie = new Movie();
+        movie.setId(id);
+        movie.setTitle(title);
+        movie.setBookmark(bookmark);
+
+        return movie;
+    }
+
+    public static Movie fromEntity(MovieEntity entity) {
+        Movie movie = new Movie();
+        movie.setId(entity.getId());
+        movie.setTitle(entity.getTitle());
+        return movie;
+    }
+
     public static Movie createMovieWithBookmark(long id, String title, double voteAverage, int voteCount, boolean bookmark) {
         Movie movie = new Movie();
         movie.setId(id);

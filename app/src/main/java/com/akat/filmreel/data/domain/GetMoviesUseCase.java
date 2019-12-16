@@ -17,7 +17,7 @@ public class GetMoviesUseCase {
     private final Repository repository;
 
     @Inject
-    GetMoviesUseCase(Repository repository) {
+    public GetMoviesUseCase(Repository repository) {
         this.repository = repository;
     }
 
