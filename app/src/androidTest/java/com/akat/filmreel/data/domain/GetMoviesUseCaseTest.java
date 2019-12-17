@@ -1,46 +1,42 @@
-package com.akat.filmreel.data;
+package com.akat.filmreel.data.domain;
 
 import android.content.Context;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.room.Room;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.akat.filmreel.data.domain.GetMoviesUseCase;
-import com.akat.filmreel.data.domain.MovieRepository;
 import com.akat.filmreel.data.local.AppDatabase;
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.local.LocalDataSource;
 import com.akat.filmreel.data.local.MovieLocalDataSource;
-import com.akat.filmreel.data.network.ApiManager;
+import com.akat.filmreel.data.network.ApiService;
 import com.akat.filmreel.data.network.MovieNetworkDataSource;
 import com.akat.filmreel.data.network.NetworkDataSource;
-import com.akat.filmreel.util.MockApiManager;
+import com.akat.filmreel.di.DaggerTestAppComponent;
+import com.akat.filmreel.di.TestAppComponent;
+import com.akat.filmreel.di.TestNetworkModule;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.HttpURLConnection;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-
-import static com.akat.filmreel.util.TestUtils.clearSingleton;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class GetMoviesUseCaseTest {
     private AppDatabase database;
     private GetMoviesUseCase getMoviesUseCase;
     private MockWebServer mockWebServer = new MockWebServer();
 
-    @Rule
-    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+    @Inject
+    ApiService apiService;
+    @Inject
+    AppPreferences preferences;
 
     @Before
     public void setUp() throws Exception {
@@ -54,23 +50,24 @@ public class GetMoviesUseCaseTest {
         mockWebServer.enqueue(response);
         mockWebServer.start(8080);
 
+        // Dagger component
+        TestAppComponent component = DaggerTestAppComponent.builder()
+                .testNetworkModule(
+                        new TestNetworkModule(mockWebServer.url("/"))
+                ).build();
+        component.inject(this);
+
         // Local data source
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
         LocalDataSource localDataSource = new MovieLocalDataSource(database);
 
-        // Preferences
-        AppPreferences preferences = mock(AppPreferences.class);
-        when(preferences.getLastPage()).thenReturn(0);
-        when(preferences.getTotalPages()).thenReturn(1);
+        // Network data source
+        NetworkDataSource networkDataSource = new MovieNetworkDataSource(apiService);
 
-//        // Network data source
-//        ApiManager manager = new MockApiManager(mockWebServer.url("/"));
-//        NetworkDataSource networkDataSource = new MovieNetworkDataSource(manager);
-//
-//        // Repository
-//        MovieRepository repository = new MovieRepository(localDataSource, networkDataSource, preferences);
-//
-//        getMoviesUseCase = new GetMoviesUseCase(repository);
+        // Repository
+        MovieRepository repository = new MovieRepository(localDataSource, networkDataSource, preferences);
+
+        getMoviesUseCase = new GetMoviesUseCase(repository);
     }
 
     private String getBody() {
@@ -129,9 +126,9 @@ public class GetMoviesUseCaseTest {
 
     @Test
     public void getMovies_fromNetwork() {
-//        List<Movie> movies = getValue(getMoviesUseCase.observeNowPlaying());
-//
-//        assertNotNull(movies);
-//        assertThat(movies.size(), equalTo(2));
+        getMoviesUseCase.fetchTopRated(false)
+                .test()
+                .assertNoErrors()
+                .assertValue(response -> response.getResults().size() == 2);
     }
 }

@@ -8,7 +8,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.data.model.MovieEntity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,15 +16,14 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static com.akat.filmreel.util.TestUtils.createMovieEntity;
+import static com.akat.filmreel.util.TestUtils.movieA;
+import static com.akat.filmreel.util.TestUtils.movieB;
+import static com.akat.filmreel.util.TestUtils.movieC;
 
 public class BookmarksDaoTest {
     private AppDatabase database;
     private BookmarksDao bookmarksDao;
     private TopRatedDao topRatedDao;
-    private final MovieEntity movieA = createMovieEntity(238, "A");
-    private final MovieEntity movieB = createMovieEntity(278, "B");
-    private final MovieEntity movieC = createMovieEntity(680, "C");
     private final Bookmark bookmark = new Bookmark(movieB.getId());
 
     @Rule

@@ -1,28 +1,25 @@
 package com.akat.filmreel.data;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-
 import com.akat.filmreel.data.domain.MovieRepository;
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.model.MovieEntity;
+import com.akat.filmreel.di.DaggerTestAppComponent;
+import com.akat.filmreel.di.TestAppComponent;
+import com.akat.filmreel.di.TestNetworkModule;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import static com.akat.filmreel.util.TestUtils.createMovie;
 import static com.akat.filmreel.util.TestUtils.createMovieEntity;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class MovieRepositoryTest {
-
-    @Rule
-    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private final List<MovieEntity> networkMovieList = Arrays.asList(
             createMovieEntity(238, "A"),
@@ -35,6 +32,8 @@ public class MovieRepositoryTest {
 
     private final List<Movie> movieList = Arrays.asList(movieA, movieB, movieC);
 
+    @Inject
+    AppPreferences preferences;
     private MovieRepository repository;
 
     @Before
@@ -42,10 +41,11 @@ public class MovieRepositoryTest {
         FakeLocalDataSource localDataSource = new FakeLocalDataSource(movieList);
         FakeNetworkDataSource networkDataSource = new FakeNetworkDataSource(networkMovieList);
 
-        AppPreferences preferences = mock(AppPreferences.class);
-        when(preferences.getLastPage()).thenReturn(0);
-        when(preferences.getTotalPages()).thenReturn(1);
-        when(preferences.getLocale()).thenReturn("en-US");
+        // Dagger component
+        TestAppComponent component = DaggerTestAppComponent.builder()
+                .testNetworkModule(new TestNetworkModule(null))
+                .build();
+        component.inject(this);
 
         repository = new MovieRepository(localDataSource, networkDataSource, preferences);
     }
