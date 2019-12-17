@@ -2,6 +2,8 @@
 <resources>
     <dimen name="image_poster_width">80dp</dimen>
     <dimen name="image_poster_height">120dp</dimen>
+    <dimen name="image_small_poster_width">40dp</dimen>
+    <dimen name="image_small_poster_height">60dp</dimen>
     <dimen name="image_backdrop_height">200dp</dimen>
     <dimen name="small_icon_size">14sp</dimen>
 
@@ -12,6 +14,7 @@
     <dimen name="nav_header_spacing">16dp</dimen>
     <dimen name="nav_header_height">168dp</dimen>
     <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="small_card_corner_radius">4dp</dimen>
 
     <dimen name="spacing_small">2dp</dimen>
     <dimen name="spacing_medium">4dp</dimen>

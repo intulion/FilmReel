@@ -1,9 +1,13 @@
 package com.akat.filmreel.data.network;
 
-import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.data.model.ApiResponse;
 
-import java.util.List;
+import io.reactivex.Single;
 
 public interface NetworkDataSource {
-    List<Movie> getTopRatedMovies(int pageNumber);
+    Single<ApiResponse> getTopRatedMovies(int pageNumber, String locale);
+
+    Single<ApiResponse> getNowPlayingMovies(int pageNumber, String locale);
+
+    Single<ApiResponse> searchMovies(String query, int pageNumber, String locale);
 }

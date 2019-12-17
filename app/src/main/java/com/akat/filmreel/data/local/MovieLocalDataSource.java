@@ -1,68 +1,70 @@
 package com.akat.filmreel.data.local;
 
-import androidx.lifecycle.LiveData;
-
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.MovieEntity;
 
 import java.util.List;
 
-public class MovieLocalDataSource implements LocalDataSource {
+import javax.inject.Inject;
 
-    private static final Object LOCK = new Object();
-    private static MovieLocalDataSource sInstance;
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
+
+public class MovieLocalDataSource implements LocalDataSource {
 
     private final TopRatedDao topRatedDao;
     private final BookmarksDao bookmarksDao;
 
-    private MovieLocalDataSource(TopRatedDao topRatedDao, BookmarksDao bookmarksDao) {
-        this.topRatedDao = topRatedDao;
-        this.bookmarksDao = bookmarksDao;
+    @Inject
+    public MovieLocalDataSource(AppDatabase database) {
+        topRatedDao = database.topRatedDao();
+        bookmarksDao = database.bookmarksDao();
     }
-
-    public static MovieLocalDataSource getInstance(TopRatedDao topRatedDao, BookmarksDao bookmarksDao) {
-        if (sInstance == null) {
-            synchronized (LOCK) {
-                sInstance = new MovieLocalDataSource(topRatedDao, bookmarksDao);
-            }
-        }
-        return sInstance;
-    }
-
 
     @Override
-    public LiveData<List<MovieWithBookmark>> getMovies() {
+    public Flowable<List<Movie>> getMovies() {
         return topRatedDao.getTopRated();
     }
 
     @Override
-    public LiveData<List<MovieWithBookmark>> getBookmarkedMovies() {
-        return topRatedDao.getBookmarkedMovies();
+    public Flowable<List<Movie>> getNowPlayingMovies() {
+        return topRatedDao.getNowPlaying();
     }
 
     @Override
-    public LiveData<MovieWithBookmark> getMovie(long movieId) {
+    public Flowable<List<Movie>> getBookmarkedMovies() {
+        return bookmarksDao.getBookmarkedMovies();
+    }
+
+    @Override
+    public Single<Movie> getMovie(long movieId) {
         return topRatedDao.getById(movieId);
     }
 
     @Override
-    public void addMovies(List<Movie> movies, int page) {
+    public void addMovies(List<MovieEntity> movies, int page) {
         topRatedDao.addTopRatedMovies(movies, page);
     }
 
     @Override
-    public void deleteNotMarkedMovies() {
-        topRatedDao.deleteNotMarked();
+    public void deleteTopRatedMovies() {
+        topRatedDao.deleteAll();
     }
 
     @Override
-    public void setBookmark(Bookmark bookmark) {
-        bookmarksDao.insert(bookmark);
+    public Completable setBookmark(Bookmark bookmark) {
+        return bookmarksDao.insert(bookmark);
     }
 
     @Override
-    public void removeBookmark(long movieId) {
-        bookmarksDao.deleteByMovieId(movieId);
+    public Completable removeBookmark(long movieId) {
+        return bookmarksDao.deleteByMovieId(movieId);
+    }
+
+    @Override
+    public Completable addMovie(MovieEntity movie) {
+        return topRatedDao.insertMovie(movie);
     }
 }

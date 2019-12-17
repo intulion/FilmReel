@@ -5,30 +5,26 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
+import com.akat.filmreel.di.ApplicationScope;
+
 import java.util.Locale;
 
-public class AppPreferences {
+import javax.inject.Inject;
+
+@ApplicationScope
+public class AppPreferences implements Preferences {
 
     private static final String LAST_PAGE = "last_page";
     private static final String TOTAL_PAGES = "total_pages";
 
-    private static final Object LOCK = new Object();
-    private static AppPreferences sInstance;
     private final Context context;
 
+    @Inject
     public AppPreferences(Context context) {
         this.context = context;
     }
 
-    public synchronized static AppPreferences getInstance(Context context) {
-        if (sInstance == null) {
-            synchronized (LOCK) {
-                sInstance = new AppPreferences(context);
-            }
-        }
-        return sInstance;
-    }
-
+    @Override
     public void setPageData(int lastPage, int totalPages) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
@@ -38,16 +34,19 @@ public class AppPreferences {
         editor.apply();
     }
 
+    @Override
     public int getLastPage() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getInt(LAST_PAGE, 0);
     }
 
+    @Override
     public int getTotalPages() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getInt(TOTAL_PAGES, 1);
     }
 
+    @Override
     public String getLocale() {
         Locale currentLocale = getCurrentLocale(context);
         if (currentLocale.getLanguage().equals("ru")) {

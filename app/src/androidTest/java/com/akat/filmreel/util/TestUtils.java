@@ -11,63 +11,44 @@ import androidx.test.espresso.intent.matcher.IntentMatchers;
 import androidx.test.espresso.matcher.BoundedMatcher;
 
 import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.MovieEntity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
-
 import static androidx.core.util.Preconditions.checkNotNull;
 
 public class TestUtils {
 
-    public static final List<Movie> testMovies;
-    public static final Movie testMovie;
+    public static final MovieEntity testMovie = createMovieEntity(238, "The Godfather");
+    public static final MovieEntity movieA = createMovieEntity(238, "A");
+    public static final MovieEntity movieB = createMovieEntity(278, "B");
+    public static final MovieEntity movieC = createMovieEntity(680, "C");
+    public static final MovieEntity movieD = createMovieEntity(497, "D");
 
-    static {
-        testMovies = Arrays.asList(
-                createMovie(238, "The Godfather", 8.6, 10889),
-                createMovie(278, "The Shawshank Redemption", 8.6, 14231),
-                createMovie(680, "Pulp Fiction", 8.5, 16614)
-        );
-
-        testMovie = testMovies.get(0);
-    }
-
-    public static Movie createMovie(long id, String title, double voteAverage, int voteCount) {
-        Movie movie = new Movie();
+    public static MovieEntity createMovieEntity(long id, String title) {
+        MovieEntity movie = new MovieEntity();
         movie.setId(id);
         movie.setTitle(title);
-        movie.setVoteAverage(voteAverage);
-        movie.setVoteCount(voteCount);
 
         return movie;
     }
 
-    public static MovieWithBookmark createMovieWithBookmark(long id, String title, double voteAverage, int voteCount, boolean bookmark) {
-        MovieWithBookmark movie = new MovieWithBookmark();
+    public static Movie createMovie(long id, String title, boolean bookmark) {
+        Movie movie = new Movie();
         movie.setId(id);
         movie.setTitle(title);
-        movie.setVoteAverage(voteAverage);
-        movie.setVoteCount(voteCount);
         movie.setBookmark(bookmark);
 
         return movie;
     }
 
-    public static MovieWithBookmark toMovieWithBookmark(Movie movie) {
-        MovieWithBookmark movieWithBookmark = new MovieWithBookmark();
-        movieWithBookmark.setId(movie.getId());
-        movieWithBookmark.setTitle(movie.getTitle());
-        movieWithBookmark.setVoteAverage(movie.getVoteAverage());
-        movieWithBookmark.setVoteCount(movie.getVoteCount());
-        movieWithBookmark.setBookmark(false);
-
-        return movieWithBookmark;
+    public static Movie fromEntity(MovieEntity entity) {
+        Movie movie = new Movie();
+        movie.setId(entity.getId());
+        movie.setTitle(entity.getTitle());
+        return movie;
     }
 
     public static Matcher<Intent> chooser(Matcher<Intent> matcher) {
@@ -110,11 +91,4 @@ public class TestUtils {
         return checkNotNull(((Toolbar) activity.findViewById(toolbarId))
                 .getNavigationContentDescription()).toString();
     }
-
-    public static void clearSingleton(Class singleton) throws NoSuchFieldException, IllegalAccessException {
-        Field instance = singleton.getDeclaredField("sInstance");
-        instance.setAccessible(true);
-        instance.set(null, null);
-    }
-
 }

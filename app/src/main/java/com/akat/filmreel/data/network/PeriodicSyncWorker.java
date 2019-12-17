@@ -4,49 +4,47 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.work.Worker;
+import androidx.work.RxWorker;
 import androidx.work.WorkerParameters;
 
+import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.local.LocalDataSource;
-import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.data.domain.Repository;
 import com.akat.filmreel.ui.MainActivity;
-import com.akat.filmreel.util.InjectorUtils;
 
-import java.util.List;
+import javax.inject.Inject;
 
-public class MovieSyncWorker extends Worker {
+import io.reactivex.Single;
 
+public class PeriodicSyncWorker extends RxWorker {
+    private static final String TAG = "PeriodicSyncWorker";
+
+    @Inject
+    Repository repository;
     private Context context;
 
-    public MovieSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public PeriodicSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.context = context;
+        MovieApplication.getAppComponent().inject(this);
     }
 
     @NonNull
     @Override
-    public Result doWork() {
-        LocalDataSource localDataSource = InjectorUtils.provideLocalDataSource(context);
-        NetworkDataSource networkDataSource = InjectorUtils.provideNetworkDataSource(context);
-
-        // Make request - update first page only
-        int page = 1;
-        List<Movie> movieList = networkDataSource.getTopRatedMovies(page);
-
-        if (!movieList.isEmpty()) {
-            localDataSource.addMovies(movieList, page);
-
-            sendNotification(context.getString(R.string.sync_title),
-                    context.getString(R.string.sync_desc));
-
-            return Result.success();
-        }
-
-        return Result.failure();
+    public Single<Result> createWork() {
+        return repository.fetchTopRatedMovies(true)
+                .doOnSuccess(apiResponse -> {
+                    Log.d(TAG, "Successful sync.");
+                    repository.saveMovies(apiResponse);
+                    sendNotification(context.getString(R.string.sync_title),
+                            context.getString(R.string.sync_desc));
+                })
+                .map(apiResponse -> Result.success())
+                .onErrorReturn(throwable -> Result.failure());
     }
 
     private void sendNotification(String messageTitle, String messageBody) {

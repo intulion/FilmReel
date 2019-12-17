@@ -45,4 +45,12 @@
         android:name="com.akat.filmreel.ui.about.AboutFragment"
         android:label="@string/about"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/fragment_search"
+        android:name="com.akat.filmreel.ui.search.SearchFragment"
+        android:label="@string/search_movies">
+        <action
+            android:id="@+id/action_fragment_search_to_fragment_movie_detail"
+            app:destination="@id/fragment_movie_detail" />
+    </fragment>
 </navigation>

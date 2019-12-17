@@ -60,8 +60,10 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitVersion"
 
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"
     annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
 
     implementation "androidx.lifecycle:lifecycle-runtime:$rootProject.lifecycleVersion"
@@ -72,6 +74,13 @@ dependencies {
     implementation "androidx.navigation:navigation-ui:$rootProject.navigationVersion"
 
     implementation "androidx.work:work-runtime:$rootProject.workVersion"
+    implementation "androidx.work:work-rxjava2:$rootProject.workVersion"
+
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
+
+    implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
     implementation "androidx.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
 
@@ -89,5 +98,7 @@ dependencies {
     androidTestImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     androidTestImplementation "org.mockito:mockito-android:$rootProject.mockitoVersion"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:$rootProject.mockwebserverVersion"
+    androidTestImplementation "com.google.dagger:dagger:$rootProject.daggerVersion"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 }
 

@@ -10,6 +10,9 @@
     <string name="sync_notification_channel_id" translatable="false">sync_channel</string>
     <string name="sync_notification_channel_name" translatable="true">Synchronization</string>
 
+    <string name="movie_rating_format" translatable="false">%1$.1f (%2$d)</string>
+    <string name="date_format">%1$td.%1$tm.%1$tY</string>
+
     <string name="top_rated_movies">Top Rated Movies</string>
     <string name="movie_details">Movie Details</string>
 
@@ -41,6 +44,16 @@
     <string name="sync_title">Synchronization</string>
     <string name="sync_desc">Movies has been synced</string>
 
-    <string name="movie_rating_format" translatable="false">%1$.1f (%2$d)</string>
-    <string name="date_format">%1$td.%1$tm.%1$tY</string>
+    <string name="search">Search</string>
+    <string name="search_movies">Search for Movies</string>
+    <string name="search_no_result">No movies found</string>
+
+    <string name="error_occurred">An error has occurred</string>
+    <string name="error_limit">Request limit exceeded</string>
+    <string name="error_access_denied">Access denied</string>
+    <string name="error_location">Failed to get current location</string>
+
+    <string name="message_bookmark_added">Bookmarked</string>
+    <string name="message_bookmark_removed">Removed from bookmarks</string>
+
 </resources>

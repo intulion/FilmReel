@@ -33,4 +33,13 @@
     <string name="sync_title">Синхронизация</string>
     <string name="top_rated_movies">Лучшие фильмы</string>
     <string name="version">Версия</string>
+    <string name="search">Поиск</string>
+    <string name="search_movies">Поиск фильмов</string>
+    <string name="search_no_result">Ничего не найдено</string>
+    <string name="error_occurred">Произошла ошибка</string>
+    <string name="error_limit">Превышен лимит запросов</string>
+    <string name="error_access_denied">Доступ запрещен</string>
+    <string name="error_location">Не удалось получить текущее местоположение</string>
+    <string name="message_bookmark_added">Добавлено в закладки</string>
+    <string name="message_bookmark_removed">Удалено из закладок</string>
 </resources>

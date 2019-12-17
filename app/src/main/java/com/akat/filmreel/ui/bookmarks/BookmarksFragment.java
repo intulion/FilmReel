@@ -8,25 +8,40 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.ui.common.MovieListAdapter;
 import com.akat.filmreel.util.Constants;
-import com.akat.filmreel.util.InjectorUtils;
+import com.akat.filmreel.util.SnackbarMessage;
+import com.akat.filmreel.util.SnackbarUtils;
+
+import javax.inject.Inject;
 
 public class BookmarksFragment extends Fragment
         implements MovieListAdapter.OnItemClickHandler {
+
+    @Inject
+    public ViewModelProvider.Factory factory;
 
     private BookmarksViewModel viewModel;
     private MovieListAdapter movieListAdapter;
 
     private RecyclerView recyclerView;
     private View noItemView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        MovieApplication.getAppComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -55,13 +70,12 @@ public class BookmarksFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BookmarksViewModelFactory factory =
-                InjectorUtils.provideBookmarksViewModelFactory(requireActivity());
         viewModel = ViewModelProviders.of(this, factory).get(BookmarksViewModel.class);
         viewModel.getBookmarkedMovies().observe(this, entries -> {
             movieListAdapter.swapItems(entries);
             updateDataView();
         });
+        setupSnackbar();
     }
 
     @Override
@@ -87,5 +101,12 @@ public class BookmarksFragment extends Fragment
             noItemView.setVisibility(View.INVISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setupSnackbar() {
+        viewModel.getSnackbarMessage().observe(this,
+                (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
+                        SnackbarUtils.showSnackbar(getView(), getString(snackbarMessageResourceId))
+        );
     }
 }

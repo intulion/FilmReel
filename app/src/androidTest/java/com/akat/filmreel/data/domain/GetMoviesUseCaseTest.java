@@ -1,8 +1,7 @@
-package com.akat.filmreel.data;
+package com.akat.filmreel.data.domain;
 
 import android.content.Context;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.room.Room;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -10,41 +9,34 @@ import com.akat.filmreel.data.local.AppDatabase;
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.local.LocalDataSource;
 import com.akat.filmreel.data.local.MovieLocalDataSource;
-import com.akat.filmreel.data.model.MovieWithBookmark;
-import com.akat.filmreel.data.network.ApiManager;
+import com.akat.filmreel.data.network.ApiService;
 import com.akat.filmreel.data.network.MovieNetworkDataSource;
 import com.akat.filmreel.data.network.NetworkDataSource;
-import com.akat.filmreel.util.AppExecutors;
-import com.akat.filmreel.util.MockApiManager;
-import com.akat.filmreel.util.SingleExecutors;
+import com.akat.filmreel.di.DaggerTestAppComponent;
+import com.akat.filmreel.di.TestAppComponent;
+import com.akat.filmreel.di.TestNetworkModule;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.HttpURLConnection;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
-import static com.akat.filmreel.util.LiveDataTestUtil.getValue;
-import static com.akat.filmreel.util.TestUtils.clearSingleton;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-public class MovieInteractorTest {
+public class GetMoviesUseCaseTest {
     private AppDatabase database;
-    private MovieInteractor interactor;
+    private GetMoviesUseCase getMoviesUseCase;
     private MockWebServer mockWebServer = new MockWebServer();
 
-    @Rule
-    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+    @Inject
+    ApiService apiService;
+    @Inject
+    AppPreferences preferences;
 
     @Before
     public void setUp() throws Exception {
@@ -58,27 +50,24 @@ public class MovieInteractorTest {
         mockWebServer.enqueue(response);
         mockWebServer.start(8080);
 
+        // Dagger component
+        TestAppComponent component = DaggerTestAppComponent.builder()
+                .testNetworkModule(
+                        new TestNetworkModule(mockWebServer.url("/"))
+                ).build();
+        component.inject(this);
+
         // Local data source
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
-        LocalDataSource localDataSource = MovieLocalDataSource.getInstance(database.topRatedDao(), database.bookmarksDao());
-
-        // Preferences
-        AppPreferences preferences = mock(AppPreferences.class);
-        when(preferences.getLastPage()).thenReturn(0);
-        when(preferences.getTotalPages()).thenReturn(1);
+        LocalDataSource localDataSource = new MovieLocalDataSource(database);
 
         // Network data source
-        ApiManager manager = new MockApiManager(mockWebServer.url("/"));
-        NetworkDataSource networkDataSource = MovieNetworkDataSource.getInstance(manager, preferences);
+        NetworkDataSource networkDataSource = new MovieNetworkDataSource(apiService);
 
         // Repository
-        AppExecutors executors = new SingleExecutors();
-        MovieRepository repository = MovieRepository.getInstance(
-                localDataSource,
-                networkDataSource,
-                executors);
+        MovieRepository repository = new MovieRepository(localDataSource, networkDataSource, preferences);
 
-        interactor = MovieInteractor.getInstance(repository, preferences);
+        getMoviesUseCase = new GetMoviesUseCase(repository);
     }
 
     private String getBody() {
@@ -133,18 +122,13 @@ public class MovieInteractorTest {
     public void tearDown() throws Exception {
         database.close();
         mockWebServer.shutdown();
-
-        clearSingleton(MovieLocalDataSource.class);
-        clearSingleton(MovieNetworkDataSource.class);
-        clearSingleton(MovieRepository.class);
-        clearSingleton(MovieInteractor.class);
     }
 
     @Test
-    public void getMovies_fromNetwork() throws InterruptedException {
-        List<MovieWithBookmark> movies = getValue(interactor.observeMovies());
-
-        assertNotNull(movies);
-        assertThat(movies.size(), equalTo(2));
+    public void getMovies_fromNetwork() {
+        getMoviesUseCase.fetchTopRated(false)
+                .test()
+                .assertNoErrors()
+                .assertValue(response -> response.getResults().size() == 2);
     }
 }

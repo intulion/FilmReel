@@ -1,97 +1,90 @@
 package com.akat.filmreel.data;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-
+import com.akat.filmreel.data.domain.MovieRepository;
+import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.data.model.MovieWithBookmark;
-import com.akat.filmreel.util.AppExecutors;
-import com.akat.filmreel.util.SingleExecutors;
+import com.akat.filmreel.data.model.MovieEntity;
+import com.akat.filmreel.di.DaggerTestAppComponent;
+import com.akat.filmreel.di.TestAppComponent;
+import com.akat.filmreel.di.TestNetworkModule;
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.akat.filmreel.util.LiveDataTestUtil.getValue;
-import static com.akat.filmreel.util.TestUtils.clearSingleton;
+import javax.inject.Inject;
+
 import static com.akat.filmreel.util.TestUtils.createMovie;
-import static com.akat.filmreel.util.TestUtils.createMovieWithBookmark;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static com.akat.filmreel.util.TestUtils.createMovieEntity;
 
 public class MovieRepositoryTest {
 
-    @Rule
-    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
-
-    private List<Movie> networkMovieList = Arrays.asList(
-            createMovie(238, "A", 8.6, 10889),
-            createMovie(278, "B", 8.6, 14231)
+    private final List<MovieEntity> networkMovieList = Arrays.asList(
+            createMovieEntity(238, "A"),
+            createMovieEntity(278, "B")
     );
 
-    private MovieWithBookmark movieA = createMovieWithBookmark(238, "A", 8.6, 10889, false);
-    private MovieWithBookmark movieB = createMovieWithBookmark(278, "B", 8.6, 14231, true);
-    private MovieWithBookmark movieC = createMovieWithBookmark(680, "C", 8.5, 16614, false);
+    private final Movie movieA = createMovie(238, "A", false);
+    private final Movie movieB = createMovie(278, "B", true);
+    private final Movie movieC = createMovie(680, "C", false);
 
-    private List<MovieWithBookmark> movieList = Arrays.asList(movieA, movieB, movieC);
+    private final List<Movie> movieList = Arrays.asList(movieA, movieB, movieC);
 
+    @Inject
+    AppPreferences preferences;
     private MovieRepository repository;
 
     @Before
     public void setUp() {
-        AppExecutors executors = new SingleExecutors();
         FakeLocalDataSource localDataSource = new FakeLocalDataSource(movieList);
         FakeNetworkDataSource networkDataSource = new FakeNetworkDataSource(networkMovieList);
 
-        repository = MovieRepository.getInstance(
-                localDataSource,
-                networkDataSource,
-                executors
-        );
-    }
+        // Dagger component
+        TestAppComponent component = DaggerTestAppComponent.builder()
+                .testNetworkModule(new TestNetworkModule(null))
+                .build();
+        component.inject(this);
 
-    @After
-    public void tearDown() throws NoSuchFieldException, IllegalAccessException {
-        clearSingleton(MovieRepository.class);
+        repository = new MovieRepository(localDataSource, networkDataSource, preferences);
     }
 
     @Test
-    public void getMovies_FromLocal() throws InterruptedException {
-        List<MovieWithBookmark> movies = getValue(repository.getTopRatedMovies());
-
-        assertNotNull(movies);
-        assertThat(movies, equalTo(movieList));
+    public void getMovies_FromLocal() {
+        repository.getTopRatedMovies()
+                .test()
+                .assertNoErrors()
+                .assertValue(movieList);
     }
 
     @Test
-    public void getBookmarkedMovies_FromLocal() throws InterruptedException {
-        List<MovieWithBookmark> movies = getValue(repository.getBookmarkedMovies());
-
-        assertNotNull(movies);
-        assertThat(movies.size(), equalTo(1));
-        assertThat(movies.get(0), equalTo(movieB));
+    public void getBookmarkedMovies_FromLocal() {
+        repository.getBookmarkedMovies()
+                .test()
+                .assertNoErrors()
+                .assertValue(movies -> movies.get(0).isBookmarked())
+                .assertValue(movies -> movies.get(0).getId() == movieB.getId());
     }
 
     @Test
-    public void getMovies_FromNetwork() throws InterruptedException {
-        repository.fetchPage(0, true);
-        List<MovieWithBookmark> movies = getValue(repository.getTopRatedMovies());
-
-        assertNotNull(movies);
-        assertThat(movies.size(), equalTo(2));
+    public void getMovies_FromNetwork() {
+        repository.fetchTopRatedMovies(true)
+                .test()
+                .assertNoErrors()
+                .assertValue(response -> response.getResults().size() == 2);
     }
 
     @Test
-    public void setBookmark() throws InterruptedException {
-        repository.setBookmark(movieA.getId(), movieA.isBookmarked());
-        List<MovieWithBookmark> movies = getValue(repository.getBookmarkedMovies());
+    public void setBookmark() {
+        repository.setBookmark(movieA.getId())
+                .test()
+                .assertNoErrors();
 
-        assertNotNull(movies);
-        assertThat(movies.size(), equalTo(2));
-        assertThat(movies.get(0), equalTo(movieA));
+        repository.getBookmarkedMovies()
+                .test()
+                .assertNoErrors()
+                .assertValue(movies -> movies.size() == 2)
+                .assertValue(movies -> movies.get(0).getId() == movieA.getId());
     }
 }

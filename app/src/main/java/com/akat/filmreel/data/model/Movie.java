@@ -1,60 +1,27 @@
 package com.akat.filmreel.data.model;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-@Entity(tableName = "movies")
 public class Movie {
 
-    @PrimaryKey
-    @SerializedName("id")
-    @Expose
     private long id;
-    @SerializedName("popularity")
-    @Expose
     private Double popularity;
-    @SerializedName("vote_count")
-    @Expose
     private Integer voteCount;
-    @SerializedName("video")
-    @Expose
     private Boolean video;
-    @SerializedName("poster_path")
-    @Expose
     private String posterPath;
-    @SerializedName("adult")
-    @Expose
     private Boolean adult;
-    @SerializedName("backdrop_path")
-    @Expose
     private String backdropPath;
-    @SerializedName("original_language")
-    @Expose
     private String originalLanguage;
-    @SerializedName("original_title")
-    @Expose
     private String originalTitle;
-    @SerializedName("title")
-    @Expose
     private String title;
-    @SerializedName("vote_average")
-    @Expose
     private Double voteAverage;
-    @SerializedName("overview")
-    @Expose
     private String overview;
-    @SerializedName("release_date")
-    @Expose
     private Date releaseDate;
-    @SerializedName("genre_ids")
-    @Expose
     private List<Integer> genreIds = null;
+    private Boolean bookmark;
+    private Date bookmarkDate;
 
     public long getId() {
         return id;
@@ -166,5 +133,54 @@ public class Movie {
 
     public void setGenreIds(List<Integer> genreIds) {
         this.genreIds = genreIds;
+    }
+
+    public Boolean getBookmark() {
+        return bookmark;
+    }
+
+    public boolean isBookmarked() {
+        if (bookmark == null) return false;
+        return bookmark;
+    }
+
+    public void setBookmark(Boolean bookmark) {
+        this.bookmark = bookmark;
+    }
+
+    public Date getBookmarkDate() {
+        return bookmarkDate;
+    }
+
+    public void setBookmarkDate(Date bookmarkDate) {
+        this.bookmarkDate = bookmarkDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return id == movie.id &&
+                title.equals(movie.title) &&
+                Objects.equals(popularity, movie.popularity) &&
+                Objects.equals(voteCount, movie.voteCount) &&
+                Objects.equals(video, movie.video) &&
+                Objects.equals(posterPath, movie.posterPath) &&
+                Objects.equals(adult, movie.adult) &&
+                Objects.equals(backdropPath, movie.backdropPath) &&
+                Objects.equals(originalLanguage, movie.originalLanguage) &&
+                Objects.equals(originalTitle, movie.originalTitle) &&
+                Objects.equals(voteAverage, movie.voteAverage) &&
+                Objects.equals(overview, movie.overview) &&
+                Objects.equals(releaseDate, movie.releaseDate) &&
+                Objects.equals(genreIds, movie.genreIds) &&
+                Objects.equals(bookmark, movie.bookmark) &&
+                Objects.equals(bookmarkDate, movie.bookmarkDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, popularity, voteCount, video, posterPath, adult, backdropPath, originalLanguage, originalTitle, title, voteAverage, overview, releaseDate, genreIds, bookmark, bookmarkDate);
     }
 }
