@@ -25,6 +25,7 @@
     <string name="map">Map</string>
     <string name="cinemas">Cinemas</string>
     <string name="nearby_cinemas">Nearby Cinemas</string>
+    <string name="movies">Movies</string>
 
     <string name="no_bookmarks">No bookmarks</string>
     <string name="long_tap_to_bookmark">Long tap on a movie to bookmark</string>
@@ -55,5 +56,12 @@
 
     <string name="message_bookmark_added">Bookmarked</string>
     <string name="message_bookmark_removed">Removed from bookmarks</string>
+
+    <string-array name="tab_titles">
+        <item>Now Playing</item>
+        <item>Top Rated</item>
+        <item>Popular</item>
+        <item>Upcoming</item>
+    </string-array>
 
 </resources>

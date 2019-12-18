@@ -25,5 +25,14 @@ public class Constants {
         public static final String CINEMA_LNG = PACKAGE + "cinemaLng";
         public static final String CURRENT_LAT = PACKAGE + "currentLat";
         public static final String CURRENT_LNG = PACKAGE + "currentLng";
+
+        public static final String PAGER_POSITION = PACKAGE + "currentPager";
+    }
+
+    public static final class PAGER {
+        public static final int NOW_PLAYING = 0;
+        public static final int TOP_RATED = 1;
+        public static final int POPULAR = 2;
+        public static final int UPCOMING = 3;
     }
 }

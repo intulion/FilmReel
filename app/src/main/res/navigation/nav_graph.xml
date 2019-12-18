@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragment_movie_list">
+    app:startDestination="@id/fragment_pager">
 
     <fragment
         android:id="@+id/fragment_movie_list"
@@ -52,5 +52,17 @@
         <action
             android:id="@+id/action_fragment_search_to_fragment_movie_detail"
             app:destination="@id/fragment_movie_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_pager"
+        android:name="com.akat.filmreel.ui.movieList.MoviePagerFragment"
+        android:label="@string/movies"
+        tools:layout="@layout/fragment_movie_pager">
+        <action
+            android:id="@+id/action_pagerFragment_to_fragment_movie_list"
+            app:destination="@id/fragment_movie_list" />
+        <action
+            android:id="@+id/action_fragment_pager_to_fragment_search"
+            app:destination="@id/fragment_search" />
     </fragment>
 </navigation>

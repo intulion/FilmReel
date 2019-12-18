@@ -42,4 +42,11 @@
     <string name="error_location">Не удалось получить текущее местоположение</string>
     <string name="message_bookmark_added">Добавлено в закладки</string>
     <string name="message_bookmark_removed">Удалено из закладок</string>
+    <string-array name="tab_titles">
+        <item>Смотрят сейчас</item>
+        <item>Лучшие</item>
+        <item>Популярные</item>
+        <item>Ожидаемые</item>
+    </string-array>
+    <string name="movies">Фильмы</string>
 </resources>

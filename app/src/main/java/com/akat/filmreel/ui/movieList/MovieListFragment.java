@@ -1,6 +1,7 @@
 package com.akat.filmreel.ui.movieList;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,10 +11,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,10 +27,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
+import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.ui.MainActivity;
 import com.akat.filmreel.ui.common.MovieListAdapter;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.SnackbarMessage;
 import com.akat.filmreel.util.SnackbarUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -52,8 +62,6 @@ public class MovieListFragment extends Fragment
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
-        setHasOptionsMenu(true);
-
         loadingIndicator = view.findViewById(R.id.pb_loading_indicator);
         recyclerView = view.findViewById(R.id.recycler_view_movie_list);
         LinearLayoutManager layoutManager =
@@ -61,9 +69,9 @@ public class MovieListFragment extends Fragment
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        DividerItemDecoration mDividerItemDecoration =
+        DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(mDividerItemDecoration);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         movieListAdapter = new MovieListAdapter(requireActivity(), this);
         movieListAdapter.setOnBottomReachedListener(this);
@@ -82,6 +90,9 @@ public class MovieListFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Bundle args = getArguments();
+        int pagerPosition = args.getInt(Constants.PARAM.PAGER_POSITION);
+
         viewModel = ViewModelProviders.of(this, factory).get(MovieListViewModel.class);
         viewModel.getMovies().observe(this, entries -> {
             movieListAdapter.swapItems(entries);
@@ -90,20 +101,6 @@ public class MovieListFragment extends Fragment
             else showLoading();
         });
         setupSnackbar();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_list, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_search_action) {
-            Navigation.findNavController(recyclerView).navigate(R.id.fragment_search);
-            return false;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

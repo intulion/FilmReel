@@ -82,6 +82,8 @@ dependencies {
     implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
     implementation "androidx.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
 
     testImplementation "junit:junit:$rootProject.junitVersion"
