@@ -11,13 +11,17 @@ import javax.inject.Inject;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
+import static com.akat.filmreel.util.Constants.PAGER.POPULAR;
+import static com.akat.filmreel.util.Constants.PAGER.TOP_RATED;
+import static com.akat.filmreel.util.Constants.PAGER.UPCOMING;
+
 @ApplicationScope
 public class GetMoviesUseCase {
 
     private final Repository repository;
 
     @Inject
-    public GetMoviesUseCase(Repository repository) {
+    GetMoviesUseCase(Repository repository) {
         this.repository = repository;
     }
 
@@ -29,23 +33,60 @@ public class GetMoviesUseCase {
         return repository.getNowPlayingMovies();
     }
 
-    public Single<ApiResponse> fetchNowPlaying(boolean forceUpdate) {
-        return repository.fetchNowPlayingMovies(forceUpdate);
+    public Flowable<List<Movie>> observePopular() {
+        return repository.getPopularMovies();
     }
 
-    public Single<ApiResponse> fetchTopRated(boolean forceUpdate) {
-        return repository.fetchTopRatedMovies(forceUpdate);
+    public Flowable<List<Movie>> observeUpcoming() {
+        return repository.getUpcomingMovies();
     }
 
-    public void saveMovies(ApiResponse response) {
-        repository.saveMovies(response);
+    public Single<ApiResponse> fetchMovies(int pageType, boolean forceUpdate) {
+        switch (pageType) {
+            case TOP_RATED:
+                return repository.fetchTopRatedMovies(forceUpdate);
+            case POPULAR:
+                return repository.fetchPopularMovies(forceUpdate);
+            case UPCOMING:
+                return repository.fetchUpcomingMovies(forceUpdate);
+            default:
+                return repository.fetchNowPlayingMovies(forceUpdate);
+        }
     }
 
-    public void deleteTopRated() {
-        repository.deleteTopRatedMovies();
+    public void saveMovies(int pageType, ApiResponse response) {
+        switch (pageType) {
+            case TOP_RATED:
+                repository.saveTopRatedMovies(response);
+                break;
+            case POPULAR:
+                repository.savePopularMovies(response);
+                break;
+            case UPCOMING:
+                repository.saveUpcomingMovies(response);
+                break;
+            default:
+                repository.saveNowPlayingMovies(response);
+        }
     }
 
-    public int getLastPage() {
-        return repository.getLastPage();
+    public void deleteMovies(int pageType) {
+        switch (pageType) {
+            case TOP_RATED:
+                repository.deleteTopRatedMovies();
+                break;
+            case POPULAR:
+                repository.deletePopularMovies();
+                break;
+            case UPCOMING:
+                repository.deleteUpcomingMovies();
+                break;
+            default:
+                repository.deleteNowPlayingMovies();
+        }
+    }
+
+    public int getLastPage(int pageType) {
+        return repository.getLastPage(pageType);
     }
 }

@@ -9,5 +9,9 @@ public interface NetworkDataSource {
 
     Single<ApiResponse> getNowPlayingMovies(int pageNumber, String locale);
 
+    Single<ApiResponse> getPopularMovies(int pageNumber, String locale);
+
+    Single<ApiResponse> getUpcomingMovies(int pageNumber, String locale);
+
     Single<ApiResponse> searchMovies(String query, int pageNumber, String locale);
 }

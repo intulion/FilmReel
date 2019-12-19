@@ -1,25 +1,16 @@
 package com.akat.filmreel.ui.movieList;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,14 +18,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.ui.MainActivity;
 import com.akat.filmreel.ui.common.MovieListAdapter;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.SnackbarMessage;
 import com.akat.filmreel.util.SnackbarUtils;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -45,6 +32,7 @@ public class MovieListFragment extends Fragment
     public ViewModelProvider.Factory factory;
 
     private MovieListViewModel viewModel;
+    private int pageType = Constants.PAGER.NOW_PLAYING;
 
     private MovieListAdapter movieListAdapter;
     private View loadingIndicator;
@@ -55,6 +43,11 @@ public class MovieListFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         MovieApplication.getAppComponent().inject(this);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            pageType = args.getInt(Constants.PARAM.PAGER_POSITION);
+        }
     }
 
     @Override
@@ -79,7 +72,7 @@ public class MovieListFragment extends Fragment
 
         SwipeRefreshLayout refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         refreshLayout.setOnRefreshListener(() -> {
-            viewModel.reloadMovies();
+            viewModel.reloadMovies(pageType);
             refreshLayout.setRefreshing(false);
         });
 
@@ -90,11 +83,9 @@ public class MovieListFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Bundle args = getArguments();
-        int pagerPosition = args.getInt(Constants.PARAM.PAGER_POSITION);
-
         viewModel = ViewModelProviders.of(this, factory).get(MovieListViewModel.class);
-        viewModel.getMovies().observe(this, entries -> {
+        viewModel.observeMovies(pageType);
+        viewModel.getMovies(pageType).observe(this, entries -> {
             movieListAdapter.swapItems(entries);
 
             if (entries != null && entries.size() != 0) showDataView();
@@ -119,7 +110,7 @@ public class MovieListFragment extends Fragment
 
     @Override
     public void onBottomReached() {
-        viewModel.loadNewData();
+        viewModel.loadNextPage(pageType);
     }
 
     private void showDataView() {

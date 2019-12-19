@@ -28,6 +28,8 @@ import javax.inject.Inject;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
+import static com.akat.filmreel.util.Constants.PAGER.TOP_RATED;
+
 public class GetMoviesUseCaseTest {
     private AppDatabase database;
     private GetMoviesUseCase getMoviesUseCase;
@@ -126,7 +128,7 @@ public class GetMoviesUseCaseTest {
 
     @Test
     public void getMovies_fromNetwork() {
-        getMoviesUseCase.fetchTopRated(false)
+        getMoviesUseCase.fetchMovies(TOP_RATED, false)
                 .test()
                 .assertNoErrors()
                 .assertValue(response -> response.getResults().size() == 2);

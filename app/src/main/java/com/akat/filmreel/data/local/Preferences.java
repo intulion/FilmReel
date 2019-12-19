@@ -1,11 +1,11 @@
 package com.akat.filmreel.data.local;
 
 public interface Preferences {
-    void setPageData(int lastPage, int totalPages);
+    void setPageData(int pageType, int lastPage, int totalPages);
 
-    int getLastPage();
+    int getLastPage(int pageType);
 
-    int getTotalPages();
+    int getTotalPages(int pageType);
 
     String getLocale();
 }

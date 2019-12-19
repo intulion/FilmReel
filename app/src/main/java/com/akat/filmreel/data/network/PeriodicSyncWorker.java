@@ -36,10 +36,10 @@ public class PeriodicSyncWorker extends RxWorker {
     @NonNull
     @Override
     public Single<Result> createWork() {
-        return repository.fetchTopRatedMovies(true)
+        return repository.fetchNowPlayingMovies(true)
                 .doOnSuccess(apiResponse -> {
                     Log.d(TAG, "Successful sync.");
-                    repository.saveMovies(apiResponse);
+                    repository.saveNowPlayingMovies(apiResponse);
                     sendNotification(context.getString(R.string.sync_title),
                             context.getString(R.string.sync_desc));
                 })

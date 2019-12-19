@@ -15,25 +15,45 @@ public interface Repository {
 
     Flowable<List<Movie>> getNowPlayingMovies();
 
+    Flowable<List<Movie>> getPopularMovies();
+
+    Flowable<List<Movie>> getUpcomingMovies();
+
     Flowable<List<Movie>> getBookmarkedMovies();
 
     Single<Movie> getMovie(long movieId);
 
     void deleteTopRatedMovies();
 
-    int getLastPage();
+    void deleteNowPlayingMovies();
+
+    void deletePopularMovies();
+
+    void deleteUpcomingMovies();
+
+    int getLastPage(int pageType);
 
     Completable setBookmark(long movieId);
 
     Completable removeBookmark(long movieId);
 
-    void saveMovies(ApiResponse response);
+    void saveTopRatedMovies(ApiResponse response);
+
+    void saveNowPlayingMovies(ApiResponse response);
+
+    void savePopularMovies(ApiResponse response);
+
+    void saveUpcomingMovies(ApiResponse response);
 
     Completable saveMovie(MovieEntity movie);
 
+    Single<ApiResponse> fetchTopRatedMovies(boolean forceUpdate);
+
     Single<ApiResponse> fetchNowPlayingMovies(boolean forceUpdate);
 
-    Single<ApiResponse> fetchTopRatedMovies(boolean forceUpdate);
+    Single<ApiResponse> fetchPopularMovies(boolean forceUpdate);
+
+    Single<ApiResponse> fetchUpcomingMovies(boolean forceUpdate);
 
     Single<ApiResponse> searchMovies(String query, int pageNumber);
 }

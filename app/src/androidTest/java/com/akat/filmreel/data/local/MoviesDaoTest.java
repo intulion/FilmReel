@@ -22,9 +22,9 @@ import static com.akat.filmreel.util.TestUtils.movieB;
 import static com.akat.filmreel.util.TestUtils.movieC;
 import static com.akat.filmreel.util.TestUtils.movieD;
 
-public class TopRatedDaoTest {
+public class MoviesDaoTest {
     private AppDatabase database;
-    private TopRatedDao topRatedDao;
+    private MoviesDao moviesDao;
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -33,11 +33,11 @@ public class TopRatedDaoTest {
     public void setUp() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
-        topRatedDao = database.topRatedDao();
+        moviesDao = database.moviesDao();
 
         // Insert movies in wrong order to test that result are sorted by page
-        topRatedDao.addTopRatedMovies(Arrays.asList(movieC, movieD), 2);
-        topRatedDao.addTopRatedMovies(Arrays.asList(movieA, movieB), 1);
+        moviesDao.addTopRatedMovies(Arrays.asList(movieC, movieD), 2);
+        moviesDao.addTopRatedMovies(Arrays.asList(movieA, movieB), 1);
     }
 
     @After
@@ -55,7 +55,7 @@ public class TopRatedDaoTest {
                 fromEntity(movieD)
         );
 
-        topRatedDao.getTopRated()
+        moviesDao.getTopRated()
                 .test()
                 .assertNoErrors()
                 .assertValue(expected);
@@ -65,7 +65,7 @@ public class TopRatedDaoTest {
     public void getById() {
         Movie expected = fromEntity(movieA);
 
-        topRatedDao.getById(movieA.getId())
+        moviesDao.getById(movieA.getId())
                 .test()
                 .assertNoErrors()
                 .assertResult(expected);

@@ -11,7 +11,6 @@ import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.util.SnackbarMessage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,23 +21,25 @@ import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.akat.filmreel.util.Constants.PAGER.POPULAR;
+import static com.akat.filmreel.util.Constants.PAGER.TOP_RATED;
+import static com.akat.filmreel.util.Constants.PAGER.UPCOMING;
+
 public class MovieListViewModel extends ViewModel {
 
     private final GetMoviesUseCase getMoviesUseCase;
     private final AddBookmarkUseCase addBookmarkUseCase;
     private final CompositeDisposable disposable = new CompositeDisposable();
-    private MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
-    private SnackbarMessage snackbarText = new SnackbarMessage();
+    private final SnackbarMessage snackbarText = new SnackbarMessage();
+    private final MutableLiveData<List<Movie>> nowPlayingMovies = new MutableLiveData<>();
+    private final MutableLiveData<List<Movie>> topRatedMovies = new MutableLiveData<>();
+    private final MutableLiveData<List<Movie>> popularMovies = new MutableLiveData<>();
+    private final MutableLiveData<List<Movie>> upcomingMovies = new MutableLiveData<>();
 
     @Inject
     MovieListViewModel(GetMoviesUseCase getMoviesUseCase, AddBookmarkUseCase addBookmarkUseCase) {
         this.getMoviesUseCase = getMoviesUseCase;
         this.addBookmarkUseCase = addBookmarkUseCase;
-
-        if (this.getMoviesUseCase.getLastPage() == 0) {
-            fetchNextPage(false);
-        }
-        observeTopRated();
     }
 
     @Override
@@ -51,12 +52,17 @@ public class MovieListViewModel extends ViewModel {
         return snackbarText;
     }
 
-    LiveData<List<Movie>> getMovies() {
-        return movies;
-    }
-
-    void loadNewData() {
-        fetchNextPage(false);
+    LiveData<List<Movie>> getMovies(int pageType) {
+        switch (pageType) {
+            case TOP_RATED:
+                return topRatedMovies;
+            case POPULAR:
+                return popularMovies;
+            case UPCOMING:
+                return upcomingMovies;
+            default:
+                return nowPlayingMovies;
+        }
     }
 
     void setBookmark(long movieId, boolean isBookmarked) {
@@ -80,30 +86,71 @@ public class MovieListViewModel extends ViewModel {
         );
     }
 
-    void reloadMovies() {
-        movies.setValue(new ArrayList<>());
-        fetchNextPage(true);
+    void observeMovies(int pageType) {
+        if (getMoviesUseCase.getLastPage(pageType) == 0) {
+            fetchNextPage(pageType,false);
+        }
+
+        switch (pageType) {
+            case TOP_RATED:
+                disposable.add(getMoviesUseCase.observeTopRated()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(topRatedMovies::setValue)
+                );
+                break;
+            case POPULAR:
+                disposable.add(getMoviesUseCase.observePopular()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(popularMovies::setValue)
+                );
+                break;
+            case UPCOMING:
+                disposable.add(getMoviesUseCase.observeUpcoming()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(upcomingMovies::setValue)
+                );
+                break;
+            default:
+                disposable.add(getMoviesUseCase.observeNowPlaying()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(nowPlayingMovies::setValue)
+                );
+        }
     }
 
-    private void observeTopRated() {
-        disposable.add(getMoviesUseCase.observeTopRated()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movies::setValue)
-        );
+    void loadNextPage(int pageType) {
+        fetchNextPage(pageType, false);
     }
 
-    private void fetchNextPage(boolean forceUpdate) {
-        disposable.add(getMoviesUseCase.fetchTopRated(forceUpdate)
+    void reloadMovies(int pageType) {
+        switch (pageType) {
+            case TOP_RATED:
+                topRatedMovies.setValue(null);
+                break;
+            case POPULAR:
+                popularMovies.setValue(null);
+                break;
+            case UPCOMING:
+                upcomingMovies.setValue(null);
+                break;
+            default:
+                nowPlayingMovies.setValue(null);
+        }
+
+        fetchNextPage(pageType,true);
+    }
+
+    private void fetchNextPage(int pageType, boolean forceUpdate) {
+        disposable.add(getMoviesUseCase.fetchMovies(pageType, forceUpdate)
                 .subscribeOn(Schedulers.io())
                 .subscribeWith(new DisposableSingleObserver<ApiResponse>() {
 
                     @Override
                     public void onSuccess(ApiResponse apiResponse) {
                         if (forceUpdate) {
-                            getMoviesUseCase.deleteTopRated();
+                            getMoviesUseCase.deleteMovies(pageType);
                         }
-
-                        getMoviesUseCase.saveMovies(apiResponse);
+                        getMoviesUseCase.saveMovies(pageType, apiResponse);
                     }
 
                     @Override
@@ -114,5 +161,4 @@ public class MovieListViewModel extends ViewModel {
 
         );
     }
-
 }

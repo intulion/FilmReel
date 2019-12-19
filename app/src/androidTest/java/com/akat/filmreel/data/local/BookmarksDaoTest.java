@@ -23,7 +23,7 @@ import static com.akat.filmreel.util.TestUtils.movieC;
 public class BookmarksDaoTest {
     private AppDatabase database;
     private BookmarksDao bookmarksDao;
-    private TopRatedDao topRatedDao;
+    private MoviesDao moviesDao;
     private final Bookmark bookmark = new Bookmark(movieB.getId());
 
     @Rule
@@ -33,10 +33,10 @@ public class BookmarksDaoTest {
     public void setUp() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
-        topRatedDao = database.topRatedDao();
+        moviesDao = database.moviesDao();
         bookmarksDao = database.bookmarksDao();
 
-        topRatedDao.addTopRatedMovies(Arrays.asList(movieA, movieB, movieC), 1);
+        moviesDao.addTopRatedMovies(Arrays.asList(movieA, movieB, movieC), 1);
     }
 
     @After
@@ -54,7 +54,7 @@ public class BookmarksDaoTest {
                 .assertNoErrors();
 
         // Ensure that movie has been bookmarked
-        topRatedDao.getById(movieId)
+        moviesDao.getById(movieId)
                 .test()
                 .assertNoErrors()
                 .assertValue(Movie::isBookmarked);
@@ -65,7 +65,7 @@ public class BookmarksDaoTest {
                 .assertNoErrors();
 
         // Ensure that movie has't been bookmarked
-        topRatedDao.getById(movieId)
+        moviesDao.getById(movieId)
                 .test()
                 .assertNoErrors()
                 .assertValue(movie -> !movie.isBookmarked());

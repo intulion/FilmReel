@@ -14,23 +14,33 @@ import io.reactivex.Single;
 
 public class MovieLocalDataSource implements LocalDataSource {
 
-    private final TopRatedDao topRatedDao;
+    private final MoviesDao moviesDao;
     private final BookmarksDao bookmarksDao;
 
     @Inject
     public MovieLocalDataSource(AppDatabase database) {
-        topRatedDao = database.topRatedDao();
+        moviesDao = database.moviesDao();
         bookmarksDao = database.bookmarksDao();
     }
 
     @Override
-    public Flowable<List<Movie>> getMovies() {
-        return topRatedDao.getTopRated();
+    public Flowable<List<Movie>> getTopRatedMovies() {
+        return moviesDao.getTopRated();
     }
 
     @Override
     public Flowable<List<Movie>> getNowPlayingMovies() {
-        return topRatedDao.getNowPlaying();
+        return moviesDao.getNowPlaying();
+    }
+
+    @Override
+    public Flowable<List<Movie>> getPopularMovies() {
+        return moviesDao.getPopular();
+    }
+
+    @Override
+    public Flowable<List<Movie>> getUpcomingMovies() {
+        return moviesDao.getUpcoming();
     }
 
     @Override
@@ -40,17 +50,47 @@ public class MovieLocalDataSource implements LocalDataSource {
 
     @Override
     public Single<Movie> getMovie(long movieId) {
-        return topRatedDao.getById(movieId);
+        return moviesDao.getById(movieId);
     }
 
     @Override
-    public void addMovies(List<MovieEntity> movies, int page) {
-        topRatedDao.addTopRatedMovies(movies, page);
+    public void addTopRatedMovies(List<MovieEntity> movies, int page) {
+        moviesDao.addTopRatedMovies(movies, page);
+    }
+
+    @Override
+    public void addNowPlayingMovies(List<MovieEntity> movies, int page) {
+        moviesDao.addNowPlayingMovies(movies, page);
+    }
+
+    @Override
+    public void addPopularMovies(List<MovieEntity> movies, int page) {
+        moviesDao.addPopularMovies(movies, page);
+    }
+
+    @Override
+    public void addUpcomingMovies(List<MovieEntity> movies, int page) {
+        moviesDao.addUpcomingMovies(movies, page);
     }
 
     @Override
     public void deleteTopRatedMovies() {
-        topRatedDao.deleteAll();
+        moviesDao.deleteAllTopRated();
+    }
+
+    @Override
+    public void deleteNowPlayingMovies() {
+        moviesDao.deleteAllNowPlaying();
+    }
+
+    @Override
+    public void deletePopularMovies() {
+        moviesDao.deleteAllPopular();
+    }
+
+    @Override
+    public void deleteUpcomingMovies() {
+        moviesDao.deleteAllUpcoming();
     }
 
     @Override
@@ -65,6 +105,6 @@ public class MovieLocalDataSource implements LocalDataSource {
 
     @Override
     public Completable addMovie(MovieEntity movie) {
-        return topRatedDao.insertMovie(movie);
+        return moviesDao.insertMovie(movie);
     }
 }

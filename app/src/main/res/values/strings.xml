@@ -57,11 +57,8 @@
     <string name="message_bookmark_added">Bookmarked</string>
     <string name="message_bookmark_removed">Removed from bookmarks</string>
 
-    <string-array name="tab_titles">
-        <item>Now Playing</item>
-        <item>Top Rated</item>
-        <item>Popular</item>
-        <item>Upcoming</item>
-    </string-array>
-
+    <string name="tab_title_now_playing">Now Playing</string>
+    <string name="tab_title_top_rated">Top Rated</string>
+    <string name="tab_title_popular">Popular</string>
+    <string name="tab_title_upcoming">Upcoming</string>
 </resources>

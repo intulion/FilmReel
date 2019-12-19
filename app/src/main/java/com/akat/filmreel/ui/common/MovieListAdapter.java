@@ -81,8 +81,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     }
 
     public void swapItems(final List<Movie> newMovies) {
-
-        if (movies == null) {
+        if (movies == null || newMovies == null) {
             movies = newMovies;
             notifyDataSetChanged();
         } else {

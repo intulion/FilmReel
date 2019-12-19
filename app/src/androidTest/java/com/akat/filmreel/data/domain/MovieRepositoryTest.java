@@ -1,6 +1,7 @@
-package com.akat.filmreel.data;
+package com.akat.filmreel.data.domain;
 
-import com.akat.filmreel.data.domain.MovieRepository;
+import com.akat.filmreel.data.FakeLocalDataSource;
+import com.akat.filmreel.data.FakeNetworkDataSource;
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.model.MovieEntity;

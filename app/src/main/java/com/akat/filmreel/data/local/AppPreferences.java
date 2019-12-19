@@ -14,8 +14,8 @@ import javax.inject.Inject;
 @ApplicationScope
 public class AppPreferences implements Preferences {
 
-    private static final String LAST_PAGE = "last_page";
-    private static final String TOTAL_PAGES = "total_pages";
+    private static final String LAST_PAGE = "last_page_";
+    private static final String TOTAL_PAGES = "total_pages_";
 
     private final Context context;
 
@@ -25,25 +25,25 @@ public class AppPreferences implements Preferences {
     }
 
     @Override
-    public void setPageData(int lastPage, int totalPages) {
+    public void setPageData(int pageType, int lastPage, int totalPages) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
 
-        editor.putInt(LAST_PAGE, lastPage);
-        editor.putInt(TOTAL_PAGES, totalPages);
+        editor.putInt(LAST_PAGE + pageType, lastPage);
+        editor.putInt(TOTAL_PAGES + pageType, totalPages);
         editor.apply();
     }
 
     @Override
-    public int getLastPage() {
+    public int getLastPage(int pageType) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getInt(LAST_PAGE, 0);
+        return sp.getInt(LAST_PAGE + pageType, 0);
     }
 
     @Override
-    public int getTotalPages() {
+    public int getTotalPages(int pageType) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getInt(TOTAL_PAGES, 1);
+        return sp.getInt(TOTAL_PAGES + pageType, 1);
     }
 
     @Override

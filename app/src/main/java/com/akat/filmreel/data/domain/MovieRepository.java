@@ -17,6 +17,11 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
+import static com.akat.filmreel.util.Constants.PAGER.NOW_PLAYING;
+import static com.akat.filmreel.util.Constants.PAGER.POPULAR;
+import static com.akat.filmreel.util.Constants.PAGER.TOP_RATED;
+import static com.akat.filmreel.util.Constants.PAGER.UPCOMING;
+
 @ApplicationScope
 public class MovieRepository implements Repository {
 
@@ -34,15 +39,27 @@ public class MovieRepository implements Repository {
     }
 
     @Override
+    public Single<ApiResponse> fetchTopRatedMovies(boolean forceUpdate) {
+        int page = forceUpdate ? 1 : preferences.getLastPage(TOP_RATED) + 1;
+        return networkDataSource.getTopRatedMovies(page, preferences.getLocale());
+    }
+
+    @Override
     public Single<ApiResponse> fetchNowPlayingMovies(boolean forceUpdate) {
-        int page = forceUpdate ? 1 : preferences.getLastPage() + 1;
+        int page = forceUpdate ? 1 : preferences.getLastPage(NOW_PLAYING) + 1;
         return networkDataSource.getNowPlayingMovies(page, preferences.getLocale());
     }
 
     @Override
-    public Single<ApiResponse> fetchTopRatedMovies(boolean forceUpdate) {
-        int page = forceUpdate ? 1 : preferences.getLastPage() + 1;
-        return networkDataSource.getTopRatedMovies(page, preferences.getLocale());
+    public Single<ApiResponse> fetchPopularMovies(boolean forceUpdate) {
+        int page = forceUpdate ? 1 : preferences.getLastPage(POPULAR) + 1;
+        return networkDataSource.getPopularMovies(page, preferences.getLocale());
+    }
+
+    @Override
+    public Single<ApiResponse> fetchUpcomingMovies(boolean forceUpdate) {
+        int page = forceUpdate ? 1 : preferences.getLastPage(UPCOMING) + 1;
+        return networkDataSource.getUpcomingMovies(page, preferences.getLocale());
     }
 
     @Override
@@ -52,12 +69,22 @@ public class MovieRepository implements Repository {
 
     @Override
     public Flowable<List<Movie>> getTopRatedMovies() {
-        return localDataSource.getMovies();
+        return localDataSource.getTopRatedMovies();
     }
 
     @Override
     public Flowable<List<Movie>> getNowPlayingMovies() {
         return localDataSource.getNowPlayingMovies();
+    }
+
+    @Override
+    public Flowable<List<Movie>> getPopularMovies() {
+        return localDataSource.getPopularMovies();
+    }
+
+    @Override
+    public Flowable<List<Movie>> getUpcomingMovies() {
+        return localDataSource.getUpcomingMovies();
     }
 
     @Override
@@ -86,18 +113,59 @@ public class MovieRepository implements Repository {
     }
 
     @Override
-    public int getLastPage() {
-        return preferences.getLastPage();
+    public void deleteNowPlayingMovies() {
+        localDataSource.deleteNowPlayingMovies();
     }
 
     @Override
-    public void saveMovies(ApiResponse response) {
-        List<MovieEntity> movieList = response.getResults();
+    public void deletePopularMovies() {
+        localDataSource.deletePopularMovies();
+    }
+
+    @Override
+    public void deleteUpcomingMovies() {
+        localDataSource.deleteUpcomingMovies();
+    }
+
+    @Override
+    public int getLastPage(int pageType) {
+        return preferences.getLastPage(pageType);
+    }
+
+    @Override
+    public void saveTopRatedMovies(ApiResponse response) {
         int page = response.getPage();
         int total = response.getTotalPages();
 
-        preferences.setPageData(page, total);
-        localDataSource.addMovies(movieList, page);
+        preferences.setPageData(TOP_RATED, page, total);
+        localDataSource.addTopRatedMovies(response.getResults(), page);
+    }
+
+    @Override
+    public void saveNowPlayingMovies(ApiResponse response) {
+        int page = response.getPage();
+        int total = response.getTotalPages();
+
+        preferences.setPageData(NOW_PLAYING, page, total);
+        localDataSource.addNowPlayingMovies(response.getResults(), page);
+    }
+
+    @Override
+    public void savePopularMovies(ApiResponse response) {
+        int page = response.getPage();
+        int total = response.getTotalPages();
+
+        preferences.setPageData(POPULAR, page, total);
+        localDataSource.addPopularMovies(response.getResults(), page);
+    }
+
+    @Override
+    public void saveUpcomingMovies(ApiResponse response) {
+        int page = response.getPage();
+        int total = response.getTotalPages();
+
+        preferences.setPageData(UPCOMING, page, total);
+        localDataSource.addUpcomingMovies(response.getResults(), page);
     }
 
     @Override

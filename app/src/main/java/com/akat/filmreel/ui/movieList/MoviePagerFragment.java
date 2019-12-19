@@ -18,6 +18,10 @@ import com.akat.filmreel.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import static com.akat.filmreel.util.Constants.PAGER.POPULAR;
+import static com.akat.filmreel.util.Constants.PAGER.TOP_RATED;
+import static com.akat.filmreel.util.Constants.PAGER.UPCOMING;
+
 public class MoviePagerFragment extends Fragment {
 
     private View rootView;
@@ -40,7 +44,7 @@ public class MoviePagerFragment extends Fragment {
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> tab.setText(
-                        getResources().getStringArray(R.array.tab_titles)[position]
+                        getTabTitle(position)
                 )
         ).attach();
     }
@@ -57,5 +61,18 @@ public class MoviePagerFragment extends Fragment {
             return false;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private int getTabTitle(int position) {
+        switch (position) {
+            case TOP_RATED:
+                return R.string.tab_title_top_rated;
+            case POPULAR:
+                return R.string.tab_title_popular;
+            case UPCOMING:
+                return R.string.tab_title_upcoming;
+            default:
+                return R.string.tab_title_now_playing;
+        }
     }
 }

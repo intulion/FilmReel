@@ -11,17 +11,33 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 public interface LocalDataSource {
-    Flowable<List<Movie>> getMovies();
+    Flowable<List<Movie>> getTopRatedMovies();
 
     Flowable<List<Movie>> getNowPlayingMovies();
+
+    Flowable<List<Movie>> getPopularMovies();
+
+    Flowable<List<Movie>> getUpcomingMovies();
 
     Flowable<List<Movie>> getBookmarkedMovies();
 
     Single<Movie> getMovie(long movieId);
 
-    void addMovies(List<MovieEntity> movies, int page);
+    void addTopRatedMovies(List<MovieEntity> movies, int page);
+
+    void addNowPlayingMovies(List<MovieEntity> movies, int page);
+
+    void addPopularMovies(List<MovieEntity> movies, int page);
+
+    void addUpcomingMovies(List<MovieEntity> movies, int page);
 
     void deleteTopRatedMovies();
+
+    void deleteNowPlayingMovies();
+
+    void deletePopularMovies();
+
+    void deleteUpcomingMovies();
 
     Completable setBookmark(Bookmark bookmark);
 

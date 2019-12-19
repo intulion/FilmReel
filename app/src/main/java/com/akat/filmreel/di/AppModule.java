@@ -18,6 +18,9 @@ import com.akat.filmreel.data.network.NetworkDataSource;
 import dagger.Module;
 import dagger.Provides;
 
+import static com.akat.filmreel.data.local.AppDatabase.MIGRATION_1_2;
+import static com.akat.filmreel.data.local.AppDatabase.MIGRATION_2_3;
+
 @Module
 class AppModule {
 
@@ -52,6 +55,7 @@ class AppModule {
     AppDatabase provideAppDatabase(Context context) {
         return Room.databaseBuilder(context,
                 AppDatabase.class, AppDatabase.DATABASE_NAME)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build();
     }
 }

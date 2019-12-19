@@ -1,7 +1,7 @@
 package com.akat.filmreel.di;
 
 
-import com.akat.filmreel.data.MovieRepositoryTest;
+import com.akat.filmreel.data.domain.MovieRepositoryTest;
 import com.akat.filmreel.data.domain.GetMoviesUseCaseTest;
 
 import dagger.Component;

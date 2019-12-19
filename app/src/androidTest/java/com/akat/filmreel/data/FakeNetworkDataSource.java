@@ -28,6 +28,16 @@ public class FakeNetworkDataSource implements NetworkDataSource {
     }
 
     @Override
+    public Single<ApiResponse> getPopularMovies(int pageNumber, String locale) {
+        return Single.just(response);
+    }
+
+    @Override
+    public Single<ApiResponse> getUpcomingMovies(int pageNumber, String locale) {
+        return Single.just(response);
+    }
+
+    @Override
     public Single<ApiResponse> searchMovies(String query, int pageNumber, String locale) {
         return Single.just(response);
     }

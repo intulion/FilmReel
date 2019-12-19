@@ -26,6 +26,16 @@ public class MovieNetworkDataSource implements NetworkDataSource {
     }
 
     @Override
+    public Single<ApiResponse> getPopularMovies(int pageNumber, String locale) {
+        return apiService.getPopularMovies(pageNumber, locale);
+    }
+
+    @Override
+    public Single<ApiResponse> getUpcomingMovies(int pageNumber, String locale) {
+        return apiService.getUpcomingMovies(pageNumber, locale);
+    }
+
+    @Override
     public Single<ApiResponse> searchMovies(String query, int pageNumber, String locale) {
         return apiService.searchMovies(query, pageNumber, locale);
     }

@@ -23,12 +23,22 @@ public class FakeLocalDataSource implements LocalDataSource {
     }
 
     @Override
-    public Flowable<List<Movie>> getMovies() {
+    public Flowable<List<Movie>> getTopRatedMovies() {
         return Flowable.just(movieList);
     }
 
     @Override
     public Flowable<List<Movie>> getNowPlayingMovies() {
+        return Flowable.just(movieList);
+    }
+
+    @Override
+    public Flowable<List<Movie>> getPopularMovies() {
+        return Flowable.just(movieList);
+    }
+
+    @Override
+    public Flowable<List<Movie>> getUpcomingMovies() {
         return Flowable.just(movieList);
     }
 
@@ -45,11 +55,37 @@ public class FakeLocalDataSource implements LocalDataSource {
 
     @Override
     public Single<Movie> getMovie(long movieId) {
+        for (Movie movie : movieList) {
+            if (movie.getId() == movieId) {
+                return Single.just(movie);
+            }
+        }
         return null;
     }
 
     @Override
-    public void addMovies(List<MovieEntity> movies, int page) {
+    public void addTopRatedMovies(List<MovieEntity> movies, int page) {
+        for (MovieEntity movie : movies) {
+            movieList.add(fromEntity(movie));
+        }
+    }
+
+    @Override
+    public void addNowPlayingMovies(List<MovieEntity> movies, int page) {
+        for (MovieEntity movie : movies) {
+            movieList.add(fromEntity(movie));
+        }
+    }
+
+    @Override
+    public void addPopularMovies(List<MovieEntity> movies, int page) {
+        for (MovieEntity movie : movies) {
+            movieList.add(fromEntity(movie));
+        }
+    }
+
+    @Override
+    public void addUpcomingMovies(List<MovieEntity> movies, int page) {
         for (MovieEntity movie : movies) {
             movieList.add(fromEntity(movie));
         }
@@ -57,6 +93,21 @@ public class FakeLocalDataSource implements LocalDataSource {
 
     @Override
     public void deleteTopRatedMovies() {
+
+    }
+
+    @Override
+    public void deleteNowPlayingMovies() {
+
+    }
+
+    @Override
+    public void deletePopularMovies() {
+
+    }
+
+    @Override
+    public void deleteUpcomingMovies() {
 
     }
 
