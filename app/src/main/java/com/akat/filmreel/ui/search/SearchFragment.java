@@ -70,9 +70,9 @@ public class SearchFragment extends Fragment
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        DividerItemDecoration mDividerItemDecoration =
+        DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(mDividerItemDecoration);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         movieListAdapter = new SearchAdapter(requireActivity(), this, this);
         recyclerView.setAdapter(movieListAdapter);
@@ -111,14 +111,7 @@ public class SearchFragment extends Fragment
         disposable.add(SearchViewObservable.fromView(searchView)
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .map(String::trim)
-                .filter(text -> {
-                    if (text.isEmpty()) {
-                        viewModel.clearSearchResult();
-                        return false;
-                    } else {
-                        return true;
-                    }
-                })
+                .filter(text -> !text.isEmpty())
                 .distinctUntilChanged()
                 .subscribe(query -> {
                     viewModel.setQuery(query);

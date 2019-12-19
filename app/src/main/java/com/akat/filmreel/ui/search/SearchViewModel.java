@@ -58,11 +58,6 @@ public class SearchViewModel extends ViewModel {
         totalPages = 1;
     }
 
-    void clearSearchResult() {
-        resetNextPage();
-        movies.postValue(null);
-    }
-
     void setQuery(String query) {
         resetNextPage();
         this.query = query;
