@@ -41,4 +41,9 @@ public class FakeNetworkDataSource implements NetworkDataSource {
     public Single<ApiResponse> searchMovies(String query, int pageNumber, String locale) {
         return Single.just(response);
     }
+
+    @Override
+    public Single<ApiResponse> getRecommendations(long movieId, String locale) {
+        return null;
+    }
 }

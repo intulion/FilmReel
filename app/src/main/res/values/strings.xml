@@ -69,4 +69,6 @@
     <string name="remind">Add reminder</string>
     <string name="reminder_title">Movie reminder</string>
     <string name="reminder_added">Reminder added</string>
+    <string name="overview">Overview</string>
+    <string name="recommendations">Recommendations</string>
 </resources>

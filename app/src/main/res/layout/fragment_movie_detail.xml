@@ -146,24 +146,52 @@
                 app:layout_constraintTop_toBottomOf="@+id/movie_poster" />
 
             <TextView
-                android:id="@+id/movie_overview"
-                style="@style/MovieDetailCaptionTextView"
+                android:id="@+id/movie_overview_header"
+                style="@style/MovieDetailSubtitleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_large"
                 android:layout_marginTop="@dimen/spacing_large"
                 android:layout_marginEnd="@dimen/spacing_large"
                 android:layout_marginBottom="@dimen/spacing_large"
+                android:text="@string/overview"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movie_rating"
+                app:layout_constraintTop_toBottomOf="@+id/movie_rating" />
+
+            <TextView
+                android:id="@+id/movie_overview"
+                style="@style/MovieDetailCaptionTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:layout_marginEnd="@dimen/spacing_large"
+                android:layout_marginBottom="@dimen/spacing_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_overview_header"
                 tools:text="@tools:sample/lorem" />
+
+            <TextView
+                android:id="@+id/movie_recommend_header"
+                style="@style/MovieDetailSubtitleTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginEnd="@dimen/spacing_large"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:text="@string/recommendations"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_overview" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/movie_recommend_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="@dimen/spacing_large"
                 android:paddingStart="@dimen/spacing_middle"
                 android:paddingEnd="@dimen/spacing_middle"
@@ -172,7 +200,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movie_overview"
+                app:layout_constraintTop_toBottomOf="@+id/movie_recommend_header"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_recommend_list" />
 

@@ -54,6 +54,11 @@ public class FakeLocalDataSource implements LocalDataSource {
     }
 
     @Override
+    public Flowable<List<Movie>> getRecommendations(long movieId) {
+        return null;
+    }
+
+    @Override
     public Single<Movie> getMovie(long movieId) {
         for (Movie movie : movieList) {
             if (movie.getId() == movieId) {
@@ -89,6 +94,11 @@ public class FakeLocalDataSource implements LocalDataSource {
         for (MovieEntity movie : movies) {
             movieList.add(fromEntity(movie));
         }
+    }
+
+    @Override
+    public void addRecommendations(long movieId, List<MovieEntity> movies, int page) {
+
     }
 
     @Override

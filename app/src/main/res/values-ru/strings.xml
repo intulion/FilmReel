@@ -52,4 +52,6 @@
     <string name="set_reminder">Напоминание</string>
     <string name="reminder_title">Напоминание о фильме</string>
     <string name="reminder_added">Напоминание добавлено</string>
+    <string name="overview">Обзор</string>
+    <string name="recommendations">Рекомендации</string>
 </resources>
