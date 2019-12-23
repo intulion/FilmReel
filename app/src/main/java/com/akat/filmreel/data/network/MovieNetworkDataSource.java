@@ -36,6 +36,11 @@ public class MovieNetworkDataSource implements NetworkDataSource {
     }
 
     @Override
+    public Single<ApiResponse> getRecommendations(long movieId, String locale) {
+        return apiService.getRecommendations(movieId, locale);
+    }
+
+    @Override
     public Single<ApiResponse> searchMovies(String query, int pageNumber, String locale) {
         return apiService.searchMovies(query, pageNumber, locale);
     }

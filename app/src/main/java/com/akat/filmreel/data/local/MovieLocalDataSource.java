@@ -49,6 +49,11 @@ public class MovieLocalDataSource implements LocalDataSource {
     }
 
     @Override
+    public Flowable<List<Movie>> getRecommendations(long movieId) {
+        return moviesDao.getRecommendations(movieId);
+    }
+
+    @Override
     public Single<Movie> getMovie(long movieId) {
         return moviesDao.getById(movieId);
     }
@@ -71,6 +76,11 @@ public class MovieLocalDataSource implements LocalDataSource {
     @Override
     public void addUpcomingMovies(List<MovieEntity> movies, int page) {
         moviesDao.addUpcomingMovies(movies, page);
+    }
+
+    @Override
+    public void addRecommendations(long movieId, List<MovieEntity> movies, int page) {
+        moviesDao.addRecommendations(movieId, movies, page);
     }
 
     @Override

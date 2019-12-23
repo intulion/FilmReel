@@ -14,4 +14,6 @@ public interface NetworkDataSource {
     Single<ApiResponse> getUpcomingMovies(int pageNumber, String locale);
 
     Single<ApiResponse> searchMovies(String query, int pageNumber, String locale);
+
+    Single<ApiResponse> getRecommendations(long movieId, String locale);
 }

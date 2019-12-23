@@ -21,6 +21,8 @@ public interface Repository {
 
     Flowable<List<Movie>> getBookmarkedMovies();
 
+    Flowable<List<Movie>> getRecommendations(long movieId);
+
     Single<Movie> getMovie(long movieId);
 
     void deleteTopRatedMovies();
@@ -45,6 +47,8 @@ public interface Repository {
 
     void saveUpcomingMovies(ApiResponse response);
 
+    void saveRecommendations(long movieId, ApiResponse response);
+
     Completable saveMovie(MovieEntity movie);
 
     Single<ApiResponse> fetchTopRatedMovies(boolean forceUpdate);
@@ -54,6 +58,8 @@ public interface Repository {
     Single<ApiResponse> fetchPopularMovies(boolean forceUpdate);
 
     Single<ApiResponse> fetchUpcomingMovies(boolean forceUpdate);
+
+    Single<ApiResponse> fetchRecommendations(long movieId);
 
     Single<ApiResponse> searchMovies(String query, int pageNumber);
 }

@@ -4,6 +4,7 @@ import com.akat.filmreel.data.model.ApiResponse;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -22,4 +23,7 @@ public interface ApiService {
 
     @GET("/3/search/movie")
     Single<ApiResponse> searchMovies(@Query("query") String query, @Query("page") int page, @Query("language") String language);
+
+    @GET("/3/movie/{movie_id}/recommendations")
+    Single<ApiResponse> getRecommendations(@Path("movie_id") long movieId, @Query("language") String language);
 }

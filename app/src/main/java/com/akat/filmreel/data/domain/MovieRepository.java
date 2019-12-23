@@ -63,6 +63,11 @@ public class MovieRepository implements Repository {
     }
 
     @Override
+    public Single<ApiResponse> fetchRecommendations(long movieId) {
+        return networkDataSource.getRecommendations(movieId, preferences.getLocale());
+    }
+
+    @Override
     public Single<ApiResponse> searchMovies(String query, int pageNumber) {
         return networkDataSource.searchMovies(query, pageNumber, preferences.getLocale());
     }
@@ -90,6 +95,11 @@ public class MovieRepository implements Repository {
     @Override
     public Flowable<List<Movie>> getBookmarkedMovies() {
         return localDataSource.getBookmarkedMovies();
+    }
+
+    @Override
+    public Flowable<List<Movie>> getRecommendations(long movieId) {
+        return localDataSource.getRecommendations(movieId);
     }
 
     @Override
@@ -166,6 +176,13 @@ public class MovieRepository implements Repository {
 
         preferences.setPageData(UPCOMING, page, total);
         localDataSource.addUpcomingMovies(response.getResults(), page);
+    }
+
+    @Override
+    public void saveRecommendations(long movieId, ApiResponse response) {
+        int page = response.getPage();
+
+        localDataSource.addRecommendations(movieId, response.getResults(), page);
     }
 
     @Override

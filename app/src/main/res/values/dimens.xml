@@ -4,6 +4,8 @@
     <dimen name="image_poster_height">120dp</dimen>
     <dimen name="image_small_poster_width">40dp</dimen>
     <dimen name="image_small_poster_height">60dp</dimen>
+    <dimen name="image_large_poster_width">100dp</dimen>
+    <dimen name="image_large_poster_height">150dp</dimen>
     <dimen name="image_backdrop_height">200dp</dimen>
     <dimen name="small_icon_size">14sp</dimen>
 

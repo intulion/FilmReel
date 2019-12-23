@@ -10,16 +10,18 @@ import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.MovieEntity;
 import com.akat.filmreel.data.model.NowPlayingEntity;
 import com.akat.filmreel.data.model.PopularEntity;
+import com.akat.filmreel.data.model.RecommendEntity;
 import com.akat.filmreel.data.model.TopRatedEntity;
 import com.akat.filmreel.data.model.UpcomingEntity;
 
-@Database(version = 3, entities = {
+@Database(version = 4, entities = {
         MovieEntity.class,
         Bookmark.class,
         TopRatedEntity.class,
         NowPlayingEntity.class,
         PopularEntity.class,
-        UpcomingEntity.class
+        UpcomingEntity.class,
+        RecommendEntity.class
 })
 @TypeConverters({
         DateConverter.class,
@@ -59,6 +61,22 @@ public abstract class AppDatabase extends RoomDatabase {
                     "`movie_id` INTEGER NOT NULL, " +
                     "`row` INTEGER NOT NULL, " +
                     "PRIMARY KEY(`movie_id`), " +
+                    "FOREIGN KEY(`movie_id`) REFERENCES `movies`(`id`) " +
+                    "ON UPDATE NO ACTION ON DELETE NO ACTION )"
+            );
+        }
+    };
+
+    public static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(final SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS recommend (" +
+                    "`parent_id` INTEGER NOT NULL, " +
+                    "`movie_id` INTEGER NOT NULL, " +
+                    "`row` INTEGER NOT NULL, " +
+                    "PRIMARY KEY(`parent_id`, `movie_id`), " +
+                    "FOREIGN KEY(`parent_id`) REFERENCES `movies`(`id`) " +
+                    "ON UPDATE NO ACTION ON DELETE NO ACTION , " +
                     "FOREIGN KEY(`movie_id`) REFERENCES `movies`(`id`) " +
                     "ON UPDATE NO ACTION ON DELETE NO ACTION )"
             );

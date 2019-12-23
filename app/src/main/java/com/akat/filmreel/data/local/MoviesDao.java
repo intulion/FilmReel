@@ -10,6 +10,7 @@ import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.model.MovieEntity;
 import com.akat.filmreel.data.model.NowPlayingEntity;
 import com.akat.filmreel.data.model.PopularEntity;
+import com.akat.filmreel.data.model.RecommendEntity;
 import com.akat.filmreel.data.model.TopRatedEntity;
 import com.akat.filmreel.data.model.UpcomingEntity;
 
@@ -66,6 +67,15 @@ abstract class MoviesDao {
             "WHERE movies.id = :id")
     abstract Single<Movie> getById(long id);
 
+    @Transaction
+    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+            "FROM movies " +
+            "INNER JOIN recommend ON movies.id = recommend.movie_id " +
+            "LEFT JOIN bookmarks ON movies.id = bookmarks.movie_id " +
+            "WHERE recommend.parent_id = :id " +
+            "ORDER BY recommend.`row`")
+    abstract Flowable<List<Movie>> getRecommendations(long id);
+
 
     /**
      * Delete movies
@@ -105,6 +115,9 @@ abstract class MoviesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void insertUpcoming(List<UpcomingEntity> list);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract void insertRecommendations(List<RecommendEntity> list);
 
 
     /**
@@ -181,5 +194,23 @@ abstract class MoviesDao {
 
         insertMovies(list);
         insertUpcoming(nowUpcomingList);
+    }
+
+    @Transaction
+    void addRecommendations(long parentId, List<MovieEntity> list, int page) {
+        if (list == null || list.isEmpty()) return;
+
+        List<RecommendEntity> recommendList = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            int row = i + list.size() * (page - 1);
+
+            recommendList.add(
+                    new RecommendEntity(parentId, list.get(i).getId(), row)
+            );
+        }
+
+        insertMovies(list);
+        insertRecommendations(recommendList);
     }
 }

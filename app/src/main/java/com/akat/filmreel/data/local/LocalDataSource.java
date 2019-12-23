@@ -21,6 +21,8 @@ public interface LocalDataSource {
 
     Flowable<List<Movie>> getBookmarkedMovies();
 
+    Flowable<List<Movie>> getRecommendations(long movieId);
+
     Single<Movie> getMovie(long movieId);
 
     void addTopRatedMovies(List<MovieEntity> movies, int page);
@@ -30,6 +32,8 @@ public interface LocalDataSource {
     void addPopularMovies(List<MovieEntity> movies, int page);
 
     void addUpcomingMovies(List<MovieEntity> movies, int page);
+
+    void addRecommendations(long movieId, List<MovieEntity> movies, int page);
 
     void deleteTopRatedMovies();
 
