@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akat.filmreel.MovieApplication;
@@ -65,13 +64,10 @@ public class SearchFragment extends Fragment
         noItemView = view.findViewById(R.id.search_no_item);
 
         recyclerView = view.findViewById(R.id.recycler_view_search);
-        LinearLayoutManager layoutManager =
-                new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
         DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+                new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         movieListAdapter = new SearchAdapter(requireActivity(), this, this);

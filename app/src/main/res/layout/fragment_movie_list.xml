@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.movieList.MovieListViewModel">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -15,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_movie_list" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
