@@ -142,17 +142,19 @@
                 android:layout_marginStart="@dimen/spacing_large"
                 android:layout_marginTop="@dimen/spacing_large"
                 android:layout_marginEnd="@dimen/spacing_large"
+                android:layout_marginBottom="@dimen/spacing_large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/movie_rating"
-                tools:text="@tools:sample/lorem/random" />
+                tools:text="@tools:sample/lorem" />
 
-            <Button
-                android:id="@+id/movie_more_btn"
+            <ImageButton
+                android:id="@+id/movie_notification_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_middle"
-                android:text="@string/more"
+                android:contentDescription="@string/desc_reminder"
+                android:src="@drawable/ic_notifications"
                 app:layout_constraintEnd_toEndOf="@+id/movie_poster"
                 app:layout_constraintStart_toStartOf="@+id/movie_poster"
                 app:layout_constraintTop_toBottomOf="@+id/movie_poster" />

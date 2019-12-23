@@ -13,20 +13,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
+import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.SnackbarMessage;
 import com.akat.filmreel.util.SnackbarUtils;
 import com.bumptech.glide.Glide;
-
-import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -48,7 +45,7 @@ public class MovieDetailFragment extends Fragment {
     private MovieDetailViewModel viewModel;
     private long movieId;
     private boolean isBookmarked;
-    private List<Integer> genres;
+    private Movie currentMovie;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,31 +57,31 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
+        final View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
 
         setHasOptionsMenu(true);
 
         Bundle bundle = requireArguments();
         movieId = bundle.getLong(Constants.PARAM.MOVIE_ID);
 
-        posterView = rootView.findViewById(R.id.movie_poster_img);
-        backdropView = rootView.findViewById(R.id.movie_backdrop);
-        titleView = rootView.findViewById(R.id.movie_title);
-        origTitleView = rootView.findViewById(R.id.movie_orig_title);
-        languageView = rootView.findViewById(R.id.movie_language);
-        releaseDateView = rootView.findViewById(R.id.movie_release_date);
-        ratingView = rootView.findViewById(R.id.movie_rating);
-        popularityView = rootView.findViewById(R.id.movie_popularity);
-        overviewView = rootView.findViewById(R.id.movie_overview);
+        posterView = view.findViewById(R.id.movie_poster_img);
+        backdropView = view.findViewById(R.id.movie_backdrop);
+        titleView = view.findViewById(R.id.movie_title);
+        origTitleView = view.findViewById(R.id.movie_orig_title);
+        languageView = view.findViewById(R.id.movie_language);
+        releaseDateView = view.findViewById(R.id.movie_release_date);
+        ratingView = view.findViewById(R.id.movie_rating);
+        popularityView = view.findViewById(R.id.movie_popularity);
+        overviewView = view.findViewById(R.id.movie_overview);
 
-        // More Button
-        rootView.findViewById(R.id.movie_more_btn).setOnClickListener(v -> {
+        // Remind Button
+        view.findViewById(R.id.movie_notification_btn).setOnClickListener(v -> {
             FragmentMoreInfo fragment = new FragmentMoreInfo();
-            fragment.setGenres(genres);
+            fragment.setMovie(currentMovie);
             fragment.show(requireActivity().getSupportFragmentManager(), fragment.getTag());
         });
 
-        return rootView;
+        return view;
     }
 
     @Override
@@ -92,51 +89,49 @@ public class MovieDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel.class);
-        viewModel.getMovie(movieId).observe(this, entry -> {
-            titleView.setText(entry.getTitle());
-            origTitleView.setText(entry.getOriginalTitle());
-            overviewView.setText(entry.getOverview());
-            languageView.setText(entry.getOriginalLanguage());
-            popularityView.setText(
-                    String.format(Locale.getDefault(), "%.3f", entry.getPopularity())
-            );
-
-            String dateFormat = requireActivity().getResources().getString(R.string.date_format);
-            releaseDateView.setText(
-                    String.format(dateFormat, entry.getReleaseDate())
-            );
-
-            String ratingFormat = requireActivity().getResources().getString(R.string.movie_rating_format);
-            ratingView.setText(
-                    String.format(ratingFormat,
-                            entry.getVoteAverage(),
-                            entry.getVoteCount()
-                    )
-            );
-
-            String posterPath = entry.getPosterPath();
-            if (posterPath != null) {
-                Glide.with(posterView.getContext())
-                        .load(Constants.HTTP.POSTER_URL + posterPath)
-                        .into(posterView);
-            }
-
-            String backdropPath = entry.getBackdropPath();
-            if (posterPath != null) {
-                Glide.with(posterView.getContext())
-                        .load(Constants.HTTP.BACKDROP_URL + backdropPath)
-                        .into(backdropView);
-            }
-
-            // set bookmark icon
-            isBookmarked = entry.isBookmarked();
-            requireActivity().invalidateOptionsMenu();
-
-            // set genres array
-            genres = entry.getGenreIds();
-        });
+        viewModel.getMovie(movieId).observe(this, this::fillMovieData);
 
         setupSnackbar();
+    }
+
+    private void fillMovieData(Movie entry) {
+        currentMovie = entry;
+
+        titleView.setText(entry.getTitle());
+        origTitleView.setText(entry.getOriginalTitle());
+        overviewView.setText(entry.getOverview());
+        languageView.setText(entry.getOriginalLanguage());
+        popularityView.setText(
+                getString(R.string.popularity_format, entry.getPopularity())
+        );
+
+        releaseDateView.setText(
+                getString(R.string.date_format, entry.getReleaseDate())
+        );
+
+        ratingView.setText(
+                getString(R.string.movie_rating_format,
+                        entry.getVoteAverage(),
+                        entry.getVoteCount())
+        );
+
+        String posterPath = entry.getPosterPath();
+        if (posterPath != null) {
+            Glide.with(posterView.getContext())
+                    .load(Constants.HTTP.POSTER_URL + posterPath)
+                    .into(posterView);
+        }
+
+        String backdropPath = entry.getBackdropPath();
+        if (posterPath != null) {
+            Glide.with(posterView.getContext())
+                    .load(Constants.HTTP.BACKDROP_URL + backdropPath)
+                    .into(backdropView);
+        }
+
+        // set bookmark icon
+        isBookmarked = entry.isBookmarked();
+        requireActivity().invalidateOptionsMenu();
     }
 
     @Override
@@ -151,9 +146,9 @@ public class MovieDetailFragment extends Fragment {
 
         MenuItem bookmarkItem = menu.findItem(R.id.menu_detail_bookmark);
         if (isBookmarked) {
-            bookmarkItem.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_bookmark));
+            bookmarkItem.setIcon(R.drawable.ic_bookmark);
         } else {
-            bookmarkItem.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_bookmark_border));
+            bookmarkItem.setIcon(R.drawable.ic_bookmark_border);
         }
     }
 
@@ -164,7 +159,7 @@ public class MovieDetailFragment extends Fragment {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT,
-                        String.format(getString(R.string.movie_share_text), titleView.getText())
+                        getString(R.string.movie_share_text, currentMovie.getTitle())
                 );
                 sendIntent.setType("text/plain");
                 Intent shareIntent = Intent.createChooser(sendIntent, null);

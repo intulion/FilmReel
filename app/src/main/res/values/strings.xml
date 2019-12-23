@@ -12,6 +12,8 @@
 
     <string name="movie_rating_format" translatable="false">%1$.1f (%2$d)</string>
     <string name="date_format">%1$td.%1$tm.%1$tY</string>
+    <string name="time_format" translatable="false">%1$tk:%1$tM</string>
+    <string name="popularity_format" translatable="false">"%.3f"</string>
 
     <string name="top_rated_movies">Top Rated Movies</string>
     <string name="movie_details">Movie Details</string>
@@ -41,6 +43,7 @@
     <string name="desc_icon_places">Places Icon</string>
     <string name="desc_about_github">Github Link</string>
     <string name="desc_about_mail">Mail Link</string>
+    <string name="desc_reminder">Remind</string>
 
     <string name="sync_title">Synchronization</string>
     <string name="sync_desc">Movies has been synced</string>
@@ -61,4 +64,9 @@
     <string name="tab_title_top_rated">Top Rated</string>
     <string name="tab_title_popular">Popular</string>
     <string name="tab_title_upcoming">Upcoming</string>
+
+    <string name="set_reminder">Set reminder</string>
+    <string name="remind">Add reminder</string>
+    <string name="reminder_title">Movie reminder</string>
+    <string name="reminder_added">Reminder added</string>
 </resources>

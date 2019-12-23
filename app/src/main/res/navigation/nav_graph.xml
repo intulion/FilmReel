@@ -17,7 +17,11 @@
         android:id="@+id/fragment_movie_detail"
         android:name="com.akat.filmreel.ui.movieDetail.MovieDetailFragment"
         android:label="@string/movie_details"
-        tools:layout="@layout/fragment_movie_detail" />
+        tools:layout="@layout/fragment_movie_detail" >
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="app://filmreel.akat.dev/movie/{id}" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_bookmarks"
         android:name="com.akat.filmreel.ui.bookmarks.BookmarksFragment"

@@ -47,4 +47,9 @@
     <string name="tab_title_popular">Популярные</string>
     <string name="tab_title_upcoming">Ожидаемые</string>
     <string name="movies">Фильмы</string>
+    <string name="desc_reminder">Напомнить</string>
+    <string name="remind">Напомнить</string>
+    <string name="set_reminder">Напоминание</string>
+    <string name="reminder_title">Напоминание о фильме</string>
+    <string name="reminder_added">Напоминание добавлено</string>
 </resources>
