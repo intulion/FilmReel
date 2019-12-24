@@ -31,7 +31,6 @@
     <string name="sync_desc">Фильмы синхронизированы</string>
     <string name="sync_notification_channel_name">Синхронизация</string>
     <string name="sync_title">Синхронизация</string>
-    <string name="top_rated_movies">Лучшие фильмы</string>
     <string name="version">Версия</string>
     <string name="search">Поиск</string>
     <string name="search_movies">Поиск фильмов</string>
@@ -54,4 +53,5 @@
     <string name="reminder_added">Напоминание добавлено</string>
     <string name="overview">Обзор</string>
     <string name="recommendations">Рекомендации</string>
+    <string name="widget_label">Сейчас в кино</string>
 </resources>

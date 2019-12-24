@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/fragment_movie_list"
         android:name="com.akat.filmreel.ui.movieList.MovieListFragment"
-        android:label="@string/top_rated_movies" >
+        android:label="@string/movies" >
         <action
             android:id="@+id/action_fragment_movie_list_to_movieDetailFragment"
             app:destination="@id/fragment_movie_detail" />

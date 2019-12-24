@@ -5,6 +5,8 @@
     <string name="developer">Developer</string>
     <string name="about">About</string>
 
+    <string name="widget_label">Now Playing</string>
+
     <string name="default_notification_channel_id" translatable="false">default_channel</string>
     <string name="default_notification_channel_name" translatable="true">Default</string>
     <string name="sync_notification_channel_id" translatable="false">sync_channel</string>
@@ -15,7 +17,6 @@
     <string name="time_format" translatable="false">%1$tk:%1$tM</string>
     <string name="popularity_format" translatable="false">"%.3f"</string>
 
-    <string name="top_rated_movies">Top Rated Movies</string>
     <string name="movie_details">Movie Details</string>
 
     <string name="more">More</string>
@@ -69,6 +70,7 @@
     <string name="remind">Add reminder</string>
     <string name="reminder_title">Movie reminder</string>
     <string name="reminder_added">Reminder added</string>
+
     <string name="overview">Overview</string>
     <string name="recommendations">Recommendations</string>
 </resources>

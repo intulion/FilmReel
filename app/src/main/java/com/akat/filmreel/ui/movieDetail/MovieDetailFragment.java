@@ -136,7 +136,7 @@ public class MovieDetailFragment extends Fragment
         }
 
         String backdropPath = entry.getBackdropPath();
-        if (posterPath != null) {
+        if (backdropPath != null) {
             Glide.with(posterView.getContext())
                     .load(Constants.HTTP.BACKDROP_URL + backdropPath)
                     .into(backdropView);

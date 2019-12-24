@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/widget_margin">
+
+    <ImageView
+        android:id="@+id/appwidget_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/desc_movies_poster"
+        android:scaleType="centerCrop"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/appwidget_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/appwidget_img"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/gradient_up"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-smallcaps"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/grey_20"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/appwidget_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/appwidget_img"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/appwidget_rating"
+        android:background="@drawable/gradient_down"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-smallcaps"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="@string/widget_label"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/grey_20" />
+
+    <TextView
+        android:id="@+id/appwidget_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/appwidget_img"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/gradient_down"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="end"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/grey_20"
+        tools:text="8.1 (2945)"/>
+
+</RelativeLayout>

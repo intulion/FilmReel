@@ -8,6 +8,7 @@ import com.akat.filmreel.ui.cinemas.CinemaListFragment;
 import com.akat.filmreel.ui.movieDetail.MovieDetailFragment;
 import com.akat.filmreel.ui.movieList.MovieListFragment;
 import com.akat.filmreel.ui.search.SearchFragment;
+import com.akat.filmreel.ui.widget.AppWidget;
 
 import dagger.BindsInstance;
 import dagger.Component;
@@ -32,6 +33,8 @@ public interface AppComponent {
     void inject(MovieDetailFragment fragment);
 
     void inject(CinemaListFragment fragment);
+
+    void inject(AppWidget widget);
 
     @Component.Factory
     interface Factory {
