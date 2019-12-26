@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
@@ -18,12 +19,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.test.espresso.IdlingResource;
 import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.network.MovieSyncWorker;
+import com.akat.filmreel.data.network.PeriodicSyncWorker;
 import com.akat.filmreel.util.SimpleIdlingResource;
 import com.google.android.material.navigation.NavigationView;
 
@@ -76,11 +78,13 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         PeriodicWorkRequest periodicRequest =
-                new PeriodicWorkRequest.Builder(MovieSyncWorker.class,
+                new PeriodicWorkRequest.Builder(PeriodicSyncWorker.class,
                         1, TimeUnit.DAYS, 12, TimeUnit.HOURS)
                         .setConstraints(constraints)
                         .build();
-        workManager.enqueue(periodicRequest);
+        workManager.enqueueUniquePeriodicWork("PeriodicSyncWorker",
+                ExistingPeriodicWorkPolicy.KEEP,
+                periodicRequest);
     }
 
     private void createNotificationChannels() {

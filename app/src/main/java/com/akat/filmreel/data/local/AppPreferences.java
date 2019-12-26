@@ -5,49 +5,48 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
+import com.akat.filmreel.di.ApplicationScope;
+
 import java.util.Locale;
 
-public class AppPreferences {
+import javax.inject.Inject;
 
-    private static final String LAST_PAGE = "last_page";
-    private static final String TOTAL_PAGES = "total_pages";
+@ApplicationScope
+public class AppPreferences implements Preferences {
 
-    private static final Object LOCK = new Object();
-    private static AppPreferences sInstance;
+    private static final String LAST_PAGE = "last_page_";
+    private static final String TOTAL_PAGES = "total_pages_";
+
     private final Context context;
 
+    @Inject
     public AppPreferences(Context context) {
         this.context = context;
     }
 
-    public synchronized static AppPreferences getInstance(Context context) {
-        if (sInstance == null) {
-            synchronized (LOCK) {
-                sInstance = new AppPreferences(context);
-            }
-        }
-        return sInstance;
-    }
-
-    public void setPageData(int lastPage, int totalPages) {
+    @Override
+    public void setPageData(int pageType, int lastPage, int totalPages) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
 
-        editor.putInt(LAST_PAGE, lastPage);
-        editor.putInt(TOTAL_PAGES, totalPages);
+        editor.putInt(LAST_PAGE + pageType, lastPage);
+        editor.putInt(TOTAL_PAGES + pageType, totalPages);
         editor.apply();
     }
 
-    public int getLastPage() {
+    @Override
+    public int getLastPage(int pageType) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getInt(LAST_PAGE, 0);
+        return sp.getInt(LAST_PAGE + pageType, 0);
     }
 
-    public int getTotalPages() {
+    @Override
+    public int getTotalPages(int pageType) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getInt(TOTAL_PAGES, 1);
+        return sp.getInt(TOTAL_PAGES + pageType, 1);
     }
 
+    @Override
     public String getLocale() {
         Locale currentLocale = getCurrentLocale(context);
         if (currentLocale.getLanguage().equals("ru")) {

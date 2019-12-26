@@ -7,29 +7,35 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.util.Constants;
-import com.akat.filmreel.util.InjectorUtils;
+import com.akat.filmreel.util.SnackbarMessage;
+import com.akat.filmreel.util.SnackbarUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
+
+import javax.inject.Inject;
 
 public class CinemaListFragment extends Fragment
         implements CinemaListAdapter.CinemaListAdapterOnItemClickHandler {
 
     private static final int PERMISSIONS_REQUEST_FINE_LOCATION = 13;
+
+    @Inject
+    public ViewModelProvider.Factory factory;
 
     private FusedLocationProviderClient fusedLocationClient;
     private CinemaListAdapter cinemaListAdapter;
@@ -47,6 +53,7 @@ public class CinemaListFragment extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        MovieApplication.getAppComponent().inject(this);
     }
 
     @Override
@@ -62,13 +69,10 @@ public class CinemaListFragment extends Fragment
         });
 
         recyclerView = view.findViewById(R.id.recycler_view_cinema_list);
-        LinearLayoutManager layoutManager =
-                new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
         DividerItemDecoration mDividerItemDecoration =
-                new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+                new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
         cinemaListAdapter = new CinemaListAdapter(requireActivity(), this);
@@ -121,7 +125,9 @@ public class CinemaListFragment extends Fragment
     private void doShowCinemas() {
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
-                    if (location != null) {
+                    if (location == null) {
+                        Snackbar.make(loadingIndicator, R.string.error_location, Snackbar.LENGTH_LONG).show();
+                    } else {
                         this.location = location;
                         loadData();
                     }
@@ -133,16 +139,16 @@ public class CinemaListFragment extends Fragment
         if (viewModel != null && location != null) {
             viewModel.forceUpdate(location.getLatitude(), location.getLongitude());
         } else {
-            CinemaListViewModelFactory factory =
-                    InjectorUtils.provideCinemaListViewModelFactory(location.getLatitude(), location.getLongitude());
             viewModel = ViewModelProviders.of(this, factory).get(CinemaListViewModel.class);
-            viewModel.getNearbyCinemas().observe(this,
+            viewModel.getNearbyCinemas(location.getLatitude(),
+                    location.getLongitude()).observe(this,
                     entries -> {
                         showLoading = false;
                         cinemaListAdapter.setItems(entries);
                         updateDataView();
                     }
             );
+            setupSnackbar();
         }
     }
 
@@ -162,5 +168,12 @@ public class CinemaListFragment extends Fragment
             loadingIndicator.setVisibility(View.GONE);
             noItemView.setVisibility(View.GONE);
         }
+    }
+
+    private void setupSnackbar() {
+        viewModel.getSnackbarMessage().observe(this,
+                (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
+                        SnackbarUtils.showSnackbar(getView(), getString(snackbarMessageResourceId))
+        );
     }
 }

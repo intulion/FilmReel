@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragment_movie_list">
+    app:startDestination="@id/fragment_pager">
 
     <fragment
         android:id="@+id/fragment_movie_list"
         android:name="com.akat.filmreel.ui.movieList.MovieListFragment"
-        android:label="@string/top_rated_movies" >
+        android:label="@string/movies" >
         <action
             android:id="@+id/action_fragment_movie_list_to_movieDetailFragment"
             app:destination="@id/fragment_movie_detail" />
@@ -17,7 +17,11 @@
         android:id="@+id/fragment_movie_detail"
         android:name="com.akat.filmreel.ui.movieDetail.MovieDetailFragment"
         android:label="@string/movie_details"
-        tools:layout="@layout/fragment_movie_detail" />
+        tools:layout="@layout/fragment_movie_detail" >
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="app://filmreel.akat.dev/movie/{id}" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_bookmarks"
         android:name="com.akat.filmreel.ui.bookmarks.BookmarksFragment"
@@ -45,4 +49,24 @@
         android:name="com.akat.filmreel.ui.about.AboutFragment"
         android:label="@string/about"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/fragment_search"
+        android:name="com.akat.filmreel.ui.search.SearchFragment"
+        android:label="@string/search_movies">
+        <action
+            android:id="@+id/action_fragment_search_to_fragment_movie_detail"
+            app:destination="@id/fragment_movie_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_pager"
+        android:name="com.akat.filmreel.ui.movieList.MoviePagerFragment"
+        android:label="@string/movies"
+        tools:layout="@layout/fragment_movie_pager">
+        <action
+            android:id="@+id/action_pagerFragment_to_fragment_movie_list"
+            app:destination="@id/fragment_movie_list" />
+        <action
+            android:id="@+id/action_fragment_pager_to_fragment_search"
+            app:destination="@id/fragment_search" />
+    </fragment>
 </navigation>

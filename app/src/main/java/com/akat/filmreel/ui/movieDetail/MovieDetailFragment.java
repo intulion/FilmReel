@@ -13,19 +13,28 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
+import com.akat.filmreel.data.model.Movie;
+import com.akat.filmreel.ui.common.MovieListAdapter;
 import com.akat.filmreel.util.Constants;
-import com.akat.filmreel.util.InjectorUtils;
+import com.akat.filmreel.util.SnackbarMessage;
+import com.akat.filmreel.util.SnackbarUtils;
 import com.bumptech.glide.Glide;
 
-import java.util.List;
-import java.util.Locale;
+import javax.inject.Inject;
 
-public class MovieDetailFragment extends Fragment {
+public class MovieDetailFragment extends Fragment
+        implements RecommendListAdapter.OnItemClickHandler {
+
+    @Inject
+    public ViewModelProvider.Factory factory;
 
     private ImageView posterView;
     private ImageView backdropView;
@@ -38,92 +47,104 @@ public class MovieDetailFragment extends Fragment {
     private TextView overviewView;
 
     private MovieDetailViewModel viewModel;
+    private RecommendListAdapter recommendListAdapter;
     private long movieId;
     private boolean isBookmarked;
-    private List<Integer> genres;
+    private Movie currentMovie;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        MovieApplication.getAppComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
+        final View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
 
         setHasOptionsMenu(true);
 
         Bundle bundle = requireArguments();
         movieId = bundle.getLong(Constants.PARAM.MOVIE_ID);
 
-        posterView = rootView.findViewById(R.id.movie_poster_img);
-        backdropView = rootView.findViewById(R.id.movie_backdrop);
-        titleView = rootView.findViewById(R.id.movie_title);
-        origTitleView = rootView.findViewById(R.id.movie_orig_title);
-        languageView = rootView.findViewById(R.id.movie_language);
-        releaseDateView = rootView.findViewById(R.id.movie_release_date);
-        ratingView = rootView.findViewById(R.id.movie_rating);
-        popularityView = rootView.findViewById(R.id.movie_popularity);
-        overviewView = rootView.findViewById(R.id.movie_overview);
+        posterView = view.findViewById(R.id.movie_poster_img);
+        backdropView = view.findViewById(R.id.movie_backdrop);
+        titleView = view.findViewById(R.id.movie_title);
+        origTitleView = view.findViewById(R.id.movie_orig_title);
+        languageView = view.findViewById(R.id.movie_language);
+        releaseDateView = view.findViewById(R.id.movie_release_date);
+        ratingView = view.findViewById(R.id.movie_rating);
+        popularityView = view.findViewById(R.id.movie_popularity);
+        overviewView = view.findViewById(R.id.movie_overview);
 
-        // More Button
-        rootView.findViewById(R.id.movie_more_btn).setOnClickListener(v -> {
+        // Recommendations
+        RecyclerView recommendView = view.findViewById(R.id.movie_recommend_list);
+        recommendListAdapter = new RecommendListAdapter(requireActivity(), this);
+        recommendView.setAdapter(recommendListAdapter);
+
+        // Remind Button
+        view.findViewById(R.id.movie_notification_btn).setOnClickListener(v -> {
             FragmentMoreInfo fragment = new FragmentMoreInfo();
-            fragment.setGenres(genres);
+            fragment.setMovie(currentMovie);
             fragment.show(requireActivity().getSupportFragmentManager(), fragment.getTag());
         });
 
-        return rootView;
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MovieDetailViewModelFactory factory =
-                InjectorUtils.provideMovieDetailViewModelFactory(requireActivity(), movieId);
         viewModel = ViewModelProviders.of(this, factory).get(MovieDetailViewModel.class);
-        viewModel.getMovie().observe(this, entry -> {
-            if (entry != null) {
-                titleView.setText(entry.getTitle());
-                origTitleView.setText(entry.getOriginalTitle());
-                overviewView.setText(entry.getOverview());
-                languageView.setText(entry.getOriginalLanguage());
-                popularityView.setText(
-                        String.format(Locale.getDefault(), "%.3f", entry.getPopularity())
-                );
+        viewModel.getMovie(movieId).observe(this, this::fillMovieData);
+        viewModel.getRecommendations(movieId).observe(this, entry ->
+                recommendListAdapter.swapItems(entry)
+        );
 
-                String dateFormat = requireActivity().getResources().getString(R.string.date_format);
-                releaseDateView.setText(
-                        String.format(dateFormat, entry.getReleaseDate())
-                );
+        setupSnackbar();
+    }
 
-                String ratingFormat = requireActivity().getResources().getString(R.string.movie_rating_format);
-                ratingView.setText(
-                        String.format(ratingFormat,
-                                entry.getVoteAverage(),
-                                entry.getVoteCount()
-                        )
-                );
+    private void fillMovieData(Movie entry) {
+        currentMovie = entry;
 
-                String posterPath = entry.getPosterPath();
-                if (posterPath != null) {
-                    Glide.with(posterView.getContext())
-                            .load(Constants.HTTP.POSTER_URL + posterPath)
-                            .into(posterView);
-                }
+        titleView.setText(entry.getTitle());
+        origTitleView.setText(entry.getOriginalTitle());
+        overviewView.setText(entry.getOverview());
+        languageView.setText(entry.getOriginalLanguage());
+        popularityView.setText(
+                getString(R.string.popularity_format, entry.getPopularity())
+        );
 
-                String backdropPath = entry.getBackdropPath();
-                if (posterPath != null) {
-                    Glide.with(posterView.getContext())
-                            .load(Constants.HTTP.BACKDROP_URL + backdropPath)
-                            .into(backdropView);
-                }
+        releaseDateView.setText(
+                getString(R.string.date_format, entry.getReleaseDate())
+        );
 
-                // set bookmark icon
-                isBookmarked = entry.isBookmarked();
-                requireActivity().invalidateOptionsMenu();
+        ratingView.setText(
+                getString(R.string.movie_rating_format,
+                        entry.getVoteAverage(),
+                        entry.getVoteCount())
+        );
 
-                // set genres array
-                genres = entry.getGenreIds();
-            }
-        });
+        String posterPath = entry.getPosterPath();
+        if (posterPath != null) {
+            Glide.with(posterView.getContext())
+                    .load(Constants.HTTP.POSTER_URL + posterPath)
+                    .into(posterView);
+        }
+
+        String backdropPath = entry.getBackdropPath();
+        if (backdropPath != null) {
+            Glide.with(posterView.getContext())
+                    .load(Constants.HTTP.BACKDROP_URL + backdropPath)
+                    .into(backdropView);
+        }
+
+        // set bookmark icon
+        isBookmarked = entry.isBookmarked();
+        requireActivity().invalidateOptionsMenu();
     }
 
     @Override
@@ -138,9 +159,9 @@ public class MovieDetailFragment extends Fragment {
 
         MenuItem bookmarkItem = menu.findItem(R.id.menu_detail_bookmark);
         if (isBookmarked) {
-            bookmarkItem.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_bookmark));
+            bookmarkItem.setIcon(R.drawable.ic_bookmark);
         } else {
-            bookmarkItem.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_bookmark_border));
+            bookmarkItem.setIcon(R.drawable.ic_bookmark_border);
         }
     }
 
@@ -151,7 +172,7 @@ public class MovieDetailFragment extends Fragment {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT,
-                        String.format(getString(R.string.movie_share_text), titleView.getText())
+                        getString(R.string.movie_share_text, currentMovie.getTitle())
                 );
                 sendIntent.setType("text/plain");
                 Intent shareIntent = Intent.createChooser(sendIntent, null);
@@ -168,4 +189,24 @@ public class MovieDetailFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    private void setupSnackbar() {
+        viewModel.getSnackbarMessage().observe(this,
+                (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
+                        SnackbarUtils.showSnackbar(getView(), getString(snackbarMessageResourceId))
+        );
+    }
+
+    @Override
+    public void onItemClick(View view, long movieId) {
+        Bundle bundle = new Bundle();
+        bundle.putLong(Constants.PARAM.MOVIE_ID, movieId);
+
+        Navigation.findNavController(view).navigate(R.id.fragment_movie_detail, bundle);
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position, long movieId, boolean isBookmarked) {
+        viewModel.setBookmark(movieId, isBookmarked);
+        recommendListAdapter.notifyItemChanged(position);
+    }
 }

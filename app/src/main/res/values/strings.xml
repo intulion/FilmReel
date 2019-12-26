@@ -5,12 +5,18 @@
     <string name="developer">Developer</string>
     <string name="about">About</string>
 
+    <string name="widget_label">Now Playing</string>
+
     <string name="default_notification_channel_id" translatable="false">default_channel</string>
     <string name="default_notification_channel_name" translatable="true">Default</string>
     <string name="sync_notification_channel_id" translatable="false">sync_channel</string>
     <string name="sync_notification_channel_name" translatable="true">Synchronization</string>
 
-    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="movie_rating_format" translatable="false">%1$.1f (%2$d)</string>
+    <string name="date_format">%1$td.%1$tm.%1$tY</string>
+    <string name="time_format" translatable="false">%1$tk:%1$tM</string>
+    <string name="popularity_format" translatable="false">"%.3f"</string>
+
     <string name="movie_details">Movie Details</string>
 
     <string name="more">More</string>
@@ -22,6 +28,7 @@
     <string name="map">Map</string>
     <string name="cinemas">Cinemas</string>
     <string name="nearby_cinemas">Nearby Cinemas</string>
+    <string name="movies">Movies</string>
 
     <string name="no_bookmarks">No bookmarks</string>
     <string name="long_tap_to_bookmark">Long tap on a movie to bookmark</string>
@@ -37,10 +44,33 @@
     <string name="desc_icon_places">Places Icon</string>
     <string name="desc_about_github">Github Link</string>
     <string name="desc_about_mail">Mail Link</string>
+    <string name="desc_reminder">Remind</string>
 
     <string name="sync_title">Synchronization</string>
     <string name="sync_desc">Movies has been synced</string>
 
-    <string name="movie_rating_format" translatable="false">%1$.1f (%2$d)</string>
-    <string name="date_format">%1$td.%1$tm.%1$tY</string>
+    <string name="search">Search</string>
+    <string name="search_movies">Search for Movies</string>
+    <string name="search_no_result">No movies found</string>
+
+    <string name="error_occurred">An error has occurred</string>
+    <string name="error_limit">Request limit exceeded</string>
+    <string name="error_access_denied">Access denied</string>
+    <string name="error_location">Failed to get current location</string>
+
+    <string name="message_bookmark_added">Bookmarked</string>
+    <string name="message_bookmark_removed">Removed from bookmarks</string>
+
+    <string name="tab_title_now_playing">Now Playing</string>
+    <string name="tab_title_top_rated">Top Rated</string>
+    <string name="tab_title_popular">Popular</string>
+    <string name="tab_title_upcoming">Upcoming</string>
+
+    <string name="set_reminder">Set reminder</string>
+    <string name="remind">Add reminder</string>
+    <string name="reminder_title">Movie reminder</string>
+    <string name="reminder_added">Reminder added</string>
+
+    <string name="overview">Overview</string>
+    <string name="recommendations">Recommendations</string>
 </resources>

@@ -1,35 +1,53 @@
 package com.akat.filmreel.ui.movieList;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.ui.common.MovieListAdapter;
 import com.akat.filmreel.util.Constants;
-import com.akat.filmreel.util.InjectorUtils;
+import com.akat.filmreel.util.SnackbarMessage;
+import com.akat.filmreel.util.SnackbarUtils;
+
+import javax.inject.Inject;
 
 public class MovieListFragment extends Fragment
         implements MovieListAdapter.OnItemClickHandler, MovieListAdapter.OnBottomReachedListener {
 
+    @Inject
+    public ViewModelProvider.Factory factory;
+
     private MovieListViewModel viewModel;
+    private int pageType = Constants.PAGER.NOW_PLAYING;
 
     private MovieListAdapter movieListAdapter;
     private View loadingIndicator;
     private RecyclerView recyclerView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        MovieApplication.getAppComponent().inject(this);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            pageType = args.getInt(Constants.PARAM.PAGER_POSITION);
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -38,14 +56,11 @@ public class MovieListFragment extends Fragment
 
         loadingIndicator = view.findViewById(R.id.pb_loading_indicator);
         recyclerView = view.findViewById(R.id.recycler_view_movie_list);
-        LinearLayoutManager layoutManager =
-                new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        DividerItemDecoration mDividerItemDecoration =
-                new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(mDividerItemDecoration);
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         movieListAdapter = new MovieListAdapter(requireActivity(), this);
         movieListAdapter.setOnBottomReachedListener(this);
@@ -53,7 +68,7 @@ public class MovieListFragment extends Fragment
 
         SwipeRefreshLayout refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         refreshLayout.setOnRefreshListener(() -> {
-            viewModel.reloadMovies();
+            viewModel.reloadMovies(pageType);
             refreshLayout.setRefreshing(false);
         });
 
@@ -64,15 +79,15 @@ public class MovieListFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MovieListViewModelFactory factory =
-                InjectorUtils.provideMovieListViewModelFactory(requireActivity());
         viewModel = ViewModelProviders.of(this, factory).get(MovieListViewModel.class);
-        viewModel.getMovies().observe(this, entries -> {
+        viewModel.observeMovies(pageType);
+        viewModel.getMovies(pageType).observe(this, entries -> {
             movieListAdapter.swapItems(entries);
 
             if (entries != null && entries.size() != 0) showDataView();
             else showLoading();
         });
+        setupSnackbar();
     }
 
     @Override
@@ -90,9 +105,8 @@ public class MovieListFragment extends Fragment
     }
 
     @Override
-    public void onBottomReached(int position) {
-        int currentPage = 1 + position / Constants.HTTP.PAGE_SIZE;
-        viewModel.loadNewData(currentPage);
+    public void onBottomReached() {
+        viewModel.loadNextPage(pageType);
     }
 
     private void showDataView() {
@@ -103,5 +117,12 @@ public class MovieListFragment extends Fragment
     private void showLoading() {
         loadingIndicator.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
+    }
+
+    private void setupSnackbar() {
+        viewModel.getSnackbarMessage().observe(this,
+                (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
+                        SnackbarUtils.showSnackbar(getView(), getString(snackbarMessageResourceId))
+        );
     }
 }

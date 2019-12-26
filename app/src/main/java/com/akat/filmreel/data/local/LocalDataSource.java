@@ -1,25 +1,51 @@
 package com.akat.filmreel.data.local;
 
-import androidx.lifecycle.LiveData;
-
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.data.model.MovieWithBookmark;
+import com.akat.filmreel.data.model.MovieEntity;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
+
 public interface LocalDataSource {
-    LiveData<List<MovieWithBookmark>> getMovies();
+    Flowable<List<Movie>> getTopRatedMovies();
 
-    LiveData<List<MovieWithBookmark>> getBookmarkedMovies();
+    Flowable<List<Movie>> getNowPlayingMovies();
 
-    LiveData<MovieWithBookmark> getMovie(long movieId);
+    Flowable<List<Movie>> getPopularMovies();
 
-    void addMovies(List<Movie> movies, int page);
+    Flowable<List<Movie>> getUpcomingMovies();
 
-    void deleteNotMarkedMovies();
+    Flowable<List<Movie>> getBookmarkedMovies();
 
-    void setBookmark(Bookmark bookmark);
+    Flowable<List<Movie>> getRecommendations(long movieId);
 
-    void removeBookmark(long movieId);
+    Single<Movie> getMovie(long movieId);
+
+    void addTopRatedMovies(List<MovieEntity> movies, int page);
+
+    void addNowPlayingMovies(List<MovieEntity> movies, int page);
+
+    void addPopularMovies(List<MovieEntity> movies, int page);
+
+    void addUpcomingMovies(List<MovieEntity> movies, int page);
+
+    void addRecommendations(long movieId, List<MovieEntity> movies, int page);
+
+    void deleteTopRatedMovies();
+
+    void deleteNowPlayingMovies();
+
+    void deletePopularMovies();
+
+    void deleteUpcomingMovies();
+
+    Completable setBookmark(Bookmark bookmark);
+
+    Completable removeBookmark(long movieId);
+
+    Completable addMovie(MovieEntity movie);
 }
