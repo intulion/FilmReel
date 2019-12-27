@@ -14,10 +14,10 @@ import io.reactivex.Single;
 @ApplicationScope
 public class GetMovieDetailsUseCase {
 
-    private final Repository repository;
+    private final IMovieRepository repository;
 
     @Inject
-    GetMovieDetailsUseCase(Repository repository) {
+    GetMovieDetailsUseCase(IMovieRepository repository) {
         this.repository = repository;
     }
 

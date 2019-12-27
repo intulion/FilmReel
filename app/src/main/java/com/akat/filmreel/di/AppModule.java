@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.akat.filmreel.data.domain.MovieRepository;
-import com.akat.filmreel.data.domain.Repository;
+import com.akat.filmreel.data.domain.IMovieRepository;
 import com.akat.filmreel.data.local.AppDatabase;
 import com.akat.filmreel.data.local.AppPreferences;
 import com.akat.filmreel.data.local.LocalDataSource;
@@ -39,9 +39,9 @@ class AppModule {
 
     @Provides
     @ApplicationScope
-    Repository provideRepository(LocalDataSource localDataSource,
-                                 NetworkDataSource networkDataSource,
-                                 Preferences preferences) {
+    IMovieRepository provideRepository(LocalDataSource localDataSource,
+                                       NetworkDataSource networkDataSource,
+                                       Preferences preferences) {
         return new MovieRepository(localDataSource, networkDataSource, preferences);
     }
 

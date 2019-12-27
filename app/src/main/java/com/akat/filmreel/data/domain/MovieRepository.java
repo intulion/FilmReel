@@ -23,7 +23,7 @@ import static com.akat.filmreel.util.Constants.PAGER.TOP_RATED;
 import static com.akat.filmreel.util.Constants.PAGER.UPCOMING;
 
 @ApplicationScope
-public class MovieRepository implements Repository {
+public class MovieRepository implements IMovieRepository {
 
     private NetworkDataSource networkDataSource;
     private LocalDataSource localDataSource;

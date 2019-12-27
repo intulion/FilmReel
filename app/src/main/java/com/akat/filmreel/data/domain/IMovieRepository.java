@@ -10,7 +10,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-public interface Repository {
+public interface IMovieRepository {
     Flowable<List<Movie>> getTopRatedMovies();
 
     Flowable<List<Movie>> getNowPlayingMovies();

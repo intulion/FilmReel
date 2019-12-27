@@ -13,7 +13,7 @@ import androidx.navigation.NavDeepLinkBuilder;
 
 import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.domain.Repository;
+import com.akat.filmreel.data.domain.IMovieRepository;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.util.Constants;
 import com.bumptech.glide.Glide;
@@ -31,7 +31,7 @@ public class AppWidget extends AppWidgetProvider {
     private final CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
-    Repository repository;
+    IMovieRepository repository;
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                         int appWidgetId, Movie movie) {

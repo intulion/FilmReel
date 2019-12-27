@@ -66,7 +66,7 @@ public class GetMoviesUseCaseTest {
         // Network data source
         NetworkDataSource networkDataSource = new MovieNetworkDataSource(apiService);
 
-        // Repository
+        // IMovieRepository
         MovieRepository repository = new MovieRepository(localDataSource, networkDataSource, preferences);
 
         getMoviesUseCase = new GetMoviesUseCase(repository);

@@ -12,10 +12,10 @@ import io.reactivex.Flowable;
 @ApplicationScope
 public class GetBookmarksUseCase {
 
-    private final Repository repository;
+    private final IMovieRepository repository;
 
     @Inject
-    GetBookmarksUseCase(Repository repository) {
+    GetBookmarksUseCase(IMovieRepository repository) {
         this.repository = repository;
     }
 
