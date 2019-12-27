@@ -15,6 +15,18 @@ This app helps you to browse for top rated, popular, now playing and upcoming mo
 * Tests with MockWebServer 
 * Homescreen Widget that shows #1 now playing movie
 
+## Installing
+1. Get TMDb API key from [TMDb website](https://www.themoviedb.org/documentation/api)
+2. Get Google Places API key from [Places API website](https://developers.google.com/places/web-service/get-api-key)
+3. Get Google Maps API key from [Maps SDK for Android](https://developers.google.com/maps/documentation/android-sdk/get-api-key)
+4. Create a local `gradle.properties` file and store the API keys there
+
+```
+FilmReel_ApiKey="TMDb API key here"
+FilmReel_MapsKey="Places API key here"
+FilmReel_PlacesApiKey="Maps API key here"
+```
+
 ## Libraries
 *   [AndroidX](https://developer.android.com/jetpack/androidx/)
 *   [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
