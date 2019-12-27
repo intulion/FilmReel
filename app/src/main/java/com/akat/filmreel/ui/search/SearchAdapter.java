@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListAdapterViewHolder> {
+    private static final int BOTTOM_REACHED_RANGE = 5;
 
     private final Context context;
     private final OnItemClickHandler clickHandler;
@@ -36,9 +37,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListA
     @NonNull
     @Override
     public MovieListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        int layoutId = R.layout.item_search_list;
-        View view = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
-        view.setFocusable(true);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_search_list, viewGroup, false);
         return new MovieListAdapterViewHolder(view);
     }
 
@@ -69,7 +68,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListA
                     .into(holder.poster);
         }
 
-        if (position == getItemCount() - 3) {
+        if (position == getItemCount() - BOTTOM_REACHED_RANGE) {
             bottomReachedListener.onBottomReached(position);
         }
     }
