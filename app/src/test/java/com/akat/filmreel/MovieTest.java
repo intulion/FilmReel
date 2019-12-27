@@ -16,11 +16,11 @@ public class MovieTest {
         assertFalse(movie.isBookmarked());
 
         // set bookmark
-        movie.setBookmark(true);
+        movie.setIsBookmarked(true);
         assertTrue(movie.isBookmarked());
 
         // remove bookmark
-        movie.setBookmark(false);
+        movie.setIsBookmarked(false);
         assertFalse(movie.isBookmarked());
     }
 }

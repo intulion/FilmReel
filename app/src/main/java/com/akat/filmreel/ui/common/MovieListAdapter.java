@@ -178,7 +178,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             setLongTapAnimation(cardView);
             clickHandler.onItemLongClick(view, adapterPosition, selectedMovie.getId(), isBookmarked);
 
-            selectedMovie.setBookmark(!isBookmarked);
+            selectedMovie.setIsBookmarked(!isBookmarked);
             return true;
         }
     }

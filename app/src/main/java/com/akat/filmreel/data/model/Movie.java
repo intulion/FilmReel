@@ -140,7 +140,7 @@ public class Movie {
         return isBookmarked;
     }
 
-    public void setBookmark(Boolean isBookmarked) {
+    public void setIsBookmarked(Boolean isBookmarked) {
         this.isBookmarked = isBookmarked;
     }
 

@@ -39,7 +39,7 @@ public class TestUtils {
         Movie movie = new Movie();
         movie.setId(id);
         movie.setTitle(title);
-        movie.setBookmark(bookmark);
+        movie.setIsBookmarked(bookmark);
 
         return movie;
     }
