@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListAdapterViewHolder> {
+    private static final int BOTTOM_REACHED_RANGE = 5;
 
     private final Context context;
     private final OnItemClickHandler clickHandler;
@@ -73,7 +74,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                     .into(holder.poster);
         }
 
-        if (onBottomReachedListener != null && position == getItemCount() - 5) {
+        if (onBottomReachedListener != null && position == getItemCount() - BOTTOM_REACHED_RANGE) {
             onBottomReachedListener.onBottomReached();
         }
 
@@ -104,10 +105,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    Movie newMovie = newMovies.get(newItemPosition);
-                    Movie oldMovie = movies.get(oldItemPosition);
-                    return newMovie.getId() == oldMovie.getId()
-                            && newMovie.getTitle().equals(oldMovie.getTitle());
+                    return movies.get(oldItemPosition) == newMovies.get(newItemPosition);
                 }
             });
             movies = newMovies;
@@ -199,5 +197,4 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.bookmark_animation);
         view.startAnimation(animation);
     }
-
 }
