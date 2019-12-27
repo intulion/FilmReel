@@ -25,7 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Calendar;
 
-public class FragmentMoreInfo extends BottomSheetDialogFragment
+public class MoreInfoFragment extends BottomSheetDialogFragment
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private BottomSheetBehavior behavior;
