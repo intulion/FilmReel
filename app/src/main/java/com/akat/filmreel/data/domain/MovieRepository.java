@@ -1,7 +1,7 @@
 package com.akat.filmreel.data.domain;
 
+import com.akat.filmreel.data.local.IMoviePreferences;
 import com.akat.filmreel.data.local.LocalDataSource;
-import com.akat.filmreel.data.local.Preferences;
 import com.akat.filmreel.data.model.ApiResponse;
 import com.akat.filmreel.data.model.Bookmark;
 import com.akat.filmreel.data.model.Movie;
@@ -27,12 +27,12 @@ public class MovieRepository implements IMovieRepository {
 
     private NetworkDataSource networkDataSource;
     private LocalDataSource localDataSource;
-    private Preferences preferences;
+    private IMoviePreferences preferences;
 
     @Inject
     public MovieRepository(LocalDataSource localDataSource,
                            NetworkDataSource networkDataSource,
-                           Preferences preferences) {
+                           IMoviePreferences preferences) {
         this.localDataSource = localDataSource;
         this.networkDataSource = networkDataSource;
         this.preferences = preferences;

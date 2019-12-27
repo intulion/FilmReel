@@ -1,6 +1,6 @@
 package com.akat.filmreel.data.local;
 
-public interface Preferences {
+public interface IMoviePreferences {
     void setPageData(int pageType, int lastPage, int totalPages);
 
     int getLastPage(int pageType);
