@@ -20,7 +20,7 @@ public class Movie {
     private String overview;
     private Date releaseDate;
     private List<Integer> genreIds = null;
-    private Boolean bookmark;
+    private Boolean isBookmarked;
     private Date bookmarkDate;
 
     public long getId() {
@@ -135,17 +135,13 @@ public class Movie {
         this.genreIds = genreIds;
     }
 
-    public Boolean getBookmark() {
-        return bookmark;
-    }
-
     public boolean isBookmarked() {
-        if (bookmark == null) return false;
-        return bookmark;
+        if (isBookmarked == null) return false;
+        return isBookmarked;
     }
 
-    public void setBookmark(Boolean bookmark) {
-        this.bookmark = bookmark;
+    public void setBookmark(Boolean isBookmarked) {
+        this.isBookmarked = isBookmarked;
     }
 
     public Date getBookmarkDate() {
@@ -175,12 +171,14 @@ public class Movie {
                 Objects.equals(overview, movie.overview) &&
                 Objects.equals(releaseDate, movie.releaseDate) &&
                 Objects.equals(genreIds, movie.genreIds) &&
-                Objects.equals(bookmark, movie.bookmark) &&
+                Objects.equals(isBookmarked, movie.isBookmarked) &&
                 Objects.equals(bookmarkDate, movie.bookmarkDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, popularity, voteCount, video, posterPath, adult, backdropPath, originalLanguage, originalTitle, title, voteAverage, overview, releaseDate, genreIds, bookmark, bookmarkDate);
+        return Objects.hash(id, popularity, voteCount, video, posterPath, adult, backdropPath,
+                originalLanguage, originalTitle, title, voteAverage, overview,
+                releaseDate, genreIds, isBookmarked, bookmarkDate);
     }
 }
