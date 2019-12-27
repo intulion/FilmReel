@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1066929562195",
+    "firebase_url": "https://river-bruin-258807.firebaseio.com",
+    "project_id": "river-bruin-258807",
+    "storage_bucket": "river-bruin-258807.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066929562195:android:c91efaa3b48cd26e361ca6",
+        "android_client_info": {
+          "package_name": "dev.akat.filmreel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1066929562195-peplmtno66mm02ts5rsvuiaha4rda11v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTpzcIkXqIXtpr_2RFdN8RExxEISzkoHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1066929562195-peplmtno66mm02ts5rsvuiaha4rda11v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066929562195:android:d18bed4d07c846fe361ca6",
+        "android_client_info": {
+          "package_name": "dev.akat.filmreel.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1066929562195-peplmtno66mm02ts5rsvuiaha4rda11v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTpzcIkXqIXtpr_2RFdN8RExxEISzkoHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1066929562195-peplmtno66mm02ts5rsvuiaha4rda11v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
