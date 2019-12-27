@@ -29,9 +29,7 @@ public class CinemaListAdapter extends RecyclerView.Adapter<CinemaListAdapter.Ci
     @NonNull
     @Override
     public CinemaListAdapter.CinemaListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        int layoutId = R.layout.item_cinema_list;
-        View view = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
-        view.setFocusable(true);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_cinema_list, viewGroup, false);
         return new CinemaListAdapter.CinemaListAdapterViewHolder(view);
     }
 
@@ -75,9 +73,7 @@ public class CinemaListAdapter extends RecyclerView.Adapter<CinemaListAdapter.Ci
 
         @Override
         public void onClick(View view) {
-            int adapterPosition = getAdapterPosition();
-            Cinema selectedCinema = cinemas.get(adapterPosition);
-
+            Cinema selectedCinema = cinemas.get(getAdapterPosition());
             Location cinemaLocation = selectedCinema.getGeometry().getLocation();
 
             clickHandler.onItemClick(
