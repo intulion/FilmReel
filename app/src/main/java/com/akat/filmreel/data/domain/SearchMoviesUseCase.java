@@ -10,10 +10,10 @@ import io.reactivex.Single;
 @ApplicationScope
 public class SearchMoviesUseCase {
 
-    private final Repository repository;
+    private final IMovieRepository repository;
 
     @Inject
-    SearchMoviesUseCase(Repository repository) {
+    SearchMoviesUseCase(IMovieRepository repository) {
         this.repository = repository;
     }
 

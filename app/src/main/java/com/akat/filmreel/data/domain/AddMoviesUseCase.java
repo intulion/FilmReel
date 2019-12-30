@@ -10,10 +10,10 @@ import io.reactivex.Completable;
 @ApplicationScope
 public class AddMoviesUseCase {
 
-    private final Repository repository;
+    private final IMovieRepository repository;
 
     @Inject
-    AddMoviesUseCase(Repository repository) {
+    AddMoviesUseCase(IMovieRepository repository) {
         this.repository = repository;
     }
 

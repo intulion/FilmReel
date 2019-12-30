@@ -125,7 +125,7 @@ public class FakeLocalDataSource implements LocalDataSource {
     public Completable setBookmark(Bookmark bookmark) {
         for (Movie movie : movieList) {
             if (movie.getId() == bookmark.getMovieId()) {
-                movie.setBookmark(true);
+                movie.setIsBookmarked(true);
             }
         }
         return Completable.complete();
@@ -135,7 +135,7 @@ public class FakeLocalDataSource implements LocalDataSource {
     public Completable removeBookmark(long movieId) {
         for (Movie movie : movieList) {
             if (movie.getId() == movieId) {
-                movie.setBookmark(false);
+                movie.setIsBookmarked(false);
             }
         }
         return Completable.complete();

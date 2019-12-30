@@ -1,6 +1,6 @@
 package com.akat.filmreel.di;
 
-import com.akat.filmreel.data.local.AppPreferences;
+import com.akat.filmreel.data.local.MoviePreferences;
 
 import dagger.Module;
 import dagger.Provides;
@@ -13,8 +13,8 @@ import static org.mockito.Mockito.when;
 public class TestAppModule {
 
     @Provides
-    AppPreferences providePreferences() {
-        AppPreferences preferences = mock(AppPreferences.class);
+    MoviePreferences providePreferences() {
+        MoviePreferences preferences = mock(MoviePreferences.class);
         when(preferences.getLastPage(TOP_RATED)).thenReturn(0);
         when(preferences.getTotalPages(TOP_RATED)).thenReturn(1);
         when(preferences.getLocale()).thenReturn("en-US");

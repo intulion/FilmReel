@@ -12,7 +12,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 @ApplicationScope
-public class AppPreferences implements Preferences {
+public class MoviePreferences implements IMoviePreferences {
 
     private static final String LAST_PAGE = "last_page_";
     private static final String TOTAL_PAGES = "total_pages_";
@@ -20,7 +20,7 @@ public class AppPreferences implements Preferences {
     private final Context context;
 
     @Inject
-    public AppPreferences(Context context) {
+    public MoviePreferences(Context context) {
         this.context = context;
     }
 

@@ -18,10 +18,10 @@ import static com.akat.filmreel.util.Constants.PAGER.UPCOMING;
 @ApplicationScope
 public class GetMoviesUseCase {
 
-    private final Repository repository;
+    private final IMovieRepository repository;
 
     @Inject
-    GetMoviesUseCase(Repository repository) {
+    GetMoviesUseCase(IMovieRepository repository) {
         this.repository = repository;
     }
 

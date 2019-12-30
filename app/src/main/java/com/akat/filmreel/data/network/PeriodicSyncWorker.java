@@ -13,7 +13,7 @@ import androidx.work.WorkerParameters;
 
 import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
-import com.akat.filmreel.data.domain.Repository;
+import com.akat.filmreel.data.domain.IMovieRepository;
 import com.akat.filmreel.ui.MainActivity;
 
 import javax.inject.Inject;
@@ -24,7 +24,7 @@ public class PeriodicSyncWorker extends RxWorker {
     private static final String TAG = "PeriodicSyncWorker";
 
     @Inject
-    Repository repository;
+    IMovieRepository repository;
     private Context context;
 
     public PeriodicSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {

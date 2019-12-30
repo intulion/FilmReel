@@ -6,7 +6,7 @@ import androidx.room.Room;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.akat.filmreel.data.local.AppDatabase;
-import com.akat.filmreel.data.local.AppPreferences;
+import com.akat.filmreel.data.local.MoviePreferences;
 import com.akat.filmreel.data.local.LocalDataSource;
 import com.akat.filmreel.data.local.MovieLocalDataSource;
 import com.akat.filmreel.data.network.ApiService;
@@ -38,7 +38,7 @@ public class GetMoviesUseCaseTest {
     @Inject
     ApiService apiService;
     @Inject
-    AppPreferences preferences;
+    MoviePreferences preferences;
 
     @Before
     public void setUp() throws Exception {
@@ -66,7 +66,7 @@ public class GetMoviesUseCaseTest {
         // Network data source
         NetworkDataSource networkDataSource = new MovieNetworkDataSource(apiService);
 
-        // Repository
+        // IMovieRepository
         MovieRepository repository = new MovieRepository(localDataSource, networkDataSource, preferences);
 
         getMoviesUseCase = new GetMoviesUseCase(repository);

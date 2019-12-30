@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListAdapterViewHolder> {
+    private static final int BOTTOM_REACHED_RANGE = 5;
 
     private final Context context;
     private final OnItemClickHandler clickHandler;
@@ -41,9 +42,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     @NonNull
     @Override
     public MovieListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        int layoutId = R.layout.item_movie_list;
-        View view = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
-        view.setFocusable(true);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_movie_list, viewGroup, false);
         return new MovieListAdapterViewHolder(view);
     }
 
@@ -73,7 +72,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                     .into(holder.poster);
         }
 
-        if (onBottomReachedListener != null && position == getItemCount() - 5) {
+        if (onBottomReachedListener != null && position == getItemCount() - BOTTOM_REACHED_RANGE) {
             onBottomReachedListener.onBottomReached();
         }
 
@@ -104,10 +103,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    Movie newMovie = newMovies.get(newItemPosition);
-                    Movie oldMovie = movies.get(oldItemPosition);
-                    return newMovie.getId() == oldMovie.getId()
-                            && newMovie.getTitle().equals(oldMovie.getTitle());
+                    return movies.get(oldItemPosition) == newMovies.get(newItemPosition);
                 }
             });
             movies = newMovies;
@@ -182,7 +178,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             setLongTapAnimation(cardView);
             clickHandler.onItemLongClick(view, adapterPosition, selectedMovie.getId(), isBookmarked);
 
-            selectedMovie.setBookmark(!isBookmarked);
+            selectedMovie.setIsBookmarked(!isBookmarked);
             return true;
         }
     }
@@ -199,5 +195,4 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.bookmark_animation);
         view.startAnimation(animation);
     }
-
 }

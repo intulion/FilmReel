@@ -9,10 +9,10 @@ import io.reactivex.Completable;
 @ApplicationScope
 public class AddBookmarkUseCase {
 
-    private final Repository repository;
+    private final IMovieRepository repository;
 
     @Inject
-    AddBookmarkUseCase(Repository repository) {
+    AddBookmarkUseCase(IMovieRepository repository) {
         this.repository = repository;
     }
 

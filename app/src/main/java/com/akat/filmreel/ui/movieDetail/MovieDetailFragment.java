@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.akat.filmreel.MovieApplication;
 import com.akat.filmreel.R;
 import com.akat.filmreel.data.model.Movie;
-import com.akat.filmreel.ui.common.MovieListAdapter;
 import com.akat.filmreel.util.Constants;
 import com.akat.filmreel.util.SnackbarMessage;
 import com.akat.filmreel.util.SnackbarUtils;
@@ -86,7 +85,7 @@ public class MovieDetailFragment extends Fragment
 
         // Remind Button
         view.findViewById(R.id.movie_notification_btn).setOnClickListener(v -> {
-            FragmentMoreInfo fragment = new FragmentMoreInfo();
+            MoreInfoFragment fragment = new MoreInfoFragment();
             fragment.setMovie(currentMovie);
             fragment.show(requireActivity().getSupportFragmentManager(), fragment.getTag());
         });

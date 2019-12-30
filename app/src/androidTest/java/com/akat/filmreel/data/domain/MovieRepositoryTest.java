@@ -2,7 +2,7 @@ package com.akat.filmreel.data.domain;
 
 import com.akat.filmreel.data.FakeLocalDataSource;
 import com.akat.filmreel.data.FakeNetworkDataSource;
-import com.akat.filmreel.data.local.AppPreferences;
+import com.akat.filmreel.data.local.MoviePreferences;
 import com.akat.filmreel.data.model.Movie;
 import com.akat.filmreel.data.model.MovieEntity;
 import com.akat.filmreel.di.DaggerTestAppComponent;
@@ -34,7 +34,7 @@ public class MovieRepositoryTest {
     private final List<Movie> movieList = Arrays.asList(movieA, movieB, movieC);
 
     @Inject
-    AppPreferences preferences;
+    MoviePreferences preferences;
     private MovieRepository repository;
 
     @Before
