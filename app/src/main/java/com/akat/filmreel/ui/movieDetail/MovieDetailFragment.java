@@ -68,7 +68,7 @@ public class MovieDetailFragment extends Fragment
         Bundle bundle = requireArguments();
         movieId = bundle.getLong(Constants.PARAM.MOVIE_ID);
 
-        posterView = view.findViewById(R.id.movie_poster_img);
+        posterView = view.findViewById(R.id.movie_poster);
         backdropView = view.findViewById(R.id.movie_backdrop);
         titleView = view.findViewById(R.id.movie_title);
         origTitleView = view.findViewById(R.id.movie_orig_title);
@@ -89,6 +89,9 @@ public class MovieDetailFragment extends Fragment
             fragment.setMovie(currentMovie);
             fragment.show(requireActivity().getSupportFragmentManager(), fragment.getTag());
         });
+
+        // Set rounded corners
+        posterView.setClipToOutline(true);
 
         return view;
     }

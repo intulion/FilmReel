@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akat.filmreel.R;
@@ -95,7 +94,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListA
     class MovieListAdapterViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        final CardView cardView;
+        final View posterContainer;
         final ImageView poster;
         final TextView title;
         final TextView originalTitle;
@@ -108,7 +107,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListA
         MovieListAdapterViewHolder(View view) {
             super(view);
 
-            cardView = itemView.findViewById(R.id.movie_list_card);
+            posterContainer = itemView.findViewById(R.id.movie_list_poster_container);
             poster = itemView.findViewById(R.id.movie_list_img);
             title = itemView.findViewById(R.id.movie_list_title);
             originalTitle = itemView.findViewById(R.id.movie_list_orig_title);
@@ -117,6 +116,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieListA
 
             ratingFormat = itemView.getResources().getString(R.string.movie_rating_format);
             dateFormat = itemView.getResources().getString(R.string.date_format);
+
+            // Set rounded corners
+            posterContainer.setClipToOutline(true);
 
             itemView.setOnClickListener(this);
         }

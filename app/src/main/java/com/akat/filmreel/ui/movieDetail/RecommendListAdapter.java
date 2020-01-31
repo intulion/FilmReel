@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,7 +56,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
         }
     }
 
-    public void swapItems(final List<Movie> newMovies) {
+    void swapItems(final List<Movie> newMovies) {
         if (movies == null || newMovies == null) {
             movies = newMovies;
             notifyDataSetChanged();
@@ -107,7 +106,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
     class RecommendListAdapterViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
 
-        final CardView cardView;
+        final View posterContainer;
         final ImageView poster;
         final ImageView bookmark;
         final TextView title;
@@ -115,10 +114,13 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
         RecommendListAdapterViewHolder(View view) {
             super(view);
 
-            cardView = itemView.findViewById(R.id.recommend_poster);
+            posterContainer = itemView.findViewById(R.id.recommend_poster_container);
             poster = itemView.findViewById(R.id.recommend_poster_img);
             bookmark = itemView.findViewById(R.id.recommend_bookmark);
             title = itemView.findViewById(R.id.recommend_title);
+
+            // Set rounded corners
+            posterContainer.setClipToOutline(true);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
@@ -138,7 +140,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
             Movie selectedMovie = movies.get(adapterPosition);
             boolean isBookmarked = selectedMovie.isBookmarked();
 
-            setLongTapAnimation(cardView);
+            setLongTapAnimation(posterContainer);
             clickHandler.onItemLongClick(view, adapterPosition, selectedMovie.getId(), isBookmarked);
 
             selectedMovie.setIsBookmarked(!isBookmarked);

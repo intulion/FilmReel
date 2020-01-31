@@ -114,25 +114,18 @@
                 app:layout_constraintTop_toBottomOf="@id/movie_popularity"
                 tools:text="8.1 (2945)" />
 
-            <androidx.cardview.widget.CardView
+            <ImageView
                 android:id="@+id/movie_poster"
                 android:layout_width="@dimen/image_poster_width"
                 android:layout_height="@dimen/image_poster_height"
                 android:layout_marginStart="@dimen/spacing_large"
-                android:clipToPadding="true"
-                app:cardCornerRadius="@dimen/card_corner_radius"
+                android:contentDescription="@string/desc_movies_poster"
+                android:scaleType="centerCrop"
+                android:background="@drawable/rounded_shape"
                 app:layout_constraintBottom_toBottomOf="@+id/movie_backdrop"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movie_backdrop">
-
-                <ImageView
-                    android:id="@+id/movie_poster_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/desc_movies_poster"
-                    android:scaleType="centerCrop"
-                    tools:src="@tools:sample/avatars" />
-            </androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toBottomOf="@+id/movie_backdrop"
+                tools:src="@tools:sample/avatars" />
 
             <ImageButton
                 android:id="@+id/movie_notification_btn"
