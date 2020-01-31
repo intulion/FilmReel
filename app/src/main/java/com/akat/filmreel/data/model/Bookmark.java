@@ -18,20 +18,20 @@ public class Bookmark {
     private long id;
     @ColumnInfo(name = "movie_id", index = true)
     private long movieId;
-    private Boolean bookmark;
+    private Boolean isBookmarked;
     private Date bookmarkDate;
 
-    public Bookmark(long id, long movieId, Boolean bookmark, Date bookmarkDate) {
+    public Bookmark(long id, long movieId, Boolean isBookmarked, Date bookmarkDate) {
         this.id = id;
         this.movieId = movieId;
-        this.bookmark = bookmark;
+        this.isBookmarked = isBookmarked;
         this.bookmarkDate = bookmarkDate;
     }
 
     @Ignore
     public Bookmark(long movieId) {
         this.movieId = movieId;
-        this.bookmark = true;
+        this.isBookmarked = true;
         this.bookmarkDate = new Date();
     }
 
@@ -51,12 +51,12 @@ public class Bookmark {
         this.movieId = movieId;
     }
 
-    public Boolean getBookmark() {
-        return bookmark;
+    public Boolean isBookmarked() {
+        return isBookmarked;
     }
 
-    public void setBookmark(Boolean bookmark) {
-        this.bookmark = bookmark;
+    public void setIsBookmarked(Boolean isBookmarked) {
+        this.isBookmarked = isBookmarked;
     }
 
     public Date getBookmarkDate() {

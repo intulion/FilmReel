@@ -14,7 +14,7 @@ import com.akat.filmreel.data.model.RecommendEntity;
 import com.akat.filmreel.data.model.TopRatedEntity;
 import com.akat.filmreel.data.model.UpcomingEntity;
 
-@Database(version = 4, entities = {
+@Database(version = 5, entities = {
         MovieEntity.class,
         Bookmark.class,
         TopRatedEntity.class,
@@ -80,6 +80,29 @@ public abstract class AppDatabase extends RoomDatabase {
                     "FOREIGN KEY(`movie_id`) REFERENCES `movies`(`id`) " +
                     "ON UPDATE NO ACTION ON DELETE NO ACTION )"
             );
+        }
+    };
+
+    public static final Migration MIGRATION_4_5 = new Migration(4, 5) {
+        @Override
+        public void migrate(final SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS bookmarks_new (" +
+                    "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "`movie_id` INTEGER NOT NULL, " +
+                    "`isBookmarked` INTEGER, " +
+                    "`bookmarkDate` INTEGER, " +
+                    "FOREIGN KEY(`movie_id`) REFERENCES `movies`(`id`) " +
+                    "ON UPDATE NO ACTION ON DELETE NO ACTION )"
+            );
+
+            database.execSQL("INSERT INTO bookmarks_new (`id`, `movie_id`, `isBookmarked`, `bookmarkDate`) " +
+                    "SELECT `id`, `movie_id`, `bookmark`, `bookmarkDate` FROM bookmarks");
+
+            database.execSQL("DROP TABLE bookmarks");
+
+            database.execSQL("ALTER TABLE bookmarks_new RENAME TO bookmarks");
+
+            database.execSQL("CREATE INDEX IF NOT EXISTS `index_bookmarks_movie_id` ON `bookmarks` (`movie_id`)");
         }
     };
 }

@@ -29,7 +29,7 @@ abstract class MoviesDao {
      */
 
     @Transaction
-    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+    @Query("SELECT movies.*, bookmarks.isBookmarked, bookmarks.bookmarkDate " +
             "FROM movies " +
             "INNER JOIN top_rated ON movies.id = top_rated.movie_id " +
             "LEFT JOIN bookmarks ON movies.id = bookmarks.movie_id " +
@@ -37,7 +37,7 @@ abstract class MoviesDao {
     abstract Flowable<List<Movie>> getTopRated();
 
     @Transaction
-    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+    @Query("SELECT movies.*, bookmarks.isBookmarked, bookmarks.bookmarkDate " +
             "FROM movies " +
             "INNER JOIN now_playing ON movies.id = now_playing.movie_id " +
             "LEFT JOIN bookmarks ON movies.id = bookmarks.movie_id " +
@@ -45,7 +45,7 @@ abstract class MoviesDao {
     abstract Flowable<List<Movie>> getNowPlaying();
 
     @Transaction
-    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+    @Query("SELECT movies.*, bookmarks.isBookmarked, bookmarks.bookmarkDate " +
             "FROM movies " +
             "INNER JOIN popular ON movies.id = popular.movie_id " +
             "LEFT JOIN bookmarks ON movies.id = bookmarks.movie_id " +
@@ -53,7 +53,7 @@ abstract class MoviesDao {
     abstract Flowable<List<Movie>> getPopular();
 
     @Transaction
-    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+    @Query("SELECT movies.*, bookmarks.isBookmarked, bookmarks.bookmarkDate " +
             "FROM movies " +
             "INNER JOIN upcoming ON movies.id = upcoming.movie_id " +
             "LEFT JOIN bookmarks ON movies.id = bookmarks.movie_id " +
@@ -61,14 +61,14 @@ abstract class MoviesDao {
     abstract Flowable<List<Movie>> getUpcoming();
 
     @Transaction
-    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+    @Query("SELECT movies.*, bookmarks.isBookmarked, bookmarks.bookmarkDate " +
             "FROM movies " +
             "LEFT JOIN bookmarks ON movies.id = bookmarks.movie_id " +
             "WHERE movies.id = :id")
     abstract Single<Movie> getById(long id);
 
     @Transaction
-    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+    @Query("SELECT movies.*, bookmarks.isBookmarked, bookmarks.bookmarkDate " +
             "FROM movies " +
             "INNER JOIN recommend ON movies.id = recommend.movie_id " +
             "LEFT JOIN bookmarks ON movies.id = bookmarks.movie_id " +

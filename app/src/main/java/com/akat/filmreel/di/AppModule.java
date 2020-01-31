@@ -21,6 +21,7 @@ import dagger.Provides;
 import static com.akat.filmreel.data.local.AppDatabase.MIGRATION_1_2;
 import static com.akat.filmreel.data.local.AppDatabase.MIGRATION_2_3;
 import static com.akat.filmreel.data.local.AppDatabase.MIGRATION_3_4;
+import static com.akat.filmreel.data.local.AppDatabase.MIGRATION_4_5;
 
 @Module
 class AppModule {
@@ -56,7 +57,7 @@ class AppModule {
     AppDatabase provideAppDatabase(Context context) {
         return Room.databaseBuilder(context,
                 AppDatabase.class, AppDatabase.DATABASE_NAME)
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                 .build();
     }
 }
