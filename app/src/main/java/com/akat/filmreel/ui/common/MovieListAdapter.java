@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -130,7 +129,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     class MovieListAdapterViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
 
-        final CardView cardView;
+        final View posterContainer;
         final ImageView poster;
         final ImageView bookmark;
         final TextView title;
@@ -145,7 +144,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         MovieListAdapterViewHolder(View view) {
             super(view);
 
-            cardView = itemView.findViewById(R.id.movie_list_card);
+            posterContainer = itemView.findViewById(R.id.movie_list_poster_container);
             poster = itemView.findViewById(R.id.movie_list_img);
             bookmark = itemView.findViewById(R.id.movie_list_bookmark);
             title = itemView.findViewById(R.id.movie_list_title);
@@ -156,6 +155,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
             ratingFormat = itemView.getResources().getString(R.string.movie_rating_format);
             dateFormat = itemView.getResources().getString(R.string.date_format);
+
+            // Set rounded corners
+            posterContainer.setClipToOutline(true);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
@@ -175,7 +177,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             Movie selectedMovie = movies.get(adapterPosition);
             boolean isBookmarked = selectedMovie.isBookmarked();
 
-            setLongTapAnimation(cardView);
+            setLongTapAnimation(posterContainer);
             clickHandler.onItemLongClick(view, adapterPosition, selectedMovie.getId(), isBookmarked);
 
             selectedMovie.setIsBookmarked(!isBookmarked);

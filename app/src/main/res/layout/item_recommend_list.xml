@@ -6,19 +6,18 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/spacing_middle">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/recommend_poster"
-        android:layout_width="@dimen/image_large_poster_width"
-        android:layout_height="@dimen/image_large_poster_height"
-        android:clipToPadding="true"
-        app:cardCornerRadius="@dimen/card_corner_radius"
+    <FrameLayout
+        android:id="@+id/recommend_poster_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_shape"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/recommend_poster_img"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/image_large_poster_width"
+            android:layout_height="@dimen/image_large_poster_height"
             android:contentDescription="@string/desc_movies_poster"
             android:scaleType="centerCrop"
             tools:src="@tools:sample/avatars" />
@@ -31,7 +30,7 @@
             android:src="@drawable/ic_bookmark_poster"
             app:layout_constraintStart_toStartOf="@id/recommend_poster_img"
             app:layout_constraintTop_toTopOf="@id/recommend_poster_img" />
-    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/recommend_title"
@@ -41,8 +40,8 @@
         android:fontFamily="@style/TextAppearance.MaterialComponents.Body1"
         android:maxLines="2"
         android:textColor="@color/grey_20"
-        app:layout_constraintEnd_toEndOf="@+id/recommend_poster"
-        app:layout_constraintStart_toStartOf="@+id/recommend_poster"
-        app:layout_constraintTop_toBottomOf="@+id/recommend_poster"
+        app:layout_constraintEnd_toEndOf="@+id/recommend_poster_container"
+        app:layout_constraintStart_toStartOf="@+id/recommend_poster_container"
+        app:layout_constraintTop_toBottomOf="@+id/recommend_poster_container"
         tools:text="@tools:sample/lorem/random" />
 </androidx.constraintlayout.widget.ConstraintLayout>

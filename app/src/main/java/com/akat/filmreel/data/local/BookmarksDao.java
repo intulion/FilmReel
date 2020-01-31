@@ -24,7 +24,7 @@ public interface BookmarksDao {
     Completable deleteByMovieId(long movieId);
 
     @Transaction
-    @Query("SELECT movies.*, bookmarks.bookmark, bookmarks.bookmarkDate " +
+    @Query("SELECT movies.*, bookmarks.isBookmarked, bookmarks.bookmarkDate " +
             "FROM movies " +
             "INNER JOIN bookmarks ON movies.id = bookmarks.movie_id " +
             "ORDER BY bookmarkDate DESC")

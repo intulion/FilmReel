@@ -36,7 +36,7 @@ public class BookmarkTest {
         Bookmark bookmark = new Bookmark(movieId);
 
         assertEquals(movieId, bookmark.getMovieId());
-        assertTrue(bookmark.getBookmark());
+        assertTrue(bookmark.isBookmarked());
         assertEquals(constDate, bookmark.getBookmarkDate());
     }
 }
