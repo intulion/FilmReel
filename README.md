@@ -1,6 +1,8 @@
 # Film Reel
 This app helps you to browse for top rated, popular, now playing and upcoming movies which are retrieved from https://www.themoviedb.org/
 
+<a href='https://play.google.com/store/apps/details?id=dev.akat.filmreel'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png' width=200/></a>
+
 ## Final project for [OTUS Android course](https://otus.ru/lessons/basic-android/)
 !<img src="https://github.com/intulion/FilmReel/blob/master/screenshots/now_playing.png" vspace="5" align= "center" width=275 >
 !<img src="https://github.com/intulion/FilmReel/blob/master/screenshots/details.png" vspace="5" align= "center" width=275 >
